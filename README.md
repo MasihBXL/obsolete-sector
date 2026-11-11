@@ -1,5 +1,7 @@
 # OBSOLETE SECTOR // Personal Creative Hub & Indie Games Archive
 
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/MasihBXL/obsolete-sector)
+
 وب‌سایت شخصی و هاب جامع خلاقانه به سبک **ویندوز اکس‌پی (Windows XP Luna Light Mode)** و وب اوایل دهه ۲۰۰۰ (Web 1.0)، برای معرفی هویت سازنده، پروژه‌ها، موزیک‌ها، آرت‌های ۳ بعدی، پچ‌نوت‌ها و همچنین آپلود، هاست و دانلود بازی‌های مستقل با اتمسفر دارک و آنالوگ (الهام‌گرفته از مایک کلوبنیکا - خالق Buckshot Roulette).
 
 ---
