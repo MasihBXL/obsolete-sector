@@ -211,6 +211,55 @@ class RetroSoundEngine {
             this.ambientPlaying = false;
         }
     }
+
+    // Audition sample directly (works even if global sound is muted)
+    auditionSample(synthType) {
+        this.init();
+        const t = this.ctx.currentTime;
+        try {
+            if (synthType === 'analog_click' || synthType === 'relay_click') {
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(synthType === 'relay_click' ? 1800 : 900, t);
+                osc.frequency.exponentialRampToValueAtTime(80, t + 0.08);
+                gain.gain.setValueAtTime(0.15, t);
+                gain.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start(t);
+                osc.stop(t + 0.08);
+            } else if (synthType === 'crt_hum') {
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(60, t);
+                gain.gain.setValueAtTime(0.2, t);
+                gain.gain.exponentialRampToValueAtTime(0.001, t + 0.6);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start(t);
+                osc.stop(t + 0.6);
+            } else if (synthType === 'ambient_drone') {
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(55, t);
+                osc.frequency.linearRampToValueAtTime(40, t + 0.8);
+                gain.gain.setValueAtTime(0.18, t);
+                gain.gain.exponentialRampToValueAtTime(0.001, t + 0.8);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start(t);
+                osc.stop(t + 0.8);
+            } else if (synthType === 'floppy_seek') {
+                this.playDownload();
+            } else {
+                // static noise burst
+                this.playStaticBurst(0.15, 0.12);
+            }
+        } catch (e) {}
+    }
 }
 
 window.soundEngine = new RetroSoundEngine();

@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OBSOLETE SECTOR // Personal Creative Hub &amp; Games Archive</title>
-    <meta name="description" content="Personal creative hub, experimental indie games, analog audio design, and 3D art portfolio.">
+    <title>Hello, I am MOPTAM // Personal Creative Hub &amp; Games Archive</title>
+    <meta name="description" content="Personal creative hub, experimental indie games, analog audio design, 3D art gallery, and game archive by MOPTAM.">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="icon" href="/assets/badges/badge_horror.svg" type="image/svg+xml">
 </head>
@@ -17,14 +17,14 @@
             <!-- Left Banner -->
             <div class="banner bannerleft"></div>
 
-            <!-- Main Central Document Box with Windows XP Window Frame -->
+            <!-- Main Central Document Box with Windows XP / 98 Window Frame -->
             <div class="doc">
                 
-                <!-- Windows Titlebar (Using Unified Pixel Typography) -->
+                <!-- Windows Titlebar -->
                 <div class="xp-titlebar">
                     <div class="xp-titlebar-left">
                         <span style="font-size: 16px;">💽</span>
-                        <span id="xpTitlebarLabel">OBSOLETE SECTOR // PERSONAL HUB &amp; GAMES ARCHIVE</span>
+                        <span id="xpTitlebarLabel">Hello, I am MOPTAM // PERSONAL HUB &amp; GAMES ARCHIVE</span>
                     </div>
                     <div class="xp-titlebar-controls">
                         <button class="xp-ctrl-btn xp-btn-min" id="winBtnMin" title="Minimize">_</button>
@@ -39,7 +39,7 @@
                     <div class="header">
                         <div class="headercontents">
                             <div class="brand-wrapper">
-                                <a href="/" class="headertext">OBSOLETE SECTOR</a>
+                                <a href="#home" class="headertext" id="siteBrandName">Hello, I am MOPTAM</a>
                                 <img src="/assets/badges/badge_horror.svg" class="headerlogo" alt="logo">
                             </div>
                             <div class="header-controls">
@@ -52,25 +52,25 @@
                         </div>
                     </div>
 
-                    <!-- Top Navigation Bar (Mike Klubnika Dot Style - Previous Clean Layout) -->
+                    <!-- Top Navigation Bar (Multi-Part View Routing) -->
                     <div class="footer_top">
                         <div class="footertext">
                             <div class="nav-links">
-                                <a href="#catalogue" class="importantlink">catalogue</a>
+                                <a href="#home" class="importantlink nav-link-item active" data-view="home">HOME</a>
                                 <span class="sep">...</span>
-                                <a href="#about" class="importantlink">about &amp; bio</a>
+                                <a href="#games" class="importantlink nav-link-item" data-view="games">GAMES ARCHIVE</a>
                                 <span class="sep">...</span>
-                                <a href="#music" class="importantlink">music &amp; ost</a>
+                                <a href="#art" class="importantlink nav-link-item" data-view="art">ART GALLERY</a>
                                 <span class="sep">...</span>
-                                <a href="#art" class="importantlink">3d art &amp; lab</a>
+                                <a href="#audio" class="importantlink nav-link-item" data-view="audio">AUDIO LAB &amp; VAULT</a>
                                 <span class="sep">...</span>
-                                <a href="#updates" class="importantlink">devlogs</a>
+                                <a href="#updates" class="importantlink nav-link-item" data-view="updates">DEVLOGS</a>
                                 <span class="sep">...</span>
-                                <a href="#guestbook" class="importantlink">guestbook &amp; contact</a>
+                                <a href="#guestbook" class="importantlink nav-link-item" data-view="guestbook">GUESTBOOK</a>
                                 <span class="sep">...</span>
                                 <a href="#" class="open-terminal-btn">terminal [~]</a>
                             </div>
-                            <div style="font-size: 11.5px; color: var(--text-dim);">ZONE: DIAL-UP 56K &bull; v2.4</div>
+                            <div style="font-size: 11.5px; color: var(--text-dim);">ZONE: DIAL-UP 56K &bull; v2.5 &bull; ARCHIVE ACTIVE</div>
                         </div>
                     </div>
 
@@ -89,38 +89,127 @@
                     <!-- Scrolling Warning Marquee -->
                     <div class="marquee-container">
                         <div class="marquee-text">
-                            ⚡ OBSOLETE SECTOR // PERSONAL CREATIVE HUB &amp; STANDALONE GAMES ARCHIVE // ANOMALY DETECTED // VISITORS LOGGED: 004,924 // TRANSMISSIONS VERIFIED ⚡
+                            ⚡ Hello, I am MOPTAM // PERSONAL CREATIVE HUB &amp; GAMES ARCHIVE // ANOMALY DETECTED // VISITORS LOGGED: 004,924 // TRANSMISSIONS VERIFIED ⚡
                         </div>
                     </div>
 
                     <!-- ==========================================================================
-                         SECTION 1: ABOUT & BIO (سایت شخصی)
+                         PART 1: HOMEPAGE (HOME) - INTRO & BIG NAVIGATION CARDS
                          ========================================================================== -->
-                    <div id="about" class="intro-box">
-                        <p style="font-weight: bold; color: var(--link-color); font-size: 14.5px;">
-                            Welcome to my personal creative hub and indie games archive.
-                        </p>
-                        <p>
-                            I develop tactile indie games, experiment with analog sound design, record industrial ambient albums, and render low-poly 3D models. 
-                            The majority of my projects involve detailed machinery, atmospheric dystopian environments, psychological dread, and loaded chambers.
-                        </p>
-                        <p style="color: var(--text-muted); font-size: 12.5px;">
-                            All game builds here are true standalone packages. Feel free to download, test directly in your browser, stream audio tapes, or sign the visitor guestbook below.
-                        </p>
+                    <div id="view-home" class="site-view active">
+                        <!-- Hero Introduction to MOPTAM -->
+                        <div class="home-hero-box">
+                            <h1 class="hero-moptam-name">Hello, I am MOPTAM</h1>
+                            <div class="hero-moptam-tagline">
+                                <strong>Independent Game Developer, Tactile Sound Designer &amp; Low-Poly 3D Artist.</strong>
+                                <br>
+                                I create atmospheric indie games with mechanical dread, tactile tabletop items, and analog cold war tech. 
+                                Everything here is self-produced: from C#/Godot game logic and PSX-style 3D models to raw analog synthesizer recordings, binaural tape loops, and software CRT dithering.
+                            </div>
+                            <div class="hero-stats-strip">
+                                <span class="hero-stat-pill">🕹️ 4 GAMES ARCHIVED</span>
+                                <span class="hero-stat-pill">⚡ FREE BUILDS &amp; STEAM RELEASES</span>
+                                <span class="hero-stat-pill">🎨 3D ART &amp; PIXEL VAULT</span>
+                                <span class="hero-stat-pill">🎧 ANALOG FOLEY &amp; SOUND LAB</span>
+                                <span class="hero-stat-pill">● SERVER STATUS: ONLINE</span>
+                            </div>
+                        </div>
+
+                        <!-- Big Attention-Grabbing Navigation Grid -->
+                        <div style="margin-bottom: 12px;">
+                            <div style="font-family: var(--font-title); font-size: 24px; color: var(--link-color); text-transform: uppercase; margin-bottom: 12px;">
+                                ■ EXPLORE SECTORS // SELECT YOUR DESTINATION
+                            </div>
+                        </div>
+
+                        <div class="home-nav-grid">
+                            <!-- Card 1: Games Archive -->
+                            <div class="home-nav-card" onclick="location.hash='#games';">
+                                <div class="home-nav-card-icon">🕹️</div>
+                                <h3 class="home-nav-card-title">GAMES ARCHIVE</h3>
+                                <p class="home-nav-card-desc">
+                                    Download standalone free game builds, inspect Steam commercial releases, send live reactions, share opinions, submit suggestions, and report bugs.
+                                </p>
+                                <div class="home-nav-card-btn">ENTER GAMES ARCHIVE ➔</div>
+                            </div>
+
+                            <!-- Card 2: Art Gallery -->
+                            <div class="home-nav-card" onclick="location.hash='#art';">
+                                <div class="home-nav-card-icon">🎨</div>
+                                <h3 class="home-nav-card-title">ART GALLERY</h3>
+                                <p class="home-nav-card-desc">
+                                    Curated showcase of PSX-era 3D renderings, low-poly bunker environments, tactile pixel art textures, and architectural concept drawings.
+                                </p>
+                                <div class="home-nav-card-btn">VISIT ART GALLERY ➔</div>
+                            </div>
+
+                            <!-- Card 3: Audio Lab & Vault -->
+                            <div class="home-nav-card" onclick="location.hash='#audio';">
+                                <div class="home-nav-card-icon">🎧</div>
+                                <h3 class="home-nav-card-title">AUDIO LAB &amp; VAULT</h3>
+                                <p class="home-nav-card-desc">
+                                    Original analog synthesizer albums, subterranean dark ambient soundtracks, and an interactive foley library of mechanical sound effects with live audition.
+                                </p>
+                                <div class="home-nav-card-btn">EXPLORE AUDIO VAULT ➔</div>
+                            </div>
+
+                            <!-- Card 4: Devlogs & Writings -->
+                            <div class="home-nav-card" onclick="location.hash='#updates';">
+                                <div class="home-nav-card-icon">📝</div>
+                                <h3 class="home-nav-card-title">DEVLOGS &amp; WRITINGS</h3>
+                                <p class="home-nav-card-desc">
+                                    Read latest development updates, design post-mortems, game release patch notes, and technical dispatches written directly by MOPTAM.
+                                </p>
+                                <div class="home-nav-card-btn">READ DEVLOGS ➔</div>
+                            </div>
+                        </div>
+
+                        <!-- Latest Update Highlight on Homepage -->
+                        <div class="latest-update-card">
+                            <div class="latest-update-header">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span class="latest-update-badge">LATEST UPDATE</span>
+                                    <span id="homeLatestUpdateDate" style="font-size: 11.5px; color: var(--text-dim); font-weight: bold;">2026-11-04</span>
+                                </div>
+                                <a href="#updates" class="btn-pixel" style="font-size: 11px;">VIEW ALL UPDATES ➔</a>
+                            </div>
+                            <h3 id="homeLatestUpdateTitle" class="latest-update-title">[Chamber Protocol] v1.4.2 Hotfix &amp; CRT Audio Overhaul</h3>
+                            <p id="homeLatestUpdateBody" class="latest-update-excerpt">
+                                Implemented analog audio synthesizer improvements, reduced latency on shell cocking sound, and fixed a rare glitch when handcuffs were used consecutively.
+                            </p>
+                        </div>
+
+                        <!-- Guestbook Call to Action -->
+                        <div style="background: var(--bg-card); border: 1px dashed var(--border-color); padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                            <div>
+                                <strong style="color: var(--link-color); font-size: 13px;">📟 VISITOR GUESTBOOK &amp; CHANNELS:</strong>
+                                <span style="font-size: 12px; color: var(--text-muted); margin-left: 6px;">Leave your transmission or connect on Steam, Discord, and Itch.io.</span>
+                            </div>
+                            <a href="#guestbook" class="btn-pixel btn-pixel-accent">SIGN GUESTBOOK ➔</a>
+                        </div>
                     </div>
 
                     <!-- ==========================================================================
-                         SECTION 2: GAMES ARCHIVE (کاتالوگ بازی‌ها)
+                         PART 2: GAMES ARCHIVE - FREE DOWNLOADS, STEAM & PER-GAME FEEDBACK
                          ========================================================================== -->
-                    <div id="catalogue">
-                        <div class="lr">
-                            <h2><span>■</span> GAMES ARCHIVE</h2>
+                    <div id="view-games" class="site-view">
+                        <div class="page-header-box">
+                            <h2 class="page-main-title"><span>■</span> GAMES ARCHIVE</h2>
+                            <p class="page-subtitle">
+                                Standalone free indie games, Steam commercial releases, community reviews, suggestions, and bug reports.
+                            </p>
+                        </div>
+
+                        <!-- Filter Controls -->
+                        <div class="lr" style="margin-bottom: 14px;">
+                            <span style="font-size: 12px; font-weight: bold; color: var(--link-color);">FILTER BY TYPE:</span>
                             <div class="lr-actions">
-                                <button class="btn-pixel filter-btn active" data-filter="ALL">ALL</button>
+                                <button class="btn-pixel filter-btn active" data-filter="ALL">ALL GAMES</button>
+                                <button class="btn-pixel filter-btn" data-filter="FREE">FREE DOWNLOADS</button>
+                                <button class="btn-pixel filter-btn" data-filter="PAID">STEAM RELEASES</button>
                                 <button class="btn-pixel filter-btn" data-filter="PSYCHOLOGICAL">PSYCH</button>
-                                <button class="btn-pixel filter-btn" data-filter="ANALOG">ANALOG</button>
+                                <button class="btn-pixel filter-btn" data-filter="ANALOG">ANALOG TECH</button>
                                 <button class="btn-pixel filter-btn" data-filter="SURVIVAL">SURVIVAL</button>
-                                <button class="btn-pixel filter-btn" data-filter="BODY">BODY</button>
                             </div>
                         </div>
 
@@ -141,7 +230,10 @@
                                     <div>
                                         <div class="cat-header">
                                             <h3 id="catTitle" class="cat-title">CHAMBER PROTOCOL</h3>
-                                            <span id="catVersion" class="cat-version">v1.4.2</span>
+                                            <div style="display: flex; gap: 6px; align-items: center;">
+                                                <span id="catPriceBadge" class="badge-free">FREE DOWNLOAD</span>
+                                                <span id="catVersion" class="cat-version">v1.4.2</span>
+                                            </div>
                                         </div>
                                         <div id="catSubtitle" class="cat-subtitle">12-gauge tactical roulette in an abandoned facility</div>
                                         <div id="catTags" class="cat-tags">
@@ -157,13 +249,17 @@
                                         <div class="cat-meta-row">
                                             <span id="catSize">FILE SIZE: 48.5 MB</span>
                                             <span id="catDate">DATE: 2026-10-15</span>
-                                            <span id="catDownloads">DOWNLOADS: 1420</span>
+                                            <span id="catDownloads">DOWNLOADS: 1422</span>
                                         </div>
                                         
-                                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                        <!-- Actions Row: Download vs Steam vs Play In Browser -->
+                                        <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;">
                                             <button id="btnDownload" class="btn-pixel btn-pixel-accent">
                                                 <span>▼</span> DIRECT DOWNLOAD
                                             </button>
+                                            <a id="btnSteam" href="#" target="_blank" class="btn-pixel btn-steam" style="display: none; text-decoration: none;">
+                                                <span>⚡</span> BUY / WISHLIST ON STEAM
+                                            </a>
                                             <button id="btnPlayBrowser" class="btn-pixel" style="display: none;">
                                                 <span>▶</span> PLAY IN BROWSER
                                             </button>
@@ -172,8 +268,8 @@
                                             </button>
                                         </div>
 
-                                        <!-- Live Reactions & Ratings Bar -->
-                                        <div class="reactions-bar" style="margin-top: 12px; padding-top: 8px; border-top: 1px dashed var(--border-subtle); display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                                        <!-- Live Reactions Bar -->
+                                        <div class="reactions-bar" style="padding-top: 8px; border-top: 1px dashed var(--border-color); display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
                                             <span style="font-size: 11px; color: var(--text-dim); font-weight: bold;">REACTIONS:</span>
                                             <button class="btn-pixel rx-btn" data-type="heart" title="Appreciate">❤️ <span class="rx-count" data-type="heart">0</span></button>
                                             <button class="btn-pixel rx-btn" data-type="skull" title="Dread / Horror">💀 <span class="rx-count" data-type="skull">0</span></button>
@@ -188,90 +284,150 @@
                             <!-- Selector Table (Game List) -->
                             <div id="catalogueList" class="cataloguelist"></div>
                         </div>
-                    </div>
 
-                    <div class="pagespace"></div>
-
-                    <!-- ==========================================================================
-                         SECTION 3: MUSIC & SOUND EXPERIMENTS (آلبوم‌ها و موزیک)
-                         ========================================================================== -->
-                    <div id="music">
-                        <div class="lr">
-                            <h2><span>■</span> MUSIC &amp; AUDIO RELEASES</h2>
-                            <span style="font-size: 11px; color: var(--text-dim);">ANALOG SYNTHESIZERS &amp; FOLEY</span>
-                        </div>
-
-                        <div id="musicGrid" class="music-grid"></div>
-                    </div>
-
-                    <div class="pagespace"></div>
-
-                    <!-- ==========================================================================
-                         SECTION 4: 3D ART & HARDWARE LAB (آرت‌ها و رندرها)
-                         ========================================================================== -->
-                    <div id="art">
-                        <div class="lr">
-                            <h2><span>■</span> 3D RETRO ART &amp; HARDWARE LAB</h2>
-                            <span style="font-size: 11px; color: var(--text-dim);">PSX RENDERS / DITHERED MODELS</span>
-                        </div>
-
-                        <div class="art-grid">
-                            <div class="art-card">
-                                <img src="/assets/images/cover_chamber.svg" style="width: 100%; aspect-ratio: 16/9; object-fit: cover; border: 1px solid #7f9db9; margin-bottom: 8px;" alt="Render">
-                                <div style="font-weight: bold; color: var(--link-color);">12-Gauge Tactical Rig</div>
-                                <div style="font-size: 11px; color: #666;">Blender / Low-Poly Vertex Color / Software Dither</div>
+                        <!-- Per-Game Community Feedback Section: Opinions, Suggestions & Bug Reports -->
+                        <div class="game-feedback-section" id="gameFeedbackSection">
+                            <div class="feedback-tab-bar">
+                                <span style="font-family: var(--font-title); font-size: 22px; color: var(--link-color); margin-right: 12px;">
+                                    COMMUNITY INTEL // <span id="feedbackGameTargetTitle">CHAMBER PROTOCOL</span>
+                                </span>
+                                <button type="button" class="btn-pixel feedback-tab-btn active" data-fb-type="all">ALL (0)</button>
+                                <button type="button" class="btn-pixel feedback-tab-btn" data-fb-type="comment">💬 OPINIONS</button>
+                                <button type="button" class="btn-pixel feedback-tab-btn" data-fb-type="suggestion">💡 SUGGESTIONS</button>
+                                <button type="button" class="btn-pixel feedback-tab-btn" data-fb-type="bug_report">🐛 BUG REPORTS</button>
                             </div>
 
-                            <div class="art-card">
-                                <img src="/assets/images/cover_signal.svg" style="width: 100%; aspect-ratio: 16/9; object-fit: cover; border: 1px solid #7f9db9; margin-bottom: 8px;" alt="Render">
-                                <div style="font-weight: bold; color: var(--link-color);">Scandinavian Ham Receiver Unit 4</div>
-                                <div style="font-size: 11px; color: #666;">Procedural Oscilloscope Green / CRT Simulation</div>
+                            <!-- Feedback Submission Box -->
+                            <div class="feedback-form-box">
+                                <div id="fbAuthPrompt" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 10px;">
+                                    <span style="font-size: 12px; color: var(--text-muted);">
+                                        🔒 Sign in with your call-sign to leave an opinion, give suggestions, or report bugs.
+                                    </span>
+                                    <button type="button" id="btnPromptFbAuth" class="btn-pixel">SIGN IN / REGISTER</button>
+                                </div>
+
+                                <form id="gameFeedbackForm" style="display: none;">
+                                    <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 8px; flex-wrap: wrap;">
+                                        <span style="font-size: 11.5px; font-weight: bold; color: var(--link-color);">SUBMISSION TYPE:</span>
+                                        <label style="font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                                            <input type="radio" name="fbType" value="comment" checked> 💬 Opinion / Review
+                                        </label>
+                                        <label style="font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                                            <input type="radio" name="fbType" value="suggestion"> 💡 Suggestion
+                                        </label>
+                                        <label style="font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                                            <input type="radio" name="fbType" value="bug_report"> 🐛 Bug Report
+                                        </label>
+                                    </div>
+                                    <div style="margin-bottom: 8px;">
+                                        <textarea id="fbContent" class="form-textarea" style="width: 100%; min-height: 55px; padding: 6px 10px; border: 1px solid var(--border-color); font-family: var(--font-mono);" placeholder="Transmit your opinion, feature suggestion, or bug encounter details..." required></textarea>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <button type="submit" id="btnSubmitFeedback" class="btn-pixel btn-pixel-accent">TRANSMIT INTEL</button>
+                                        <span id="fbSubmitStatus" style="font-size: 11.5px; font-weight: bold;"></span>
+                                    </div>
+                                </form>
                             </div>
 
-                            <div class="art-card">
-                                <img src="/assets/images/cover_sub.svg" style="width: 100%; aspect-ratio: 16/9; object-fit: cover; border: 1px solid #7f9db9; margin-bottom: 8px;" alt="Render">
-                                <div style="font-weight: bold; color: var(--link-color);">Pressure Zero Pod Hatch</div>
-                                <div style="font-size: 11px; color: #666;">Welded Iron Textures / Alarm Red Radiance</div>
-                            </div>
-
-                            <div class="art-card">
-                                <img src="/assets/images/cover_machine.svg" style="width: 100%; aspect-ratio: 16/9; object-fit: cover; border: 1px solid #7f9db9; margin-bottom: 8px;" alt="Render">
-                                <div style="font-weight: bold; color: var(--link-color);">Hydraulic Crusher MK-VI</div>
-                                <div style="font-size: 11px; color: #666;">Pneumatic Piston Mechanics / Industrial Rust</div>
+                            <!-- List of feedback items -->
+                            <div id="gameFeedbackList">
+                                <div style="font-size: 12px; color: var(--text-dim); text-align: center; padding: 12px;">Loading community transmissions...</div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="pagespace"></div>
+                    <!-- ==========================================================================
+                         PART 3: ART GALLERY - 3D RENDERS, PIXEL ART & DRAWINGS
+                         ========================================================================== -->
+                    <div id="view-art" class="site-view">
+                        <div class="page-header-box">
+                            <h2 class="page-main-title"><span>■</span> ART GALLERY</h2>
+                            <p class="page-subtitle">
+                                3D low-poly models, retro CRT dithered renders, tactile pixel textures, and mechanical concept drawings created by MOPTAM.
+                            </p>
+                        </div>
+
+                        <!-- Art Filter Controls -->
+                        <div class="art-gallery-controls">
+                            <span style="font-size: 12px; font-weight: bold; color: var(--link-color); align-self: center;">CATEGORY:</span>
+                            <button class="btn-pixel art-filter-btn active" data-category="ALL">ALL ARTWORK (8)</button>
+                            <button class="btn-pixel art-filter-btn" data-category="3d">3D RENDERS &amp; MODELS (4)</button>
+                            <button class="btn-pixel art-filter-btn" data-category="pixel">PIXEL ART (2)</button>
+                            <button class="btn-pixel art-filter-btn" data-category="drawing">DRAWINGS &amp; SKETCHES (2)</button>
+                        </div>
+
+                        <!-- Artwork Grid -->
+                        <div id="artGalleryGrid" class="art-gallery-grid"></div>
+                    </div>
 
                     <!-- ==========================================================================
-                         SECTION 5: DEVLOGS & PATCH NOTES (پچ‌نوت‌ها)
+                         PART 4: AUDIO LAB & SOUND VAULT - MUSIC & FOLEY SFX
                          ========================================================================== -->
-                    <div id="updates">
-                        <div class="lr">
-                            <h2><span>■</span> DEVLOG DISPATCHES &amp; PATCH LOGS</h2>
-                            <a href="/admin.html" class="importantlink" style="font-size: 12px;">+ post dispatch</a>
+                    <div id="view-audio" class="site-view">
+                        <div class="page-header-box">
+                            <h2 class="page-main-title"><span>■</span> AUDIO LAB &amp; SOUND VAULT</h2>
+                            <p class="page-subtitle">
+                                Analog synthesizer albums, tape-decay dark ambient soundtracks, and tactical mechanical sound effects crafted by MOPTAM.
+                            </p>
                         </div>
+
+                        <!-- Section A: Original Soundtracks & Albums -->
+                        <div style="margin-bottom: 24px;">
+                            <div class="lr" style="margin-bottom: 12px;">
+                                <h3 style="font-family: var(--font-title); font-size: 24px; color: var(--link-color); margin: 0;">
+                                    ▲ ALBUMS &amp; ORIGINAL SOUNDTRACKS
+                                </h3>
+                                <span style="font-size: 11px; color: var(--text-dim);">ANALOG SYNTHS &amp; TAPE LOOPS</span>
+                            </div>
+                            <div id="musicGrid" class="music-grid"></div>
+                        </div>
+
+                        <!-- Section B: Sound Effects & Foley Vault -->
+                        <div>
+                            <div class="lr" style="margin-bottom: 12px;">
+                                <h3 style="font-family: var(--font-title); font-size: 24px; color: var(--link-color); margin: 0;">
+                                    ▲ TACTILE SOUND EFFECTS &amp; FOLEY VAULT
+                                </h3>
+                                <span style="font-size: 11px; color: var(--text-dim);">48kHz / 24-BIT MASTER SAMPLES</span>
+                            </div>
+                            <div id="sfxGrid" class="sfx-grid"></div>
+                        </div>
+                    </div>
+
+                    <!-- ==========================================================================
+                         PART 5: DEVLOGS & WRITINGS - UPDATES BY MOPTAM
+                         ========================================================================== -->
+                    <div id="view-updates" class="site-view">
+                        <div class="page-header-box">
+                            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                                <h2 class="page-main-title" style="margin: 0;"><span>■</span> DEVLOG DISPATCHES &amp; UPDATES</h2>
+                                <a href="/admin.html" id="adminNewDispatchBtn" class="btn-pixel btn-pixel-accent" style="display: none; text-decoration: none;">+ POST DISPATCH</a>
+                            </div>
+                            <p class="page-subtitle" style="margin-top: 6px;">
+                                Technical post-mortems, game design notes, version changelogs, and personal updates written by MOPTAM.
+                            </p>
+                        </div>
+
                         <div id="updatesList"></div>
                     </div>
 
-                    <div class="pagespace"></div>
-
                     <!-- ==========================================================================
-                         SECTION 6: GUESTBOOK & CONTACT (دفترچه یادداشت و ارتباط)
+                         PART 6: GUESTBOOK & CONTACT
                          ========================================================================== -->
-                    <div id="guestbook">
-                        <div class="lr">
-                            <h2><span>■</span> GUESTBOOK &amp; CONTACT CHANNELS</h2>
-                            <span style="font-size: 11px; color: var(--text-dim);">DIRECT LINE</span>
+                    <div id="view-guestbook" class="site-view">
+                        <div class="page-header-box">
+                            <h2 class="page-main-title"><span>■</span> GUESTBOOK &amp; CONTACT CHANNELS</h2>
+                            <p class="page-subtitle">
+                                Direct transmission frequency and links to Steam, Itch.io, Bandcamp, Discord, and Email.
+                            </p>
                         </div>
 
                         <!-- Direct Social & Store Links -->
-                        <div style="background: var(--bg-doc); border: 1px solid var(--border-color); padding: 12px 16px; margin-bottom: 16px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">
-                            <strong style="color: var(--link-color); font-size: 12px;">CHANNELS:</strong>
+                        <div style="background: var(--bg-card); border: 1px solid var(--border-color); padding: 14px 18px; margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">
+                            <strong style="color: var(--link-color); font-size: 12px;">DIRECT CHANNELS:</strong>
                             <a href="mailto:developer@obsolete-sector.net" class="btn-pixel">✉ Email</a>
                             <a href="https://itch.io" target="_blank" class="btn-pixel">🎮 Itch.io Profile</a>
-                            <a href="https://store.steampowered.com" target="_blank" class="btn-pixel">⚡ Steam Dev</a>
+                            <a href="https://store.steampowered.com" target="_blank" class="btn-pixel btn-steam">⚡ Steam Developer</a>
                             <a href="https://bandcamp.com" target="_blank" class="btn-pixel">🎵 Bandcamp</a>
                             <a href="https://discord.com" target="_blank" class="btn-pixel">💬 Discord</a>
                         </div>
@@ -279,7 +435,7 @@
                         <!-- Sign Guestbook Form -->
                         <div class="guestbook-box">
                             <h3 style="font-family: var(--font-title); font-size: 26px; color: var(--link-color); margin-bottom: 4px;">SIGN THE GUESTBOOK</h3>
-                            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">Leave a transmission message for the archive visitors.</p>
+                            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">Leave a transmission message for MOPTAM and the archive visitors.</p>
                             
                             <!-- Notice for guests -->
                             <div id="gbGuestWarning" style="background: var(--bg-card-inner); border: 1px dashed var(--border-color); padding: 10px 14px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
@@ -310,7 +466,7 @@
                     </div>
 
                     <!-- Hit Counter Bottom -->
-                    <div class="hit-counter-box">
+                    <div class="hit-counter-box" style="margin-top: 24px;">
                         <span>TRANSMISSION VISITOR NO.</span>
                         <div class="odometer">
                             <span class="odometer-digit">0</span>
@@ -325,23 +481,27 @@
 
                 </div>
 
-                <!-- Footer (Authentic Mike Klubnika layout) -->
+                <!-- Footer -->
                 <footer class="footer">
                     <div class="footertext">
                         <div class="nav-links">
-                            <a href="#catalogue" class="importantlink">catalogue</a>
+                            <a href="#home" class="importantlink" onclick="location.hash='#home';">home</a>
                             <span class="sep">...</span>
-                            <a href="#about" class="importantlink">about &amp; bio</a>
+                            <a href="#games" class="importantlink" onclick="location.hash='#games';">games</a>
                             <span class="sep">...</span>
-                            <a href="#music" class="importantlink">music</a>
+                            <a href="#art" class="importantlink" onclick="location.hash='#art';">art gallery</a>
                             <span class="sep">...</span>
-                            <a href="#guestbook" class="importantlink">contact</a>
+                            <a href="#audio" class="importantlink" onclick="location.hash='#audio';">audio lab</a>
+                            <span class="sep">...</span>
+                            <a href="#updates" class="importantlink" onclick="location.hash='#updates';">devlogs</a>
+                            <span class="sep">...</span>
+                            <a href="#guestbook" class="importantlink" onclick="location.hash='#guestbook';">guestbook</a>
                             <span class="sep">...</span>
                             <a href="/admin.html" class="importantlink">admin portal</a>
                             <span class="sep">...</span>
                             <a href="#" class="open-terminal-btn">terminal [~]</a>
                         </div>
-                        <div>OBSOLETE SECTOR &copy; 2000-2026 // STANDALONE TRANSMISSION</div>
+                        <div>Hello, I am MOPTAM &copy; 2000-2026 // STANDALONE TRANSMISSION</div>
                     </div>
                 </footer>
 
@@ -356,20 +516,21 @@
     <div id="xpStartMenu" class="xp-start-menu">
         <div class="xp-start-header">
             <span style="font-size: 22px;">👤</span>
-            <span>Developer // Personal Hub</span>
+            <span>MOPTAM // Personal Creative Hub</span>
         </div>
         <div class="xp-start-body">
-            <a class="xp-start-item" href="#about" onclick="toggleStartMenu(false);"><span>👤</span> About Me &amp; Bio</a>
-            <a class="xp-start-item" href="#catalogue" onclick="toggleStartMenu(false);"><span>🕹️</span> Games Archive</a>
-            <a class="xp-start-item" href="#music" onclick="toggleStartMenu(false);"><span>🎵</span> Music &amp; Soundtracks</a>
-            <a class="xp-start-item" href="#art" onclick="toggleStartMenu(false);"><span>🎨</span> 3D Art &amp; Hardware</a>
-            <a class="xp-start-item" href="#guestbook" onclick="toggleStartMenu(false);"><span>📟</span> Guestbook &amp; Socials</a>
+            <a class="xp-start-item" href="#home" onclick="toggleStartMenu(false);"><span>🏠</span> Home Portal</a>
+            <a class="xp-start-item" href="#games" onclick="toggleStartMenu(false);"><span>🕹️</span> Games Archive</a>
+            <a class="xp-start-item" href="#art" onclick="toggleStartMenu(false);"><span>🎨</span> Art Gallery (3D &amp; Pixels)</a>
+            <a class="xp-start-item" href="#audio" onclick="toggleStartMenu(false);"><span>🎧</span> Audio Lab &amp; Sound Vault</a>
+            <a class="xp-start-item" href="#updates" onclick="toggleStartMenu(false);"><span>📝</span> Devlogs &amp; Dispatches</a>
+            <a class="xp-start-item" href="#guestbook" onclick="toggleStartMenu(false);"><span>📟</span> Guestbook &amp; Channels</a>
             <div style="height: 1px; background: #e0e0e0; margin: 3px 0;"></div>
             <a class="xp-start-item" href="/admin.html"><span>🔒</span> Upload / Admin Portal</a>
             <div class="xp-start-item open-terminal-btn" onclick="toggleStartMenu(false);"><span>💻</span> Command Terminal [~]</div>
         </div>
         <div class="xp-start-footer">
-            <button class="btn-pixel" onclick="toggleStartMenu(false);">Log Off</button>
+            <button class="btn-pixel" onclick="toggleStartMenu(false);">Close Menu</button>
         </div>
     </div>
 
@@ -381,7 +542,7 @@
             </button>
             <div class="xp-taskbar-tasks">
                 <div class="xp-task-pill" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">
-                    <span>💽</span> Obsolete Sector - Personal Creative Hub
+                    <span>💽</span> Hello, I am MOPTAM - Personal Creative Hub
                 </div>
             </div>
         </div>
@@ -407,7 +568,7 @@
                     <div style="font-size: 36px;">💾 ➔ 📁</div>
                     <div>
                         <div style="font-weight: bold; font-size: 13px;" id="dlDialogTitle">Downloading Chamber_Protocol.zip</div>
-                        <div style="font-size: 11px; color: #555;">From: obsolete-sector.archive (Standalone File)</div>
+                        <div style="font-size: 11px; color: #555;">From: MOPTAM Archive (Verified Standalone Build)</div>
                     </div>
                 </div>
 
@@ -418,7 +579,7 @@
                     </tr>
                     <tr>
                         <td style="color: #666;">Download to:</td>
-                        <td>C:\Games\Indie_Horror\</td>
+                        <td>C:\Games\MOPTAM_Archive\</td>
                     </tr>
                     <tr>
                         <td style="color: #666;">Transfer rate:</td>
@@ -470,9 +631,36 @@
                     </div>
                     <div style="display: flex; gap: 8px;">
                         <button id="modalDownloadBtn" class="btn-pixel btn-pixel-accent">DOWNLOAD ZIP</button>
+                        <a id="modalSteamBtn" href="#" target="_blank" class="btn-pixel btn-steam" style="display: none;">STEAM STORE</a>
                         <a id="modalItchBtn" href="#" target="_blank" class="btn-pixel" style="display: none;">ITCH.IO</a>
-                        <a id="modalSteamBtn" href="#" target="_blank" class="btn-pixel" style="display: none;">STEAM</a>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ARTWORK LIGHTBOX INSPECTION MODAL -->
+    <div id="artModal" class="modal-overlay">
+        <div class="modal-box" style="width: 750px; max-width: 95vw;">
+            <div class="xp-titlebar">
+                <div class="xp-titlebar-left">
+                    <span>🎨</span>
+                    <span id="artModalTitle">ARTWORK INSPECTOR</span>
+                </div>
+                <button id="artModalClose" class="xp-ctrl-btn xp-btn-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="background: #000000; border: 1px solid var(--border-color); text-align: center; margin-bottom: 14px; position: relative;">
+                    <img id="artModalImg" src="" style="max-width: 100%; max-height: 440px; object-fit: contain; display: inline-block; image-rendering: pixelated;" alt="Artwork">
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px; margin-bottom: 6px;">
+                    <h3 id="artModalHeading" style="font-family: var(--font-title); font-size: 24px; color: var(--link-color); margin: 0;"></h3>
+                    <span id="artModalCategory" class="hero-stat-pill"></span>
+                </div>
+                <div id="artModalMedium" style="font-size: 12px; color: var(--text-dim); margin-bottom: 10px;"></div>
+                <p id="artModalDesc" style="font-size: 13px; line-height: 1.6; color: var(--text-primary); margin-bottom: 16px;"></p>
+                <div style="display: flex; justify-content: flex-end;">
+                    <button class="btn-pixel" id="artModalCloseBtn">CLOSE VIEWFINDER</button>
                 </div>
             </div>
         </div>
@@ -515,7 +703,7 @@
                 <!-- Form 1: Sign In -->
                 <div id="authPaneLogin">
                     <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
-                        Enter your operator credentials to access downloads, post transmissions, and leave reactions.
+                        Enter your operator credentials to download games, transmit reviews, submit suggestions, and report bugs.
                     </p>
                     <form id="loginForm">
                         <div style="margin-bottom: 10px;">
@@ -528,7 +716,7 @@
                         </div>
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <button type="submit" class="btn-pixel btn-pixel-accent">AUTHENTICATE</button>
-                            <span style="font-size: 11px; color: var(--text-dim);">Admin &amp; User login supported</span>
+                            <span style="font-size: 11px; color: var(--text-dim);">Admin &amp; User clearance supported</span>
                         </div>
                     </form>
                 </div>
@@ -603,7 +791,7 @@
             <button id="terminalCloseBtn" style="background: none; border: none; color: #40f567; cursor: pointer; font-family: monospace;">[CLOSE X]</button>
         </div>
         <div id="terminalLog" class="terminal-log">
-            <div>OBSOLETE SECTOR COMMAND INTERFACE INITIALIZED.</div>
+            <div>MOPTAM COMMAND INTERFACE INITIALIZED.</div>
             <div>Type "help" to display operational commands.</div>
         </div>
         <div class="terminal-input-row">

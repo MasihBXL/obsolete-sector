@@ -1,0 +1,50 @@
+[
+  {
+    "id": "sfx-1",
+    "name": "HYDRAULIC VALVE PURGE",
+    "type": "INDUSTRIAL FOLEY",
+    "format": "48kHz / 24-bit WAV",
+    "description": "High-pressure pneumatic air release accompanied by mechanical metallic clamp locking.",
+    "synth": "analog_click"
+  },
+  {
+    "id": "sfx-2",
+    "name": "12-GAUGE BREECH SNAP",
+    "type": "WEAPON TACTILE",
+    "format": "48kHz / 24-bit WAV",
+    "description": "Heavy milled steel latch slamming into locked position with reverberant room acoustic bounce.",
+    "synth": "relay_click"
+  },
+  {
+    "id": "sfx-3",
+    "name": "CATHODE RAY DEGAUSS COIL",
+    "type": "ELECTROMAGNETIC",
+    "format": "48kHz / 24-bit WAV",
+    "description": "Heavy capacitor discharge into degaussing coils followed by 60Hz cathode hum settling.",
+    "synth": "crt_hum"
+  },
+  {
+    "id": "sfx-4",
+    "name": "ABYSSAL SONAR CHIRP & GROAN",
+    "type": "HYDROPHONE / AMBIENT",
+    "format": "48kHz / 24-bit WAV",
+    "description": "Deep ocean low-frequency ping with metal hull deflection resonance recorded at 4000m.",
+    "synth": "ambient_drone"
+  },
+  {
+    "id": "sfx-5",
+    "name": "FLOPPY DRIVE STEPPER MOTOR",
+    "type": "ANALOG TECH",
+    "format": "48kHz / 24-bit WAV",
+    "description": "Tactile magnetic head positioning seek ticks from a 1988 3.5-inch 1.44MB diskette drive.",
+    "synth": "floppy_seek"
+  },
+  {
+    "id": "sfx-6",
+    "name": "VACUUM TUBE WARMUP CRACKLE",
+    "type": "ELECTRICAL TAPE",
+    "format": "48kHz / 24-bit WAV",
+    "description": "Thermal expansion of glass filaments in high-gain tube amplifiers with faint radio static.",
+    "synth": "tape_hiss"
+  }
+]

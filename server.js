@@ -26,6 +26,26 @@ const IMAGES_DIR = path.join(UPLOADS_DIR, 'images');
 const GAMES_DATA_PATH = path.join(DATA_DIR, 'games.json');
 const UPDATES_DATA_PATH = path.join(DATA_DIR, 'updates.json');
 const MUSIC_DATA_PATH = path.join(DATA_DIR, 'music.json');
+const ART_DATA_PATH = path.join(DATA_DIR, 'art.json');
+const SFX_DATA_PATH = path.join(DATA_DIR, 'sfx.json');
+
+function getArt() {
+    if (!fs.existsSync(ART_DATA_PATH)) return [];
+    try {
+        return JSON.parse(fs.readFileSync(ART_DATA_PATH, 'utf8'));
+    } catch (e) {
+        return [];
+    }
+}
+
+function getSfx() {
+    if (!fs.existsSync(SFX_DATA_PATH)) return [];
+    try {
+        return JSON.parse(fs.readFileSync(SFX_DATA_PATH, 'utf8'));
+    } catch (e) {
+        return [];
+    }
+}
 
 const DEFAULT_MUSIC = [
     {
@@ -659,8 +679,16 @@ app.delete('/api/guestbook/:id', requireAdmin, (req, res) => {
 });
 
 // ============================================================================
-// MUSIC & DEVLOGS
+// ART, SFX, MUSIC & DEVLOGS
 // ============================================================================
+
+app.get('/api/art', (req, res) => {
+    res.json(getArt());
+});
+
+app.get('/api/sfx', (req, res) => {
+    res.json(getSfx());
+});
 
 app.get('/api/music', (req, res) => {
     res.json(getMusic());
@@ -668,6 +696,55 @@ app.get('/api/music', (req, res) => {
 
 app.get('/api/updates', (req, res) => {
     res.json(getUpdates());
+});
+
+app.get('/api/updates/latest', (req, res) => {
+    const updates = getUpdates();
+    res.json(updates.length > 0 ? updates[0] : null);
+});
+
+// ============================================================================
+// GAME FEEDBACK (COMMENTS / OPINIONS, SUGGESTIONS, BUG REPORTS)
+// ============================================================================
+
+// 1. Get feedback for a specific game
+app.get('/api/games/:id/feedback', (req, res) => {
+    const { type } = req.query;
+    const feedback = db.getGameFeedback(req.params.id, type);
+    res.json(feedback);
+});
+
+// 2. Submit feedback for a game (Requires User Account)
+app.post('/api/games/:id/feedback', requireUser, (req, res) => {
+    try {
+        const { type, content } = req.body;
+        const validTypes = ['comment', 'suggestion', 'bug_report'];
+        if (!type || !validTypes.includes(type)) {
+            return res.status(400).json({ error: 'Valid feedback type required: comment, suggestion, or bug_report' });
+        }
+        if (!content || typeof content !== 'string' || content.trim().length === 0) {
+            return res.status(400).json({ error: 'Message cannot be empty.' });
+        }
+
+        const entry = db.addGameFeedback({
+            gameId: req.params.id,
+            userId: req.user.id,
+            username: req.user.username,
+            userRole: req.user.role,
+            type,
+            content: content.trim().slice(0, 1000)
+        });
+
+        res.status(201).json({ success: true, feedback: entry });
+    } catch (err) {
+        res.status(500).json({ error: err.message || 'Failed to submit feedback' });
+    }
+});
+
+// 3. Admin delete feedback entry
+app.delete('/api/admin/feedback/:id', requireAdmin, (req, res) => {
+    db.deleteGameFeedback(req.params.id);
+    res.json({ success: true, message: 'Feedback entry deleted.' });
 });
 
 app.post('/api/updates', requireAdmin, (req, res) => {
@@ -712,7 +789,9 @@ app.post('/api/games', requireAdmin, upload.fields([
             externalDownloadUrl,
             playInBrowserUrl,
             itchUrl,
-            steamUrl
+            steamUrl,
+            isFree,
+            price
         } = req.body;
 
         if (!title) {
@@ -769,6 +848,8 @@ app.post('/api/games', requireAdmin, upload.fields([
             subtitle: subtitle || 'Indie Horror Game',
             releaseDate: releaseDate || new Date().toISOString().split('T')[0],
             version: version || '1.0.0',
+            isFree: isFree === 'false' || isFree === false ? false : true,
+            price: price || (isFree === 'false' ? '$6.99' : 'FREE'),
             tags: parsedTags,
             description: description || 'No archive description logged.',
             features: parsedFeatures,
@@ -782,6 +863,7 @@ app.post('/api/games', requireAdmin, upload.fields([
                 itch: itchUrl || '',
                 steam: steamUrl || ''
             },
+            steamUrl: steamUrl || '',
             coverImage,
             screenshots
         };

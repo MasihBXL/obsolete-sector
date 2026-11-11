@@ -13,7 +13,7 @@
     <div class="win-titlebar" style="border-radius: 0;">
         <div class="win-titlebar-left">
             <span class="win-titlebar-icon">🔒</span>
-            <span>OBSOLETE_ADMIN_CONSOLE.EXE - Windows Security Administration</span>
+            <span>MOPTAM_ADMIN_CONSOLE.EXE - Windows Security Administration</span>
         </div>
         <div class="win-titlebar-buttons">
             <a href="/" class="win-btn-control" style="text-decoration: none; color: inherit;" title="Exit to Website">&times;</a>
@@ -115,6 +115,20 @@
                             <div class="form-group form-col">
                                 <label class="form-label" for="tags">Tags / Genres (comma separated)</label>
                                 <input type="text" id="tags" name="tags" class="form-input" placeholder="HORROR, ANALOG, PSX, SURVIVAL">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group form-col">
+                                <label class="form-label" for="isFree">Distribution Model</label>
+                                <select id="isFree" name="isFree" class="form-input">
+                                    <option value="true" selected>Free Download (Direct Download)</option>
+                                    <option value="false">Paid / Commercial (Steam Release)</option>
+                                </select>
+                            </div>
+                            <div class="form-group form-col">
+                                <label class="form-label" for="price">Price Display (e.g. FREE or $6.99)</label>
+                                <input type="text" id="price" name="price" class="form-input" placeholder="FREE or $6.99" value="FREE">
                             </div>
                         </div>
 

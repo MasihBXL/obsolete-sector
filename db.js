@@ -65,6 +65,19 @@ function initSchema() {
             created_at TEXT NOT NULL,
             FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
         );
+
+        CREATE TABLE IF NOT EXISTS game_feedback (
+            id TEXT PRIMARY KEY,
+            game_id TEXT NOT NULL,
+            user_id TEXT,
+            username TEXT NOT NULL,
+            user_role TEXT DEFAULT 'user',
+            type TEXT NOT NULL DEFAULT 'comment', -- 'comment', 'suggestion', 'bug_report'
+            content TEXT NOT NULL,
+            status TEXT DEFAULT 'open',           -- 'open', 'reviewed', 'fixed'
+            created_at TEXT NOT NULL,
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+        );
     `);
 
     // Ensure default Admin account exists
@@ -310,6 +323,41 @@ function logDownload(gameId, userId) {
     `).run(id, gameId, userId, createdAt);
 }
 
+// Game Feedback (Opinions/Comments, Suggestions, Bug Reports)
+function addGameFeedback({ gameId, userId, username, userRole = 'user', type = 'comment', content }) {
+    const id = 'fb-' + Date.now() + '-' + Math.round(Math.random() * 1000);
+    const createdAt = new Date().toISOString();
+    db.prepare(`
+        INSERT INTO game_feedback (id, game_id, user_id, username, user_role, type, content, status, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, 'open', ?)
+    `).run(id, gameId, userId, username, userRole, type, content, createdAt);
+
+    return { id, game_id: gameId, user_id: userId, username, user_role: userRole, type, content, status: 'open', created_at: createdAt };
+}
+
+function getGameFeedback(gameId, type = null) {
+    if (type && type !== 'all') {
+        return db.prepare(`
+            SELECT id, game_id, user_id, username, user_role, type, content, status, created_at
+            FROM game_feedback
+            WHERE game_id = ? AND type = ?
+            ORDER BY created_at DESC
+            LIMIT 100
+        `).all(gameId, type);
+    }
+    return db.prepare(`
+        SELECT id, game_id, user_id, username, user_role, type, content, status, created_at
+        FROM game_feedback
+        WHERE game_id = ?
+        ORDER BY created_at DESC
+        LIMIT 100
+    `).all(gameId);
+}
+
+function deleteGameFeedback(id) {
+    db.prepare('DELETE FROM game_feedback WHERE id = ?').run(id);
+}
+
 // Run schema initialization
 initSchema();
 
@@ -329,5 +377,8 @@ module.exports = {
     deleteGuestbookEntry,
     toggleReaction,
     getReactionsForGames,
-    logDownload
+    logDownload,
+    addGameFeedback,
+    getGameFeedback,
+    deleteGameFeedback
 };

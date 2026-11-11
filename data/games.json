@@ -5,6 +5,8 @@
     "subtitle": "12-gauge tactical roulette in an abandoned cold war facility",
     "releaseDate": "2026-10-15",
     "version": "1.4.2",
+    "isFree": true,
+    "price": "FREE",
     "tags": [
       "PSYCHOLOGICAL HORROR",
       "ANALOG TECH",
@@ -32,6 +34,7 @@
       "itch": "https://itch.io",
       "steam": "https://store.steampowered.com"
     },
+    "steamUrl": "https://store.steampowered.com",
     "coverImage": "/assets/images/cover_chamber.svg",
     "screenshots": [
       "/assets/images/cover_chamber.svg",
@@ -45,6 +48,8 @@
     "subtitle": "Decode illegal broadcast tapes on an analog ham radio receiver",
     "releaseDate": "2026-08-04",
     "version": "1.0.8",
+    "isFree": true,
+    "price": "FREE",
     "tags": [
       "ANALOG HORROR",
       "PUZZLE",
@@ -69,6 +74,7 @@
     "externalLinks": {
       "itch": "https://itch.io"
     },
+    "steamUrl": "",
     "coverImage": "/assets/images/cover_signal.svg",
     "screenshots": [
       "/assets/images/cover_signal.svg",
@@ -81,6 +87,8 @@
     "subtitle": "Navigate an anomalous metallic fluid sea in a welded claustrophobic pod",
     "releaseDate": "2026-05-20",
     "version": "2.1.0",
+    "isFree": false,
+    "price": "$6.99",
     "tags": [
       "SURVIVAL HORROR",
       "RETRO 3D",
@@ -99,14 +107,15 @@
       "Linux"
     ],
     "fileSize": "35.4 MB",
-    "downloadUrl": "/uploads/games/pressure-zero-v2.1.zip",
+    "downloadUrl": "",
     "isLocalFile": false,
     "downloadsCount": 2315,
     "playInBrowserUrl": "",
     "externalLinks": {
       "itch": "https://itch.io",
-      "steam": "https://store.steampowered.com"
+      "steam": "https://store.steampowered.com/app/1986_submerged"
     },
+    "steamUrl": "https://store.steampowered.com/app/1986_submerged",
     "coverImage": "/assets/images/cover_sub.svg",
     "screenshots": [
       "/assets/images/cover_sub.svg",
@@ -119,6 +128,8 @@
     "subtitle": "Operate industrial biological processing machinery",
     "releaseDate": "2026-02-11",
     "version": "1.2.0",
+    "isFree": false,
+    "price": "$8.99",
     "tags": [
       "BODY HORROR",
       "INDUSTRIAL",
@@ -136,13 +147,15 @@
       "Web"
     ],
     "fileSize": "29.0 MB",
-    "downloadUrl": "/uploads/games/concrete-oscillator.zip",
+    "downloadUrl": "",
     "isLocalFile": false,
     "downloadsCount": 1650,
     "playInBrowserUrl": "",
     "externalLinks": {
-      "itch": "https://itch.io"
+      "itch": "https://itch.io",
+      "steam": "https://store.steampowered.com/app/concrete_oscillator"
     },
+    "steamUrl": "https://store.steampowered.com/app/concrete_oscillator",
     "coverImage": "/assets/images/cover_machine.svg",
     "screenshots": [
       "/assets/images/cover_machine.svg",
