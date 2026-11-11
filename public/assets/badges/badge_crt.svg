@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="88" height="31" viewBox="0 0 88 31">
+  <rect width="88" height="31" fill="#0c1a0e" stroke="#25542b" stroke-width="1"/>
+  <rect x="2" y="2" width="84" height="13" fill="#143b1b"/>
+  <text x="44" y="11" font-family="'Courier New', monospace" font-size="8" font-weight="bold" fill="#39ff14" text-anchor="middle">CRT MONITOR</text>
+  <rect x="2" y="16" width="84" height="13" fill="#081409"/>
+  <text x="44" y="25" font-family="'Courier New', monospace" font-size="7" fill="#65e679" text-anchor="middle">60Hz PHOSPHOR</text>
+</svg>

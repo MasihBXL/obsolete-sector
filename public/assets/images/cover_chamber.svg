@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+  <defs>
+    <pattern id="dither" width="4" height="4" patternUnits="userSpaceOnUse">
+      <rect width="2" height="2" fill="#000" opacity="0.3"/>
+      <rect x="2" y="2" width="2" height="2" fill="#000" opacity="0.3"/>
+    </pattern>
+    <radialGradient id="vignette" cx="50%" cy="50%" r="50%">
+      <stop offset="40%" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.85"/>
+    </radialGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="640" height="360" fill="#101114"/>
+  
+  <!-- Desk surface -->
+  <polygon points="0,220 640,220 640,360 0,360" fill="#1b1c20"/>
+  <line x1="0" y1="220" x2="640" y2="220" stroke="#2d3038" stroke-width="3"/>
+  <line x1="0" y1="222" x2="640" y2="222" stroke="#000000" stroke-width="2"/>
+
+  <!-- Dim Overhead Fluorescent lamp -->
+  <rect x="220" y="20" width="200" height="14" fill="#3a404a"/>
+  <rect x="230" y="34" width="180" height="8" fill="#e8f4f8" opacity="0.85"/>
+  <polygon points="200,42 440,42 560,220 80,220" fill="#e8f4f8" opacity="0.04"/>
+
+  <!-- Rusty metal Desk items: Shotgun -->
+  <g transform="translate(140, 240)">
+    <!-- Barrel -->
+    <rect x="20" y="24" width="260" height="14" fill="#22252a" stroke="#0d0e10" stroke-width="2"/>
+    <rect x="20" y="38" width="180" height="12" fill="#1c1e22" stroke="#0d0e10" stroke-width="2"/>
+    <rect x="270" y="22" width="12" height="18" fill="#3a3d45"/>
+    <!-- Pump Grip -->
+    <rect x="110" y="36" width="65" height="16" fill="#4a2818" stroke="#1f110a" stroke-width="2"/>
+    <line x1="120" y1="36" x2="120" y2="52" stroke="#23120b" stroke-width="2"/>
+    <line x1="135" y1="36" x2="135" y2="52" stroke="#23120b" stroke-width="2"/>
+    <line x1="150" y1="36" x2="150" y2="52" stroke="#23120b" stroke-width="2"/>
+    <line x1="165" y1="36" x2="165" y2="52" stroke="#23120b" stroke-width="2"/>
+    <!-- Receiver -->
+    <rect x="200" y="20" width="80" height="28" fill="#181a1d" stroke="#000" stroke-width="2"/>
+    <!-- Stock -->
+    <polygon points="280,22 360,10 370,48 280,44" fill="#5c2e17" stroke="#211007" stroke-width="2"/>
+    <!-- Trigger guard -->
+    <path d="M260,48 Q250,60 238,48" stroke="#333" stroke-width="3" fill="none"/>
+  </g>
+
+  <!-- 12-Gauge Shells on table -->
+  <g transform="translate(420, 270)">
+    <!-- Live Red Shell -->
+    <rect x="0" y="10" width="36" height="16" fill="#a81919" stroke="#520b0b" stroke-width="1"/>
+    <rect x="36" y="9" width="12" height="18" fill="#d4af37" stroke="#7a6217" stroke-width="1"/>
+    <text x="6" y="22" font-family="monospace" font-size="8" fill="#ff8080" font-weight="bold">12 GA</text>
+  </g>
+  <g transform="translate(475, 280)">
+    <!-- Spent Blue/Black Shell -->
+    <rect x="0" y="10" width="36" height="16" fill="#1e3a5f" stroke="#0f1e33" stroke-width="1"/>
+    <rect x="36" y="9" width="12" height="18" fill="#888888" stroke="#444444" stroke-width="1"/>
+  </g>
+
+  <!-- Handcuffs on table -->
+  <ellipse cx="110" cy="290" rx="18" ry="12" fill="none" stroke="#68707d" stroke-width="5"/>
+  <ellipse cx="145" cy="295" rx="18" ry="12" fill="none" stroke="#68707d" stroke-width="5"/>
+  <line x1="125" y1="292" x2="130" y2="294" stroke="#68707d" stroke-width="4"/>
+
+  <!-- Creepy silhouette opposite the desk -->
+  <ellipse cx="320" cy="130" rx="42" ry="54" fill="#08090a"/>
+  <!-- Glowing synthetic eyes -->
+  <circle cx="308" cy="130" r="3.5" fill="#38f0d8"/>
+  <circle cx="332" cy="130" r="3.5" fill="#38f0d8"/>
+  <circle cx="308" cy="130" r="1.5" fill="#ffffff"/>
+  <circle cx="332" cy="130" r="1.5" fill="#ffffff"/>
+
+  <!-- Pixel Dither overlay -->
+  <rect width="640" height="360" fill="url(#dither)" opacity="0.4"/>
+  <!-- CRT Scanlines -->
+  <line x1="0" y1="0" x2="640" y2="0" stroke="#000" stroke-width="1" opacity="0.3"/>
+  <!-- Vignette -->
+  <rect width="640" height="360" fill="url(#vignette)"/>
+
+  <!-- Title Watermark -->
+  <text x="30" y="60" font-family="'Courier New', monospace" font-size="22" fill="#c0c8d4" letter-spacing="4" font-weight="bold">CHAMBER PROTOCOL</text>
+  <text x="32" y="80" font-family="'Courier New', monospace" font-size="12" fill="#6c788a" letter-spacing="2">[LIVE: 3 / BLANK: 4] // PROTOCOL: ARMED</text>
+</svg>

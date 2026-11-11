@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="88" height="31" viewBox="0 0 88 31">
+  <rect width="88" height="31" fill="#181818" stroke="#555555" stroke-width="1"/>
+  <rect x="2" y="2" width="84" height="13" fill="#2d3748"/>
+  <text x="44" y="11" font-family="'Courier New', monospace" font-size="8" font-weight="bold" fill="#63b3ed" text-anchor="middle">OFFICIAL ARCHIVE</text>
+  <rect x="2" y="16" width="84" height="13" fill="#121820"/>
+  <text x="44" y="25" font-family="'Courier New', monospace" font-size="7" fill="#cbd5e0" text-anchor="middle">STANDALONE BUILDS</text>
+</svg>

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+  <rect width="640" height="360" fill="#0d1117"/>
+  <!-- Dithered Low-Poly Retro 3D Room simulation -->
+  <polygon points="0,0 200,80 200,280 0,360" fill="#161b22" stroke="#21262d" stroke-width="2"/>
+  <polygon points="640,0 440,80 440,280 640,360" fill="#161b22" stroke="#21262d" stroke-width="2"/>
+  <polygon points="200,80 440,80 440,280 200,280" fill="#0d1117" stroke="#30363d" stroke-width="2"/>
+  <!-- Floor Grid -->
+  <polygon points="0,360 200,280 440,280 640,360" fill="#11151c"/>
+  <line x1="260" y1="280" x2="160" y2="360" stroke="#1f242c" stroke-width="2"/>
+  <line x1="320" y1="280" x2="320" y2="360" stroke="#1f242c" stroke-width="2"/>
+  <line x1="380" y1="280" x2="480" y2="360" stroke="#1f242c" stroke-width="2"/>
+
+  <!-- Rusty Door in distance with eerie light leak -->
+  <rect x="290" y="140" width="60" height="130" fill="#05070a" stroke="#484f58" stroke-width="3"/>
+  <rect x="295" y="145" width="50" height="10" fill="#ff4d4d" opacity="0.3"/>
+  <line x1="292" y1="270" x2="348" y2="270" stroke="#ff4d4d" stroke-width="3"/>
+
+  <!-- Security Camera Overlay -->
+  <text x="30" y="40" font-family="'Courier New', monospace" font-size="14" fill="#8b949e">CAM_04 // SECTOR B-CORRIDOR</text>
+  <text x="520" y="40" font-family="'Courier New', monospace" font-size="14" fill="#f85149">REC ●</text>
+  <text x="30" y="335" font-family="'Courier New', monospace" font-size="12" fill="#8b949e">TIMESTAMP: 03:42:19 AM</text>
+</svg>

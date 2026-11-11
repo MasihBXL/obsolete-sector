@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OBSOLETE SECTOR // Personal Creative Hub &amp; Games Archive</title>
+    <meta name="description" content="Personal creative hub, experimental indie games, analog audio design, and 3D art portfolio.">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="icon" href="/assets/badges/badge_horror.svg" type="image/svg+xml">
+</head>
+<body>
+    <!-- CRT Scanlines Overlay -->
+    <div class="crt-overlay"></div>
+
+    <div class="contents">
+        <div class="docholder">
+            <!-- Left Banner -->
+            <div class="banner bannerleft"></div>
+
+            <!-- Main Central Document Box with Windows XP Window Frame -->
+            <div class="doc">
+                
+                <!-- Windows Titlebar (Using Unified Pixel Typography) -->
+                <div class="xp-titlebar">
+                    <div class="xp-titlebar-left">
+                        <span style="font-size: 16px;">💽</span>
+                        <span id="xpTitlebarLabel">OBSOLETE SECTOR // PERSONAL HUB &amp; GAMES ARCHIVE</span>
+                    </div>
+                    <div class="xp-titlebar-controls">
+                        <button class="xp-ctrl-btn xp-btn-min" id="winBtnMin" title="Minimize">_</button>
+                        <button class="xp-ctrl-btn xp-btn-max" id="winBtnMax" title="Maximize">□</button>
+                        <button class="xp-ctrl-btn xp-btn-close" id="winBtnClose" title="Close">&times;</button>
+                    </div>
+                </div>
+
+                <div class="doccontents">
+                    
+                    <!-- Header -->
+                    <div class="header">
+                        <div class="headercontents">
+                            <div class="brand-wrapper">
+                                <a href="/" class="headertext">OBSOLETE SECTOR</a>
+                                <img src="/assets/badges/badge_horror.svg" class="headerlogo" alt="logo">
+                            </div>
+                            <div class="header-controls">
+                                <button id="themeToggleBtn" class="btn-pixel">THEME: WINDOWS XP</button>
+                                <button id="crtToggleBtn" class="btn-pixel">CRT: ON</button>
+                                <button id="audioToggleBtn" class="btn-pixel">AUDIO: OFF</button>
+                                <button id="authBtn" class="btn-pixel">LOGIN / REGISTER</button>
+                                <a href="/admin.html" id="adminUploadBtn" class="btn-pixel btn-pixel-accent" style="display: none;">+ UPLOAD / ADMIN</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Top Navigation Bar (Mike Klubnika Dot Style - Previous Clean Layout) -->
+                    <div class="footer_top">
+                        <div class="footertext">
+                            <div class="nav-links">
+                                <a href="#catalogue" class="importantlink">catalogue</a>
+                                <span class="sep">...</span>
+                                <a href="#about" class="importantlink">about &amp; bio</a>
+                                <span class="sep">...</span>
+                                <a href="#music" class="importantlink">music &amp; ost</a>
+                                <span class="sep">...</span>
+                                <a href="#art" class="importantlink">3d art &amp; lab</a>
+                                <span class="sep">...</span>
+                                <a href="#updates" class="importantlink">devlogs</a>
+                                <span class="sep">...</span>
+                                <a href="#guestbook" class="importantlink">guestbook &amp; contact</a>
+                                <span class="sep">...</span>
+                                <a href="#" class="open-terminal-btn">terminal [~]</a>
+                            </div>
+                            <div style="font-size: 11.5px; color: var(--text-dim);">ZONE: DIAL-UP 56K &bull; v2.4</div>
+                        </div>
+                    </div>
+
+                    <!-- 88x31 Badges Strip -->
+                    <div class="badge_container hide-mobile">
+                        <img src="/assets/badges/badge_horror.svg" alt="Indie Horror">
+                        <img src="/assets/badges/badge_ie6.svg" alt="Internet Explorer 6.0">
+                        <img src="/assets/badges/badge_winamp.svg" alt="Winamp 2.91">
+                        <img src="/assets/badges/badge_winrar.svg" alt="WinRAR 3.80">
+                        <img src="/assets/badges/badge_res.svg" alt="1024x768 16-Bit">
+                        <img src="/assets/badges/badge_crt.svg" alt="CRT 60Hz">
+                        <img src="/assets/badges/badge_buckshot.svg" alt="12-Gauge">
+                        <img src="/assets/badges/badge_archive.svg" alt="Standalone Archive">
+                    </div>
+
+                    <!-- Scrolling Warning Marquee -->
+                    <div class="marquee-container">
+                        <div class="marquee-text">
+                            ⚡ OBSOLETE SECTOR // PERSONAL CREATIVE HUB &amp; STANDALONE GAMES ARCHIVE // ANOMALY DETECTED // VISITORS LOGGED: 004,924 // TRANSMISSIONS VERIFIED ⚡
+                        </div>
+                    </div>
+
+                    <!-- ==========================================================================
+                         SECTION 1: ABOUT & BIO (سایت شخصی)
+                         ========================================================================== -->
+                    <div id="about" class="intro-box">
+                        <p style="font-weight: bold; color: var(--link-color); font-size: 14.5px;">
+                            Welcome to my personal creative hub and indie games archive.
+                        </p>
+                        <p>
+                            I develop tactile indie games, experiment with analog sound design, record industrial ambient albums, and render low-poly 3D models. 
+                            The majority of my projects involve detailed machinery, atmospheric dystopian environments, psychological dread, and loaded chambers.
+                        </p>
+                        <p style="color: var(--text-muted); font-size: 12.5px;">
+                            All game builds here are true standalone packages. Feel free to download, test directly in your browser, stream audio tapes, or sign the visitor guestbook below.
+                        </p>
+                    </div>
+
+                    <!-- ==========================================================================
+                         SECTION 2: GAMES ARCHIVE (کاتالوگ بازی‌ها)
+                         ========================================================================== -->
+                    <div id="catalogue">
+                        <div class="lr">
+                            <h2><span>■</span> GAMES ARCHIVE</h2>
+                            <div class="lr-actions">
+                                <button class="btn-pixel filter-btn active" data-filter="ALL">ALL</button>
+                                <button class="btn-pixel filter-btn" data-filter="PSYCHOLOGICAL">PSYCH</button>
+                                <button class="btn-pixel filter-btn" data-filter="ANALOG">ANALOG</button>
+                                <button class="btn-pixel filter-btn" data-filter="SURVIVAL">SURVIVAL</button>
+                                <button class="btn-pixel filter-btn" data-filter="BODY">BODY</button>
+                            </div>
+                        </div>
+
+                        <!-- Split View CRT Monitor & Active Game Box -->
+                        <div class="catalogue">
+                            <div class="cataloguetop">
+                                
+                                <!-- Screen Housing on Left -->
+                                <div class="cataloguepreview">
+                                    <div class="screen-housing">
+                                        <img id="cataloguePreviewImg" src="/assets/images/cover_chamber.svg" class="cataloguepreviewimg" alt="game preview">
+                                        <div class="screen-scanline-fx"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Active Game Details on Right -->
+                                <div class="cataloguedetails">
+                                    <div>
+                                        <div class="cat-header">
+                                            <h3 id="catTitle" class="cat-title">CHAMBER PROTOCOL</h3>
+                                            <span id="catVersion" class="cat-version">v1.4.2</span>
+                                        </div>
+                                        <div id="catSubtitle" class="cat-subtitle">12-gauge tactical roulette in an abandoned facility</div>
+                                        <div id="catTags" class="cat-tags">
+                                            <span class="tag-badge">HORROR</span>
+                                            <span class="tag-badge">ANALOG</span>
+                                        </div>
+                                        <div id="catDesc" class="cat-desc">
+                                            Loading transmission data...
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <div class="cat-meta-row">
+                                            <span id="catSize">FILE SIZE: 48.5 MB</span>
+                                            <span id="catDate">DATE: 2026-10-15</span>
+                                            <span id="catDownloads">DOWNLOADS: 1420</span>
+                                        </div>
+                                        
+                                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                            <button id="btnDownload" class="btn-pixel btn-pixel-accent">
+                                                <span>▼</span> DIRECT DOWNLOAD
+                                            </button>
+                                            <button id="btnPlayBrowser" class="btn-pixel" style="display: none;">
+                                                <span>▶</span> PLAY IN BROWSER
+                                            </button>
+                                            <button id="btnDetails" class="btn-pixel">
+                                                <span>[+]</span> EXPAND SPEC SHEET
+                                            </button>
+                                        </div>
+
+                                        <!-- Live Reactions & Ratings Bar -->
+                                        <div class="reactions-bar" style="margin-top: 12px; padding-top: 8px; border-top: 1px dashed var(--border-subtle); display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                                            <span style="font-size: 11px; color: var(--text-dim); font-weight: bold;">REACTIONS:</span>
+                                            <button class="btn-pixel rx-btn" data-type="heart" title="Appreciate">❤️ <span class="rx-count" data-type="heart">0</span></button>
+                                            <button class="btn-pixel rx-btn" data-type="skull" title="Dread / Horror">💀 <span class="rx-count" data-type="skull">0</span></button>
+                                            <button class="btn-pixel rx-btn" data-type="fire" title="Intense">🔥 <span class="rx-count" data-type="fire">0</span></button>
+                                            <button class="btn-pixel rx-btn" data-type="tape" title="Atmospheric Tape">📼 <span class="rx-count" data-type="tape">0</span></button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- Selector Table (Game List) -->
+                            <div id="catalogueList" class="cataloguelist"></div>
+                        </div>
+                    </div>
+
+                    <div class="pagespace"></div>
+
+                    <!-- ==========================================================================
+                         SECTION 3: MUSIC & SOUND EXPERIMENTS (آلبوم‌ها و موزیک)
+                         ========================================================================== -->
+                    <div id="music">
+                        <div class="lr">
+                            <h2><span>■</span> MUSIC &amp; AUDIO RELEASES</h2>
+                            <span style="font-size: 11px; color: var(--text-dim);">ANALOG SYNTHESIZERS &amp; FOLEY</span>
+                        </div>
+
+                        <div id="musicGrid" class="music-grid"></div>
+                    </div>
+
+                    <div class="pagespace"></div>
+
+                    <!-- ==========================================================================
+                         SECTION 4: 3D ART & HARDWARE LAB (آرت‌ها و رندرها)
+                         ========================================================================== -->
+                    <div id="art">
+                        <div class="lr">
+                            <h2><span>■</span> 3D RETRO ART &amp; HARDWARE LAB</h2>
+                            <span style="font-size: 11px; color: var(--text-dim);">PSX RENDERS / DITHERED MODELS</span>
+                        </div>
+
+                        <div class="art-grid">
+                            <div class="art-card">
+                                <img src="/assets/images/cover_chamber.svg" style="width: 100%; aspect-ratio: 16/9; object-fit: cover; border: 1px solid #7f9db9; margin-bottom: 8px;" alt="Render">
+                                <div style="font-weight: bold; color: var(--link-color);">12-Gauge Tactical Rig</div>
+                                <div style="font-size: 11px; color: #666;">Blender / Low-Poly Vertex Color / Software Dither</div>
+                            </div>
+
+                            <div class="art-card">
+                                <img src="/assets/images/cover_signal.svg" style="width: 100%; aspect-ratio: 16/9; object-fit: cover; border: 1px solid #7f9db9; margin-bottom: 8px;" alt="Render">
+                                <div style="font-weight: bold; color: var(--link-color);">Scandinavian Ham Receiver Unit 4</div>
+                                <div style="font-size: 11px; color: #666;">Procedural Oscilloscope Green / CRT Simulation</div>
+                            </div>
+
+                            <div class="art-card">
+                                <img src="/assets/images/cover_sub.svg" style="width: 100%; aspect-ratio: 16/9; object-fit: cover; border: 1px solid #7f9db9; margin-bottom: 8px;" alt="Render">
+                                <div style="font-weight: bold; color: var(--link-color);">Pressure Zero Pod Hatch</div>
+                                <div style="font-size: 11px; color: #666;">Welded Iron Textures / Alarm Red Radiance</div>
+                            </div>
+
+                            <div class="art-card">
+                                <img src="/assets/images/cover_machine.svg" style="width: 100%; aspect-ratio: 16/9; object-fit: cover; border: 1px solid #7f9db9; margin-bottom: 8px;" alt="Render">
+                                <div style="font-weight: bold; color: var(--link-color);">Hydraulic Crusher MK-VI</div>
+                                <div style="font-size: 11px; color: #666;">Pneumatic Piston Mechanics / Industrial Rust</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pagespace"></div>
+
+                    <!-- ==========================================================================
+                         SECTION 5: DEVLOGS & PATCH NOTES (پچ‌نوت‌ها)
+                         ========================================================================== -->
+                    <div id="updates">
+                        <div class="lr">
+                            <h2><span>■</span> DEVLOG DISPATCHES &amp; PATCH LOGS</h2>
+                            <a href="/admin.html" class="importantlink" style="font-size: 12px;">+ post dispatch</a>
+                        </div>
+                        <div id="updatesList"></div>
+                    </div>
+
+                    <div class="pagespace"></div>
+
+                    <!-- ==========================================================================
+                         SECTION 6: GUESTBOOK & CONTACT (دفترچه یادداشت و ارتباط)
+                         ========================================================================== -->
+                    <div id="guestbook">
+                        <div class="lr">
+                            <h2><span>■</span> GUESTBOOK &amp; CONTACT CHANNELS</h2>
+                            <span style="font-size: 11px; color: var(--text-dim);">DIRECT LINE</span>
+                        </div>
+
+                        <!-- Direct Social & Store Links -->
+                        <div style="background: var(--bg-doc); border: 1px solid var(--border-color); padding: 12px 16px; margin-bottom: 16px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">
+                            <strong style="color: var(--link-color); font-size: 12px;">CHANNELS:</strong>
+                            <a href="mailto:developer@obsolete-sector.net" class="btn-pixel">✉ Email</a>
+                            <a href="https://itch.io" target="_blank" class="btn-pixel">🎮 Itch.io Profile</a>
+                            <a href="https://store.steampowered.com" target="_blank" class="btn-pixel">⚡ Steam Dev</a>
+                            <a href="https://bandcamp.com" target="_blank" class="btn-pixel">🎵 Bandcamp</a>
+                            <a href="https://discord.com" target="_blank" class="btn-pixel">💬 Discord</a>
+                        </div>
+
+                        <!-- Sign Guestbook Form -->
+                        <div class="guestbook-box">
+                            <h3 style="font-family: var(--font-title); font-size: 26px; color: var(--link-color); margin-bottom: 4px;">SIGN THE GUESTBOOK</h3>
+                            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">Leave a transmission message for the archive visitors.</p>
+                            
+                            <!-- Notice for guests -->
+                            <div id="gbGuestWarning" style="background: var(--bg-card-inner); border: 1px dashed var(--border-color); padding: 10px 14px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                                <span style="font-size: 11.5px; color: var(--text-muted);">
+                                    🔒 <strong>GUEST CLEARANCE:</strong> You can read all transmissions. To transmit your own log, sign in or register an account.
+                                </span>
+                                <button type="button" id="btnGbPromptAuth" class="btn-pixel">SIGN IN / REGISTER</button>
+                            </div>
+
+                            <!-- Notice for authenticated users -->
+                            <div id="gbUserNotice" style="display: none; margin-bottom: 10px; font-size: 12px; color: var(--link-color); font-weight: bold;">
+                                📡 TRANSMITTING AS: <span id="gbUserCallsign" style="color: var(--accent);"></span>
+                            </div>
+
+                            <form id="guestbookForm">
+                                <div style="margin-bottom: 8px;">
+                                    <textarea id="gbText" class="form-textarea" style="width: 100%; min-height: 60px; padding: 6px 10px; border: 1px solid var(--border-color); font-family: var(--font-mono);" placeholder="Write your transmission message here..." required></textarea>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <button type="submit" id="gbSubmitBtn" class="btn-pixel btn-pixel-accent">TRANSMIT MESSAGE</button>
+                                    <span id="gbStatus" style="font-size: 12px; font-weight: bold;"></span>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Guestbook entries list -->
+                        <div id="guestbookList"></div>
+                    </div>
+
+                    <!-- Hit Counter Bottom -->
+                    <div class="hit-counter-box">
+                        <span>TRANSMISSION VISITOR NO.</span>
+                        <div class="odometer">
+                            <span class="odometer-digit">0</span>
+                            <span class="odometer-digit">0</span>
+                            <span class="odometer-digit">4</span>
+                            <span class="odometer-digit">9</span>
+                            <span class="odometer-digit">2</span>
+                            <span class="odometer-digit">4</span>
+                        </div>
+                        <span style="font-size: 10px; color: #4ade80;">● ONLINE</span>
+                    </div>
+
+                </div>
+
+                <!-- Footer (Authentic Mike Klubnika layout) -->
+                <footer class="footer">
+                    <div class="footertext">
+                        <div class="nav-links">
+                            <a href="#catalogue" class="importantlink">catalogue</a>
+                            <span class="sep">...</span>
+                            <a href="#about" class="importantlink">about &amp; bio</a>
+                            <span class="sep">...</span>
+                            <a href="#music" class="importantlink">music</a>
+                            <span class="sep">...</span>
+                            <a href="#guestbook" class="importantlink">contact</a>
+                            <span class="sep">...</span>
+                            <a href="/admin.html" class="importantlink">admin portal</a>
+                            <span class="sep">...</span>
+                            <a href="#" class="open-terminal-btn">terminal [~]</a>
+                        </div>
+                        <div>OBSOLETE SECTOR &copy; 2000-2026 // STANDALONE TRANSMISSION</div>
+                    </div>
+                </footer>
+
+            </div>
+
+            <!-- Right Banner -->
+            <div class="banner bannerright"></div>
+        </div>
+    </div>
+
+    <!-- WINDOWS XP START MENU POPUP -->
+    <div id="xpStartMenu" class="xp-start-menu">
+        <div class="xp-start-header">
+            <span style="font-size: 22px;">👤</span>
+            <span>Developer // Personal Hub</span>
+        </div>
+        <div class="xp-start-body">
+            <a class="xp-start-item" href="#about" onclick="toggleStartMenu(false);"><span>👤</span> About Me &amp; Bio</a>
+            <a class="xp-start-item" href="#catalogue" onclick="toggleStartMenu(false);"><span>🕹️</span> Games Archive</a>
+            <a class="xp-start-item" href="#music" onclick="toggleStartMenu(false);"><span>🎵</span> Music &amp; Soundtracks</a>
+            <a class="xp-start-item" href="#art" onclick="toggleStartMenu(false);"><span>🎨</span> 3D Art &amp; Hardware</a>
+            <a class="xp-start-item" href="#guestbook" onclick="toggleStartMenu(false);"><span>📟</span> Guestbook &amp; Socials</a>
+            <div style="height: 1px; background: #e0e0e0; margin: 3px 0;"></div>
+            <a class="xp-start-item" href="/admin.html"><span>🔒</span> Upload / Admin Portal</a>
+            <div class="xp-start-item open-terminal-btn" onclick="toggleStartMenu(false);"><span>💻</span> Command Terminal [~]</div>
+        </div>
+        <div class="xp-start-footer">
+            <button class="btn-pixel" onclick="toggleStartMenu(false);">Log Off</button>
+        </div>
+    </div>
+
+    <!-- WINDOWS XP TASKBAR -->
+    <div class="xp-taskbar">
+        <div class="xp-taskbar-left">
+            <button id="xpStartBtn" class="xp-start-btn">
+                <span style="font-size: 18px;">⊞</span> start
+            </button>
+            <div class="xp-taskbar-tasks">
+                <div class="xp-task-pill" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">
+                    <span>💽</span> Obsolete Sector - Personal Creative Hub
+                </div>
+            </div>
+        </div>
+        <div class="xp-taskbar-tray">
+            <span>🔊</span>
+            <span>🛡️</span>
+            <span id="trayClock">03:42 PM</span>
+        </div>
+    </div>
+
+    <!-- WINDOWS XP FILE DOWNLOAD MODAL DIALOG -->
+    <div id="downloadDialog" class="modal-overlay">
+        <div class="xp-download-dialog">
+            <div class="xp-titlebar">
+                <div class="xp-titlebar-left">
+                    <span>💾</span>
+                    <span>File Download - Security Notice</span>
+                </div>
+                <button class="xp-ctrl-btn xp-btn-close" id="dlDialogClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="display: flex; gap: 14px; align-items: center; margin-bottom: 14px; border-bottom: 1px solid #d4d0c8; padding-bottom: 10px;">
+                    <div style="font-size: 36px;">💾 ➔ 📁</div>
+                    <div>
+                        <div style="font-weight: bold; font-size: 13px;" id="dlDialogTitle">Downloading Chamber_Protocol.zip</div>
+                        <div style="font-size: 11px; color: #555;">From: obsolete-sector.archive (Standalone File)</div>
+                    </div>
+                </div>
+
+                <table style="width: 100%; font-size: 12px; margin-bottom: 12px;">
+                    <tr>
+                        <td style="color: #666; width: 130px;">Estimated time left:</td>
+                        <td id="dlTimeLeft">00:00:02 (at 56.6 KB/sec)</td>
+                    </tr>
+                    <tr>
+                        <td style="color: #666;">Download to:</td>
+                        <td>C:\Games\Indie_Horror\</td>
+                    </tr>
+                    <tr>
+                        <td style="color: #666;">Transfer rate:</td>
+                        <td id="dlTransferRate">1.4 MB/s</td>
+                    </tr>
+                </table>
+
+                <div class="xp-progress-frame">
+                    <div class="xp-progress-fill" id="dlProgressBar"></div>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 8px;">
+                    <button class="btn-pixel btn-pixel-accent" id="dlBtnConfirm">[ Save File ]</button>
+                    <button class="btn-pixel" id="dlBtnCancel">[ Cancel ]</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GAME DETAILS MODAL -->
+    <div id="gameModal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="xp-titlebar">
+                <div class="xp-titlebar-left">
+                    <span>🗂️</span>
+                    <span id="modalGameTitle">CHAMBER PROTOCOL</span>
+                </div>
+                <button id="modalClose" class="xp-ctrl-btn xp-btn-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <img id="modalHeroImg" class="modal-hero" src="/assets/images/cover_chamber.svg" alt="screenshot">
+                <div id="modalThumbs" class="modal-gallery"></div>
+
+                <div style="font-size: 13px; line-height: 1.6; margin-bottom: 14px;">
+                    <p id="modalGameDesc"></p>
+                </div>
+
+                <h4 style="font-size: 12px; color: var(--link-color); text-transform: uppercase; margin-bottom: 6px;">SPECIFICATIONS &amp; SYSTEMS:</h4>
+                <ul id="modalFeaturesList" style="padding-left: 20px; font-size: 12.5px; margin-bottom: 16px;"></ul>
+
+                <div style="background: #ffffff; border: 1px solid var(--border-color); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                    <div>
+                        <div style="font-weight: bold; color: var(--link-color);">STANDALONE ARCHIVE BUNDLE</div>
+                        <div style="font-size: 11px; color: #666;">
+                            Version: <span id="modalVersion"></span> &bull; 
+                            Size: <span id="modalFileSize"></span> &bull; 
+                            Acquisitions: <span id="modalDownloads"></span>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button id="modalDownloadBtn" class="btn-pixel btn-pixel-accent">DOWNLOAD ZIP</button>
+                        <a id="modalItchBtn" href="#" target="_blank" class="btn-pixel" style="display: none;">ITCH.IO</a>
+                        <a id="modalSteamBtn" href="#" target="_blank" class="btn-pixel" style="display: none;">STEAM</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PLAY IN BROWSER MODAL -->
+    <div id="playModal" class="modal-overlay">
+        <div class="modal-box" style="width: 900px; max-width: 95vw;">
+            <div class="xp-titlebar">
+                <div class="xp-titlebar-left">
+                    <span>🕹️</span>
+                    <span id="playGameTitle">PLAY TRANSMISSION</span>
+                </div>
+                <button id="playModalClose" class="xp-ctrl-btn xp-btn-close">&times;</button>
+            </div>
+            <div style="position: relative; width: 100%; aspect-ratio: 16/9; background: #000;">
+                <iframe id="playIframe" src="about:blank" style="width: 100%; height: 100%; border: none;" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- AUTHENTICATION / CLEARANCE MODAL -->
+    <div id="authModal" class="modal-overlay">
+        <div class="modal-box" style="width: 480px; max-width: 95vw;">
+            <div class="xp-titlebar">
+                <div class="xp-titlebar-left">
+                    <span>🔐</span>
+                    <span id="authModalTitle">USER CLEARANCE // AUTHENTICATION</span>
+                </div>
+                <button id="authModalClose" class="xp-ctrl-btn xp-btn-close">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 16px 20px;">
+                <!-- Tab toggles: Login vs Register vs Social -->
+                <div style="display: flex; gap: 4px; margin-bottom: 14px; border-bottom: 2px solid var(--border-color); padding-bottom: 6px;">
+                    <button type="button" id="authTabLogin" class="btn-pixel active-auth-tab">SIGN IN</button>
+                    <button type="button" id="authTabRegister" class="btn-pixel">CREATE ACCOUNT</button>
+                    <button type="button" id="authTabSocial" class="btn-pixel">QUICK SOCIAL</button>
+                </div>
+
+                <!-- Form 1: Sign In -->
+                <div id="authPaneLogin">
+                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
+                        Enter your operator credentials to access downloads, post transmissions, and leave reactions.
+                    </p>
+                    <form id="loginForm">
+                        <div style="margin-bottom: 10px;">
+                            <label style="display: block; font-size: 11px; margin-bottom: 3px; font-weight: bold;">CALL-SIGN OR EMAIL:</label>
+                            <input type="text" id="loginIdentifier" class="form-input" style="width: 100%; padding: 6px 10px;" placeholder="Username or email..." required>
+                        </div>
+                        <div style="margin-bottom: 14px;">
+                            <label style="display: block; font-size: 11px; margin-bottom: 3px; font-weight: bold;">SECURITY PASSCODE:</label>
+                            <input type="password" id="loginPassword" class="form-input" style="width: 100%; padding: 6px 10px;" placeholder="Password..." required>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <button type="submit" class="btn-pixel btn-pixel-accent">AUTHENTICATE</button>
+                            <span style="font-size: 11px; color: var(--text-dim);">Admin &amp; User login supported</span>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Form 2: Register -->
+                <div id="authPaneRegister" style="display: none;">
+                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
+                        Create a free user account. Users have download and interaction clearance (no administrator privileges).
+                    </p>
+                    <form id="registerForm">
+                        <div style="margin-bottom: 10px;">
+                            <label style="display: block; font-size: 11px; margin-bottom: 3px; font-weight: bold;">CALL-SIGN (USERNAME):</label>
+                            <input type="text" id="regUsername" class="form-input" style="width: 100%; padding: 6px 10px;" placeholder="Letters, numbers, underscores (3-24 chars)..." required>
+                        </div>
+                        <div style="margin-bottom: 10px;">
+                            <label style="display: block; font-size: 11px; margin-bottom: 3px; font-weight: bold;">EMAIL ADDRESS:</label>
+                            <input type="email" id="regEmail" class="form-input" style="width: 100%; padding: 6px 10px;" placeholder="operator@domain.com..." required>
+                        </div>
+                        <div style="margin-bottom: 14px;">
+                            <label style="display: block; font-size: 11px; margin-bottom: 3px; font-weight: bold;">PASSWORD:</label>
+                            <input type="password" id="regPassword" class="form-input" style="width: 100%; padding: 6px 10px;" placeholder="At least 4 characters..." required>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <button type="submit" class="btn-pixel btn-pixel-accent">CREATE ACCOUNT</button>
+                            <span style="font-size: 11px; color: var(--text-dim);">Role: Standard User</span>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Form 3: Social / Instant Login (Google, Apple ID, GitHub) -->
+                <div id="authPaneSocial" style="display: none;">
+                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
+                        Quick sign-in with your provider. Only your desired on-site username is required!
+                    </p>
+                    <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px;">
+                        <button type="button" class="btn-pixel social-provider-btn" data-provider="google" style="justify-content: flex-start; padding: 8px 12px;">
+                            <span style="font-weight: bold; color: #ea4335;">[ G ]</span> &nbsp; Sign in with Google
+                        </button>
+                        <button type="button" class="btn-pixel social-provider-btn" data-provider="apple" style="justify-content: flex-start; padding: 8px 12px;">
+                            <span style="font-weight: bold;">[  ]</span> &nbsp; Sign in with Apple ID
+                        </button>
+                        <button type="button" class="btn-pixel social-provider-btn" data-provider="github" style="justify-content: flex-start; padding: 8px 12px;">
+                            <span style="font-weight: bold;">[ 🐱 ]</span> &nbsp; Sign in with GitHub
+                        </button>
+                    </div>
+
+                    <!-- Prompt for username after clicking a provider -->
+                    <div id="socialUsernameBox" style="display: none; background: var(--bg-card); border: 1px dashed var(--border-color); padding: 12px; margin-top: 10px;">
+                        <div style="font-size: 11.5px; font-weight: bold; margin-bottom: 6px; color: var(--link-color);" id="socialProviderLabel">
+                            LINKING ACCOUNT
+                        </div>
+                        <p style="font-size: 11px; color: var(--text-dim); margin-bottom: 8px;">
+                            Enter your unique call-sign / username for this profile:
+                        </p>
+                        <input type="text" id="socialUsername" class="form-input" style="width: 100%; padding: 6px 10px; margin-bottom: 10px;" placeholder="Your call-sign...">
+                        <button type="button" id="btnSubmitSocial" class="btn-pixel btn-pixel-accent" style="width: 100%;">
+                            CONFIRM &amp; SIGN IN
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Status Feedback -->
+                <div id="authStatusMsg" style="margin-top: 12px; font-size: 12px; font-weight: bold; min-height: 18px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECRET RETRO TERMINAL DRAWER -->
+    <div id="terminalDrawer" class="terminal-drawer">
+        <div class="terminal-topbar">
+            <span>TERMINAL CONSOLE [PORT 3000] // PRESS [~] OR [ESC] TO HIDE</span>
+            <button id="terminalCloseBtn" style="background: none; border: none; color: #40f567; cursor: pointer; font-family: monospace;">[CLOSE X]</button>
+        </div>
+        <div id="terminalLog" class="terminal-log">
+            <div>OBSOLETE SECTOR COMMAND INTERFACE INITIALIZED.</div>
+            <div>Type "help" to display operational commands.</div>
+        </div>
+        <div class="terminal-input-row">
+            <span class="terminal-prompt">TERMINAL&gt;</span>
+            <input type="text" id="terminalInput" class="terminal-input" autocomplete="off" spellcheck="false" placeholder="type 'help'...">
+        </div>
+    </div>
+
+    <!-- Audio & Frontend Scripts -->
+    <script src="/js/audio.js"></script>
+    <script src="/js/app.js"></script>
+</body>
+</html>

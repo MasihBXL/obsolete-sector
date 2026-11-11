@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TERMINAL UPLOAD // Admin Archive Control</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="icon" href="/assets/badges/badge_horror.svg" type="image/svg+xml">
+</head>
+<body class="admin-body">
+    <!-- Windows 98 / XP Header Titlebar -->
+    <div class="win-titlebar" style="border-radius: 0;">
+        <div class="win-titlebar-left">
+            <span class="win-titlebar-icon">🔒</span>
+            <span>OBSOLETE_ADMIN_CONSOLE.EXE - Windows Security Administration</span>
+        </div>
+        <div class="win-titlebar-buttons">
+            <a href="/" class="win-btn-control" style="text-decoration: none; color: inherit;" title="Exit to Website">&times;</a>
+        </div>
+    </div>
+
+    <!-- Header Strip -->
+    <header class="admin-header-strip">
+        <div style="display: flex; align-items: center; gap: 14px;">
+            <a href="/" class="win98-btn">&larr; BACK TO HOMEPAGE</a>
+            <span style="color: #475569;">|</span>
+            <span class="admin-logo">ARCHIVE CONTROL TERMINAL</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 14px;">
+            <button id="adminLogoutBtn" class="win98-btn" style="display: none; background: #611818; color: #fff;">TERMINATE SESSION</button>
+        </div>
+    </header>
+
+    <div class="admin-container">
+
+        <!-- LOGIN PANEL -->
+        <div id="loginSection" class="login-panel">
+            <h2>ACCESS AUTHORIZATION</h2>
+            <p class="login-desc">Enter terminal security passcode to unlock game uploads &amp; database controls.</p>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label" for="loginPassword">SECURITY PASSCODE</label>
+                    <input type="password" id="loginPassword" class="form-input" placeholder="Default passcode: 1986" required autofocus>
+                    <small style="color: #64748b; font-size: 11px; margin-top: 4px; display: block;">Default Code: <strong>1986</strong></small>
+                </div>
+                <div id="loginError" style="color: #ff5252; font-size: 12px; margin-bottom: 12px; display: none;"></div>
+                <button type="submit" class="win98-btn" style="width: 100%; justify-content: center; padding: 10px; font-weight: bold; background: #6b1414; color: #fff;">
+                    [ ➔ AUTHENTICATE ]
+                </button>
+            </form>
+        </div>
+
+        <!-- MAIN ADMIN DASHBOARD -->
+        <div id="adminMainSection" style="display: none;">
+            
+            <!-- Quick Stats Bar -->
+            <div style="display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap;">
+                <div style="flex: 1; background: #111419; border: 1px solid #28303c; padding: 14px 20px;">
+                    <div style="font-size: 11px; color: #64748b; text-transform: uppercase;">INDEXED GAMES</div>
+                    <div id="statTotalGames" style="font-size: 28px; font-family: 'VT323', monospace; color: #38bdf8;">0</div>
+                </div>
+                <div style="flex: 1; background: #111419; border: 1px solid #28303c; padding: 14px 20px;">
+                    <div style="font-size: 11px; color: #64748b; text-transform: uppercase;">TOTAL DOWNLOAD ACQUISITIONS</div>
+                    <div id="statTotalDownloads" style="font-size: 28px; font-family: 'VT323', monospace; color: #4ade80;">0</div>
+                </div>
+                <div style="flex: 1; background: #111419; border: 1px solid #28303c; padding: 14px 20px;">
+                    <div style="font-size: 11px; color: #64748b; text-transform: uppercase;">REGISTERED USERS</div>
+                    <div id="statTotalUsers" style="font-size: 28px; font-family: 'VT323', monospace; color: #f59e0b;">0</div>
+                </div>
+                <div style="flex: 1; background: #111419; border: 1px solid #28303c; padding: 14px 20px;">
+                    <div style="font-size: 11px; color: #64748b; text-transform: uppercase;">SERVER PROTOCOL</div>
+                    <div style="font-size: 28px; font-family: 'VT323', monospace; color: #ff5252;">ONLINE // RW</div>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <div class="admin-tabs">
+                <button id="tabUpload" class="tab-btn active">+ UPLOAD NEW GAME</button>
+                <button id="tabManage" class="tab-btn">MANAGE ARCHIVE</button>
+                <button id="tabDevlog" class="tab-btn">POST DEVLOG DISPATCH</button>
+                <button id="tabUsers" class="tab-btn">USER ACCOUNTS</button>
+            </div>
+
+            <!-- TAB 1: UPLOAD GAME -->
+            <div id="sectionUpload">
+                <div class="admin-card">
+                    <div class="card-title">
+                        <span>NEW TRANSMISSION REGISTRATION</span>
+                        <span style="font-size: 12px; color: #64748b;">STANDALONE GAME BUILD</span>
+                    </div>
+
+                    <form id="uploadGameForm" enctype="multipart/form-data">
+                        
+                        <div class="form-row">
+                            <div class="form-group form-col">
+                                <label class="form-label" for="title">Game Title *</label>
+                                <input type="text" id="title" name="title" class="form-input" placeholder="e.g. CHAMBER PROTOCOL" required>
+                            </div>
+                            <div class="form-group form-col">
+                                <label class="form-label" for="subtitle">Subtitle / Short Hook</label>
+                                <input type="text" id="subtitle" name="subtitle" class="form-input" placeholder="e.g. 12-gauge tactical roulette in an abandoned facility">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group form-col">
+                                <label class="form-label" for="version">Version</label>
+                                <input type="text" id="version" name="version" class="form-input" placeholder="1.0.0" value="1.0.0">
+                            </div>
+                            <div class="form-group form-col">
+                                <label class="form-label" for="releaseDate">Release Date</label>
+                                <input type="date" id="releaseDate" name="releaseDate" class="form-input">
+                            </div>
+                            <div class="form-group form-col">
+                                <label class="form-label" for="tags">Tags / Genres (comma separated)</label>
+                                <input type="text" id="tags" name="tags" class="form-input" placeholder="HORROR, ANALOG, PSX, SURVIVAL">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="description">Full Description / Atmospheric Story</label>
+                            <textarea id="description" name="description" class="form-textarea" placeholder="Detailed game synopsis, eerie story background, setting, and gameplay premise..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="features">Key Features (One per line)</label>
+                            <textarea id="features" name="features" class="form-textarea" style="min-height: 70px;" placeholder="Procedurally generated shotgun rounds&#10;Dystopian analog CRT simulation&#10;Mechanical tactile sound effects&#10;Multiple unsettling endings"></textarea>
+                        </div>
+
+                        <!-- Game Build File Upload -->
+                        <div class="form-group">
+                            <label class="form-label">Game Archive File (.ZIP, .RAR, .7Z, .EXE - up to 500MB)</label>
+                            <div class="file-dropzone" id="gameDropzone">
+                                <input type="file" id="gameFileInput" name="gameFile" accept=".zip,.rar,.7z,.tar,.gz,.exe">
+                                <div class="dropzone-label">CLICK OR DRAG GAME ARCHIVE FILE HERE</div>
+                                <div class="dropzone-hint">Supports ZIP, RAR, 7Z, Standalone EXE</div>
+                                <div id="gameFileInfo" class="file-selected-info" style="display: none;"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <!-- Cover Image -->
+                            <div class="form-group form-col">
+                                <label class="form-label">Cover Artwork (PNG, JPG, GIF, SVG)</label>
+                                <div class="file-dropzone" id="coverDropzone" style="padding: 16px;">
+                                    <input type="file" id="coverInput" name="coverImage" accept="image/*">
+                                    <div class="dropzone-label" style="font-size: 11.5px;">SELECT COVER IMAGE</div>
+                                    <div id="coverInfo" class="file-selected-info" style="display: none;"></div>
+                                </div>
+                            </div>
+
+                            <!-- Screenshots -->
+                            <div class="form-group form-col">
+                                <label class="form-label">Screenshots (Up to 6 images)</label>
+                                <div class="file-dropzone" style="padding: 16px;">
+                                    <input type="file" id="screenshotsInput" name="screenshots" accept="image/*" multiple>
+                                    <div class="dropzone-label" style="font-size: 11.5px;">SELECT SCREENSHOTS</div>
+                                    <div id="screenshotsInfo" class="file-selected-info" style="display: none;"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Alternative / External Links -->
+                        <div class="form-row">
+                            <div class="form-group form-col">
+                                <label class="form-label" for="externalDownloadUrl">External Download Link (Optional Fallback)</label>
+                                <input type="url" id="externalDownloadUrl" name="externalDownloadUrl" class="form-input" placeholder="https://drive.google.com/... or mediafire link">
+                            </div>
+                            <div class="form-group form-col">
+                                <label class="form-label" for="playInBrowserUrl">Play-In-Browser URL (Optional WebGL / HTML5)</label>
+                                <input type="url" id="playInBrowserUrl" name="playInBrowserUrl" class="form-input" placeholder="https://itch.io/embed-upload/... or webgl url">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group form-col">
+                                <label class="form-label" for="itchUrl">Itch.io Page (Optional)</label>
+                                <input type="url" id="itchUrl" name="itchUrl" class="form-input" placeholder="https://yourname.itch.io/game">
+                            </div>
+                            <div class="form-group form-col">
+                                <label class="form-label" for="steamUrl">Steam Page (Optional)</label>
+                                <input type="url" id="steamUrl" name="steamUrl" class="form-input" placeholder="https://store.steampowered.com/app/...">
+                            </div>
+                        </div>
+
+                        <!-- Progress Bar -->
+                        <div id="uploadProgressBarContainer" class="progress-bar-container">
+                            <div id="uploadProgressBar" class="progress-bar"></div>
+                        </div>
+                        <div id="uploadStatus" style="font-size: 12px; margin-bottom: 14px; font-weight: bold;"></div>
+
+                        <button type="submit" class="win98-btn" style="padding: 10px 24px; font-weight: bold; background: #6b1414; color: #fff;">
+                            [ 💾 UPLOAD &amp; PUBLISH TO ARCHIVE ]
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- TAB 2: MANAGE ARCHIVE -->
+            <div id="sectionManage" style="display: none;">
+                <div class="admin-card">
+                    <div class="card-title">
+                        <span>EXISTING ARCHIVE CATALOGUE</span>
+                        <span style="font-size: 12px; color: #64748b;">VIEW &amp; PURGE</span>
+                    </div>
+
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>COVER</th>
+                                <th>GAME TITLE</th>
+                                <th>VERSION</th>
+                                <th>SIZE</th>
+                                <th>DOWNLOADS</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminGamesTableBody">
+                            <!-- Populated dynamically by admin.js -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TAB 3: DEVLOG UPDATES -->
+            <div id="sectionDevlog" style="display: none;">
+                <div class="admin-card">
+                    <div class="card-title">
+                        <span>POST DISPATCH / PATCH LOG</span>
+                        <span style="font-size: 12px; color: #64748b;">ANALOG BULLETIN</span>
+                    </div>
+
+                    <form id="postDevlogForm">
+                        <div class="form-group">
+                            <label class="form-label" for="devlogTitle">Log Headline *</label>
+                            <input type="text" id="devlogTitle" class="form-input" placeholder="e.g. [Chamber Protocol] v1.5 - New Shotgun Chamber Variant & Audio Overhaul" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group form-col">
+                                <label class="form-label" for="devlogDate">Dispatch Date</label>
+                                <input type="date" id="devlogDate" class="form-input">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="devlogBody">Dispatch Body / Patch Notes *</label>
+                            <textarea id="devlogBody" class="form-textarea" style="min-height: 120px;" placeholder="Write details about fixes, new games, mechanics, or announcements..." required></textarea>
+                        </div>
+                        <div id="devlogStatus" style="font-size: 12px; margin-bottom: 12px; font-weight: bold;"></div>
+                        <button type="submit" class="btn-primary" style="padding: 9px 20px;">
+                            POST DISPATCH
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- TAB 4: USER ACCOUNTS & RBAC MANAGEMENT -->
+            <div id="sectionUsers" style="display: none;">
+                <div class="admin-card">
+                    <div class="card-title">
+                        <span>REGISTERED OPERATOR ACCOUNTS</span>
+                        <span style="font-size: 12px; color: #64748b;">DATABASE // ROLE-BASED ACCESS CONTROL (RBAC)</span>
+                    </div>
+                    <p style="font-size: 12px; color: #94a3b8; margin-bottom: 14px;">
+                        Standard users have download and interaction clearance. Users cannot access this administrator portal.
+                    </p>
+                    <div style="overflow-x: auto;">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Auth Provider</th>
+                                    <th>Registered At</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminUsersTableBody">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="/js/admin.js"></script>
+</body>
+</html>

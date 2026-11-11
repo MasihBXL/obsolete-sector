@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+  <defs>
+    <radialGradient id="greenGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#28ff44" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="dither2" width="4" height="4" patternUnits="userSpaceOnUse">
+      <rect width="2" height="2" fill="#000" opacity="0.4"/>
+      <rect x="2" y="2" width="2" height="2" fill="#000" opacity="0.4"/>
+    </pattern>
+  </defs>
+  <!-- Dark room background -->
+  <rect width="640" height="360" fill="#0b0e0c"/>
+  
+  <!-- Ham Radio Console Chassis -->
+  <rect x="70" y="40" width="500" height="280" fill="#151b17" stroke="#253229" stroke-width="4" rx="6"/>
+  <rect x="80" y="50" width="480" height="260" fill="#121614" stroke="#0e1210" stroke-width="2"/>
+
+  <!-- Oscilloscope CRT Round Screen -->
+  <circle cx="210" cy="180" r="85" fill="#051208" stroke="#1d4024" stroke-width="6"/>
+  <circle cx="210" cy="180" r="85" fill="url(#greenGlow)"/>
+  <!-- Oscilloscope Grid -->
+  <line x1="125" y1="180" x2="295" y2="180" stroke="#13301a" stroke-width="1"/>
+  <line x1="210" y1="95" x2="210" y2="265" stroke="#13301a" stroke-width="1"/>
+  <circle cx="210" cy="180" r="45" fill="none" stroke="#13301a" stroke-width="1" stroke-dasharray="2,2"/>
+  
+  <!-- Glowing waveform -->
+  <path d="M 130 180 Q 150 140 170 180 T 195 210 T 210 130 T 225 240 T 245 170 T 270 190 T 290 180" 
+        fill="none" stroke="#2bf74b" stroke-width="3" stroke-linecap="round"/>
+  <path d="M 130 180 Q 150 140 170 180 T 195 210 T 210 130 T 225 240 T 245 170 T 270 190 T 290 180" 
+        fill="none" stroke="#a5ffb3" stroke-width="1" stroke-linecap="round"/>
+
+  <!-- Frequency Dial / Tuning Display -->
+  <rect x="330" y="70" width="200" height="60" fill="#080c09" stroke="#1f2c22" stroke-width="3"/>
+  <text x="345" y="110" font-family="'Courier New', monospace" font-size="32" fill="#2bff4e" font-weight="bold" letter-spacing="4">89.43</text>
+  <text x="475" y="105" font-family="'Courier New', monospace" font-size="12" fill="#1b852f">MHz</text>
+
+  <!-- Big Knobs and Toggle switches -->
+  <circle cx="370" cy="190" r="30" fill="#222b25" stroke="#3b4d40" stroke-width="4"/>
+  <line x1="370" y1="190" x2="350" y2="175" stroke="#e0e8e2" stroke-width="4" stroke-linecap="round"/>
+  
+  <circle cx="460" cy="190" r="30" fill="#222b25" stroke="#3b4d40" stroke-width="4"/>
+  <line x1="460" y1="190" x2="480" y2="205" stroke="#e0e8e2" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Toggle switches & status LEDs -->
+  <rect x="340" y="250" width="8" height="24" fill="#a0a8a2"/>
+  <circle cx="344" cy="245" r="4" fill="#ff2626"/>
+  <text x="330" y="288" font-family="monospace" font-size="8" fill="#6c8072">PWR</text>
+
+  <rect x="390" y="255" width="8" height="24" fill="#a0a8a2"/>
+  <circle cx="394" cy="245" r="4" fill="#2bff4e"/>
+  <text x="375" y="288" font-family="monospace" font-size="8" fill="#6c8072">SQUELCH</text>
+
+  <rect x="440" y="250" width="8" height="24" fill="#a0a8a2"/>
+  <circle cx="444" cy="245" r="4" fill="#ffb426"/>
+  <text x="430" y="288" font-family="monospace" font-size="8" fill="#6c8072">REC</text>
+
+  <!-- Dither overlay -->
+  <rect width="640" height="360" fill="url(#dither2)" opacity="0.35"/>
+
+  <!-- Top label -->
+  <text x="30" y="32" font-family="'Courier New', monospace" font-size="16" fill="#3dd858" font-weight="bold" letter-spacing="3">NULL SIGNAL: 1986 // RECEIVER UNIT 4</text>
+</svg>

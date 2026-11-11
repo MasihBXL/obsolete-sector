@@ -1,0 +1,325 @@
+/* ==========================================================================
+   ADMIN TERMINAL & UPLOAD DASHBOARD STYLES (WINDOWS XP LUNA LIGHT PALETTE)
+   Unified Pixel Typography: VT323 & Share Tech Mono
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&display=swap');
+
+.admin-body {
+    background: linear-gradient(180deg, #1f4e9a 0%, #3e78cc 35%, #6aa4ec 70%, #9ec6fd 100%);
+    background-attachment: fixed;
+    color: #111;
+    font-family: 'Share Tech Mono', 'Courier New', monospace;
+    min-height: 100vh;
+}
+
+.admin-header-strip {
+    background: #ece9d8;
+    border-bottom: 2px solid #7f9db9;
+    padding: 12px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.admin-logo {
+    font-family: 'VT323', monospace;
+    font-size: 28px;
+    color: #003399;
+    letter-spacing: 2px;
+}
+
+.admin-container {
+    max-width: 960px;
+    margin: 24px auto;
+    padding: 0 16px;
+}
+
+/* Login screen */
+.login-panel {
+    max-width: 420px;
+    margin: 70px auto;
+    background: #ece9d8;
+    border: 3px solid #0055ea;
+    border-radius: 6px 6px 0 0;
+    padding: 24px 28px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.login-panel h2 {
+    font-family: 'VT323', monospace;
+    font-size: 32px;
+    color: #003399;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.login-desc {
+    color: #555;
+    font-size: 13px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Forms */
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-label {
+    display: block;
+    font-size: 12px;
+    color: #003399;
+    font-weight: bold;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.form-input, .form-textarea, .form-select {
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid #7f9db9;
+    color: #000;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 13.5px;
+    padding: 8px 10px;
+    outline: none;
+}
+
+.form-input:focus, .form-textarea:focus {
+    border-color: #0055ea;
+    box-shadow: 0 0 6px rgba(0, 85, 234, 0.3);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 85px;
+}
+
+.form-row {
+    display: flex;
+    gap: 16px;
+}
+
+.form-col {
+    flex: 1;
+}
+
+/* Dropzone */
+.file-dropzone {
+    border: 2px dashed #7f9db9;
+    background: #ffffff;
+    padding: 20px 16px;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+}
+
+.file-dropzone:hover {
+    border-color: #0055ea;
+    background: #f0f6ff;
+}
+
+.file-dropzone input[type="file"] {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.dropzone-label {
+    font-size: 13px;
+    color: #003399;
+    font-weight: bold;
+}
+
+.dropzone-hint {
+    font-size: 11px;
+    color: #666;
+    margin-top: 4px;
+}
+
+.file-selected-info {
+    margin-top: 10px;
+    color: #2e7d32;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* Admin Tabs */
+.admin-tabs {
+    display: flex;
+    gap: 4px;
+    border-bottom: 2px solid #0055ea;
+    margin-bottom: 20px;
+}
+
+.tab-btn {
+    background: #ece9d8;
+    border: 1px solid #7f9db9;
+    border-bottom: none;
+    border-radius: 4px 4px 0 0;
+    color: #003399;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+.tab-btn.active {
+    background: #ffffff;
+    border-top: 3px solid #f26c4f;
+    border-bottom: 2px solid #ffffff;
+    margin-bottom: -2px;
+    color: #000;
+}
+
+/* Card Section */
+.admin-card {
+    background: #ffffff;
+    border: 1px solid #7f9db9;
+    padding: 22px;
+    margin-bottom: 24px;
+}
+
+.card-title {
+    font-family: 'VT323', monospace;
+    font-size: 26px;
+    color: #003399;
+    margin-bottom: 16px;
+    border-bottom: 2px solid #7f9db9;
+    padding-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Upload progress */
+.progress-bar-container {
+    width: 100%;
+    height: 16px;
+    background: #ece9d8;
+    border: 1px solid #7f9db9;
+    margin: 14px 0;
+    display: none;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(180deg, #4488ee 0%, #0055ea 100%);
+    width: 0%;
+    transition: width 0.1s linear;
+}
+
+/* Table */
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.admin-table th {
+    text-align: left;
+    background: #ece9d8;
+    padding: 9px 12px;
+    border-bottom: 2px solid #7f9db9;
+    color: #003399;
+    text-transform: uppercase;
+    font-size: 11px;
+}
+
+.admin-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #e8e8e8;
+    vertical-align: middle;
+}
+
+.admin-table tr:hover {
+    background: #f0f6ff;
+}
+
+.game-thumb-mini {
+    width: 48px;
+    height: 27px;
+    object-fit: cover;
+    border: 1px solid #7f9db9;
+}
+
+.btn-danger {
+    background: #b01010;
+    border: 1px solid #700;
+    color: #fff;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    padding: 4px 8px;
+    cursor: pointer;
+}
+
+.btn-danger:hover {
+    background: #d61818;
+}
+
+/* The Backrooms Wiki Theme Overrides for Admin Portal */
+[data-theme="backrooms"] .admin-body {
+    background: linear-gradient(180deg, #262319 0%, #3c382a 40%, #4d4336 80%, #7a6d52 100%);
+    color: #1f1c14;
+}
+
+[data-theme="backrooms"] .admin-header-strip {
+    background: #ede9df;
+    border-bottom: 2px solid #7a6d52;
+}
+
+[data-theme="backrooms"] .admin-logo {
+    color: #7a6d52;
+}
+
+[data-theme="backrooms"] .admin-card,
+[data-theme="backrooms"] .login-panel {
+    background: #ede9df;
+    border: 2px solid #7a6d52;
+    color: #1f1c14;
+}
+
+[data-theme="backrooms"] .card-title,
+[data-theme="backrooms"] .login-panel h2 {
+    color: #7a6d52;
+    border-bottom: 2px solid #a5a09b;
+}
+
+[data-theme="backrooms"] .form-input,
+[data-theme="backrooms"] .form-textarea,
+[data-theme="backrooms"] .file-dropzone {
+    background: #fcfcfc;
+    border-color: #a5a09b;
+    color: #1f1c14;
+}
+
+[data-theme="backrooms"] .form-label,
+[data-theme="backrooms"] .dropzone-label {
+    color: #7a6d52;
+}
+
+[data-theme="backrooms"] .tab-btn {
+    background: #ede9df;
+    border-color: #a5a09b;
+    color: #7a6d52;
+}
+
+[data-theme="backrooms"] .tab-btn.active {
+    background: #fcfcfc;
+    border-top: 3px solid #dd6611;
+    color: #1f1c14;
+}
+
+[data-theme="backrooms"] .admin-table th {
+    background: #ede9df;
+    color: #7a6d52;
+    border-bottom: 2px solid #a5a09b;
+}
+
+[data-theme="backrooms"] .admin-table td {
+    border-bottom: 1px solid #dcd7d2;
+}

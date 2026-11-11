@@ -1,0 +1,46 @@
+[
+  {
+    "id": "album-1",
+    "title": "TANGO CIRCUIT",
+    "year": "2026",
+    "genre": "ANALOG SYNTHESIZER / INDUSTRIAL",
+    "tracksCount": 8,
+    "description": "Raw analog oscillator recordings, metallic reverbs, and dystopian tape loops crafted for cold nights in concrete bunkers.",
+    "bandcampUrl": "https://bandcamp.com",
+    "tracks": [
+      "01. Ground Loop Frequency",
+      "02. Relay Chime in Sub-Level 3",
+      "03. Tungsten Filament Glow",
+      "04. Hydraulic Breath"
+    ]
+  },
+  {
+    "id": "album-2",
+    "title": "MOLDRISE (ORIGINAL SOUNDTRACK)",
+    "year": "2025",
+    "genre": "DARK AMBIENT / FOLEY",
+    "tracksCount": 12,
+    "description": "Original score for the experimental industrial simulation. Subterranean rumblings, piston exhausts, and bio-mechanical drones.",
+    "bandcampUrl": "https://bandcamp.com",
+    "tracks": [
+      "01. Pressure Seal Integrity",
+      "02. Shift Log 48",
+      "03. Biological Grinding Chamber",
+      "04. Shift Over (Silence)"
+    ]
+  },
+  {
+    "id": "album-3",
+    "title": "LADEN LETHE [EP]",
+    "year": "2024",
+    "genre": "LO-FI HORROR ELECTRONICA",
+    "tracksCount": 6,
+    "description": "Short tape-decay experiments and 1-bit soundscapes recorded onto worn magnetic microcassettes.",
+    "bandcampUrl": "https://bandcamp.com",
+    "tracks": [
+      "01. Headphone Bleed",
+      "02. Cathode Ray Tube Hum",
+      "03. Static Snow"
+    ]
+  }
+]

@@ -1,0 +1,152 @@
+[
+  {
+    "id": "buckshot-chamber",
+    "title": "CHAMBER PROTOCOL",
+    "subtitle": "12-gauge tactical roulette in an abandoned cold war facility",
+    "releaseDate": "2026-10-15",
+    "version": "1.4.2",
+    "tags": [
+      "PSYCHOLOGICAL HORROR",
+      "ANALOG TECH",
+      "ROULETTE",
+      "PIXEL-3D"
+    ],
+    "description": "You sit across a rusty industrial desk under flickering fluorescent tubes. A modified shotgun rests between you and an unblinking surveillance android. Cut telephone wires, adrenaline shots, expired cigarettes, and loaded shells. Can you calculate the odds before the chamber snaps shut?",
+    "features": [
+      "Procedurally generated shotgun loadouts (Live vs Blank)",
+      "Tactical retro items: Magnifying Glass, Wirecutters, Handcuffs, Adrenaline",
+      "Full authentic CRT phosphor simulation & mechanical foley audio",
+      "Atmospheric analog horror story told through microcassettes"
+    ],
+    "platforms": [
+      "Windows",
+      "Linux",
+      "Web"
+    ],
+    "fileSize": "48.5 MB",
+    "downloadUrl": "/uploads/games/chamber-protocol-v1.4.2.zip",
+    "isLocalFile": false,
+    "downloadsCount": 1422,
+    "playInBrowserUrl": "",
+    "externalLinks": {
+      "itch": "https://itch.io",
+      "steam": "https://store.steampowered.com"
+    },
+    "coverImage": "/assets/images/cover_chamber.svg",
+    "screenshots": [
+      "/assets/images/cover_chamber.svg",
+      "/assets/images/screen_terminal.svg",
+      "/assets/images/screen_machinery.svg"
+    ]
+  },
+  {
+    "id": "unsorted-signals",
+    "title": "NULL SIGNAL: 1986",
+    "subtitle": "Decode illegal broadcast tapes on an analog ham radio receiver",
+    "releaseDate": "2026-08-04",
+    "version": "1.0.8",
+    "tags": [
+      "ANALOG HORROR",
+      "PUZZLE",
+      "ATMOSPHERIC",
+      "AUDIO"
+    ],
+    "description": "Late at night in an isolated concrete bunker in the Scandinavian woods, your job is to tune high-frequency broadcast arrays. But tonight the emergency broadcast frequency is transmitting voices from below the crust. Turn knobs, match frequencies, analyze spectral waterfalls, and do not look into the ventilation duct.",
+    "features": [
+      "Accurate analog radio frequency tuning simulation with static synthesis",
+      "Spectrogram & oscilloscope decoding minigames",
+      "Eerie lo-fi audio tracks and ambient tape hiss",
+      "Multiple disturbing endings based on frequencies decoded"
+    ],
+    "platforms": [
+      "Windows"
+    ],
+    "fileSize": "62.1 MB",
+    "downloadUrl": "/uploads/games/null-signal-1986.zip",
+    "isLocalFile": false,
+    "downloadsCount": 980,
+    "playInBrowserUrl": "",
+    "externalLinks": {
+      "itch": "https://itch.io"
+    },
+    "coverImage": "/assets/images/cover_signal.svg",
+    "screenshots": [
+      "/assets/images/cover_signal.svg",
+      "/assets/images/screen_terminal.svg"
+    ]
+  },
+  {
+    "id": "iron-lung-depths",
+    "title": "SUBMERGED: PRESSURE ZERO",
+    "subtitle": "Navigate an anomalous metallic fluid sea in a welded claustrophobic pod",
+    "releaseDate": "2026-05-20",
+    "version": "2.1.0",
+    "tags": [
+      "SURVIVAL HORROR",
+      "RETRO 3D",
+      "CLAUSTROPHOBIA",
+      "EXPERIMENTAL"
+    ],
+    "description": "You are welded inside a miniature one-person submarine built from scrap submarine iron. There are no viewports. You can only view the exterior by taking low-resolution grainy photos that take seconds to develop on a cathode screen. Something massive is moving in the dense black ocean around your hull.",
+    "features": [
+      "Blind navigation using sonar ping coords and delayed camera flash",
+      "Dread-inducing claustrophobia and deafening metal groan sounds",
+      "Grainy dithered monochrome camera monitor aesthetic",
+      "Heart-stopping sound design"
+    ],
+    "platforms": [
+      "Windows",
+      "Linux"
+    ],
+    "fileSize": "35.4 MB",
+    "downloadUrl": "/uploads/games/pressure-zero-v2.1.zip",
+    "isLocalFile": false,
+    "downloadsCount": 2315,
+    "playInBrowserUrl": "",
+    "externalLinks": {
+      "itch": "https://itch.io",
+      "steam": "https://store.steampowered.com"
+    },
+    "coverImage": "/assets/images/cover_sub.svg",
+    "screenshots": [
+      "/assets/images/cover_sub.svg",
+      "/assets/images/screen_machinery.svg"
+    ]
+  },
+  {
+    "id": "meat-machine",
+    "title": "CONCRETE OSCILLATOR",
+    "subtitle": "Operate industrial biological processing machinery",
+    "releaseDate": "2026-02-11",
+    "version": "1.2.0",
+    "tags": [
+      "BODY HORROR",
+      "INDUSTRIAL",
+      "DYSTOPIAN",
+      "POINT & CLICK"
+    ],
+    "description": "A dark experimental simulation of operating heavy hydraulic levers, dial gauges, temperature needles, and pneumatic valves in an endless underground factory. Follow daily shift protocols or face mechanical repurposing.",
+    "features": [
+      "Intricate clickable analog dials, switches, and clanking pistons",
+      "Grim dystopia worldbuilding told through shift punchcards",
+      "High quality tactile sound effects recorded from real industrial motors"
+    ],
+    "platforms": [
+      "Windows",
+      "Web"
+    ],
+    "fileSize": "29.0 MB",
+    "downloadUrl": "/uploads/games/concrete-oscillator.zip",
+    "isLocalFile": false,
+    "downloadsCount": 1650,
+    "playInBrowserUrl": "",
+    "externalLinks": {
+      "itch": "https://itch.io"
+    },
+    "coverImage": "/assets/images/cover_machine.svg",
+    "screenshots": [
+      "/assets/images/cover_machine.svg",
+      "/assets/images/screen_machinery.svg"
+    ]
+  }
+]

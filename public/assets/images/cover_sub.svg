@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+  <defs>
+    <radialGradient id="redAlarm" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ff1a1a" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.9"/>
+    </radialGradient>
+    <pattern id="mesh" width="6" height="6" patternUnits="userSpaceOnUse">
+      <path d="M 0 3 L 6 3 M 3 0 L 3 6" stroke="#000" stroke-width="1" opacity="0.4"/>
+    </pattern>
+  </defs>
+  <!-- Welded Hull Interior -->
+  <rect width="640" height="360" fill="#080303"/>
+
+  <!-- Rusty Circular Hatch Door -->
+  <circle cx="320" cy="180" r="140" fill="#140c0c" stroke="#3d1d1d" stroke-width="12"/>
+  <circle cx="320" cy="180" r="120" fill="#0d0707" stroke="#240f0f" stroke-width="6"/>
+
+  <!-- Bolts around the hatch -->
+  <g fill="#472626" stroke="#120606" stroke-width="1">
+    <circle cx="320" cy="46" r="6"/>
+    <circle cx="320" cy="314" r="6"/>
+    <circle cx="186" cy="180" r="6"/>
+    <circle cx="454" cy="180" r="6"/>
+    <circle cx="225" cy="85" r="6"/>
+    <circle cx="415" cy="85" r="6"/>
+    <circle cx="225" cy="275" r="6"/>
+    <circle cx="415" cy="275" r="6"/>
+  </g>
+
+  <!-- Heavy Hatch Valve Wheel -->
+  <circle cx="320" cy="180" r="45" fill="none" stroke="#632626" stroke-width="10"/>
+  <line x1="275" y1="180" x2="365" y2="180" stroke="#632626" stroke-width="8"/>
+  <line x1="320" y1="135" x2="320" y2="225" stroke="#632626" stroke-width="8"/>
+  <circle cx="320" cy="180" r="14" fill="#1a0a0a" stroke="#8a3030" stroke-width="3"/>
+
+  <!-- Pressure Gauge (DANGER) -->
+  <rect x="70" y="80" width="90" height="90" fill="#140e0e" stroke="#331c1c" stroke-width="3"/>
+  <circle cx="115" cy="125" r="32" fill="#0a0505" stroke="#4d2222" stroke-width="3"/>
+  <!-- Needle in red zone -->
+  <line x1="115" y1="125" x2="135" y2="105" stroke="#ff3333" stroke-width="3" stroke-linecap="round"/>
+  <text x="96" y="150" font-family="monospace" font-size="8" fill="#ff4d4d">BAR x100</text>
+
+  <!-- Flashing Emergency Warning Light -->
+  <circle cx="530" cy="90" r="16" fill="#ff2222" opacity="0.8"/>
+  <circle cx="530" cy="90" r="8" fill="#ffffff"/>
+  <rect x="522" y="106" width="16" height="12" fill="#291818"/>
+
+  <!-- Text Warning Stencil -->
+  <text x="320" y="340" text-anchor="middle" font-family="'Courier New', monospace" font-size="13" fill="#ff4444" font-weight="bold" letter-spacing="4">HULL BREACH IMMINENT - WELD SEAL INTACT</text>
+
+  <!-- Red Alarm vignette overlay -->
+  <rect width="640" height="360" fill="url(#redAlarm)"/>
+  <rect width="640" height="360" fill="url(#mesh)"/>
+</svg>

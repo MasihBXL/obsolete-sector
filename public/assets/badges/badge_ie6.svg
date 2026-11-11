@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="88" height="31" viewBox="0 0 88 31">
+  <rect width="88" height="31" fill="#000080" stroke="#808080" stroke-width="1"/>
+  <rect x="2" y="2" width="84" height="13" fill="#0055aa"/>
+  <text x="44" y="11" font-family="'Tahoma', sans-serif" font-size="7.5" font-weight="bold" fill="#ffffff" text-anchor="middle">INTERNET EXPLORER</text>
+  <rect x="2" y="16" width="84" height="13" fill="#001a33"/>
+  <text x="44" y="25" font-family="'Courier New', monospace" font-size="7" fill="#66bbff" text-anchor="middle">ENHANCED 6.0</text>
+</svg>

@@ -1,0 +1,20 @@
+[
+  {
+    "id": "upd-1",
+    "date": "2026-11-04",
+    "title": "[Chamber Protocol] v1.4.2 Hotfix & CRT Audio Overhaul",
+    "body": "Implemented analog audio synthesizer improvements, reduced latency on shell cocking sound, and fixed a rare glitch when handcuffs were used consecutively. Thanks to everyone for the reports."
+  },
+  {
+    "id": "upd-2",
+    "date": "2026-10-18",
+    "title": "[Catalogue Launch] New retro portal live",
+    "body": "Migrated games archive into this dedicated terminal catalogue. All builds are now direct downloadable, verified standalone, and include native scanline shaders."
+  },
+  {
+    "id": "upd-3",
+    "date": "2026-08-10",
+    "title": "[Null Signal: 1986] Released to public archive",
+    "body": "Null Signal is finally compiled. Best played with headphones in a dark room. Watch your radio frequencies carefully."
+  }
+]
