@@ -84,18 +84,6 @@
                         </div>
                     </div>
 
-                    <!-- 88x31 Badges Strip -->
-                    <div class="badge_container hide-mobile">
-                        <img src="/assets/badges/badge_horror.svg" alt="Indie Horror">
-                        <img src="/assets/badges/badge_ie6.svg" alt="Internet Explorer 6.0">
-                        <img src="/assets/badges/badge_winamp.svg" alt="Winamp 2.91">
-                        <img src="/assets/badges/badge_winrar.svg" alt="WinRAR 3.80">
-                        <img src="/assets/badges/badge_res.svg" alt="1024x768 16-Bit">
-                        <img src="/assets/badges/badge_crt.svg" alt="CRT 60Hz">
-                        <img src="/assets/badges/badge_buckshot.svg" alt="12-Gauge">
-                        <img src="/assets/badges/badge_archive.svg" alt="Standalone Archive">
-                    </div>
-
                     <!-- Scrolling Warning Marquee -->
                     <div class="marquee-container">
                         <div class="marquee-text">
@@ -438,16 +426,16 @@
                             </p>
                         </div>
 
-                        <!-- BUILT-IN RETRO AUDIO PLAYER (WINDOWS XP / WINAMP STYLE) -->
+                        <!-- BUILT-IN RETRO MUSIC PLAYER (WINDOWS XP NEUTRAL / CREAM THEME) -->
                         <div class="win-music-player" id="builtInPlayer">
                             
                             <!-- Player Header -->
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid rgba(56,189,248,0.3); padding-bottom: 8px;">
+                            <div class="player-header-bar">
                                 <div style="display: flex; align-items: center; gap: 8px;">
                                     <span style="font-size: 16px;">📻</span>
-                                    <span style="font-family: var(--font-title); font-size: 18px; color: #38bdf8; letter-spacing: 0.5px;">MOPTAM DIGITAL MEDIA AUDIO DECK v2.0</span>
+                                    <span style="font-family: var(--font-title); font-size: 18px; color: #003399; letter-spacing: 0.5px;">MOPTAM AUDIO DECK v2.0 - Windows XP Media Player</span>
                                 </div>
-                                <span id="playerStatusIndicator" style="font-size: 10px; color: #4ade80; font-family: var(--font-mono); font-weight: bold;">● READY</span>
+                                <span id="playerStatusIndicator" style="font-size: 11px; color: #2e7d32; font-family: var(--font-mono); font-weight: bold;">● READY</span>
                             </div>
 
                             <!-- Screen & Cover Display -->
@@ -477,7 +465,7 @@
                                     <button type="button" id="btnPlayerRewind" class="player-btn" title="Rewind 5s">
                                         <span>⏪</span> -5s
                                     </button>
-                                    <button type="button" id="btnPlayerPlay" class="player-btn" style="background: #0284c7; color: #fff;" title="Play / Pause">
+                                    <button type="button" id="btnPlayerPlay" class="player-btn" style="background: linear-gradient(180deg, #e6f0fa 0%, #b8d4f6 100%); border-color: #0055ea;" title="Play / Pause">
                                         <span id="playerPlayIcon">▶</span> <span id="playerPlayText">PLAY</span>
                                     </button>
                                     <button type="button" id="btnPlayerForward" class="player-btn" title="Forward 5s">
@@ -499,7 +487,7 @@
                                     </div>
 
                                     <!-- Download Track Button -->
-                                    <button type="button" id="btnPlayerDownloadTrack" class="player-btn" style="border-color: #4ade80; color: #4ade80;">
+                                    <button type="button" id="btnPlayerDownloadTrack" class="player-btn" style="color: #003399; font-weight: bold;">
                                         <span>💾</span> DOWNLOAD TRACK
                                     </button>
                                 </div>
@@ -829,17 +817,16 @@
                 <button id="authModalClose" class="xp-ctrl-btn xp-btn-close">&times;</button>
             </div>
             <div class="modal-body" style="padding: 16px 20px;">
-                <!-- Tab toggles: Login vs Register vs Social -->
+                <!-- Tab toggles: Sign In vs Create Account -->
                 <div style="display: flex; gap: 4px; margin-bottom: 14px; border-bottom: 2px solid var(--border-color); padding-bottom: 6px;">
                     <button type="button" id="authTabLogin" class="btn-pixel active-auth-tab">SIGN IN</button>
                     <button type="button" id="authTabRegister" class="btn-pixel">CREATE ACCOUNT</button>
-                    <button type="button" id="authTabSocial" class="btn-pixel">QUICK SOCIAL</button>
                 </div>
 
                 <!-- Form 1: Sign In -->
                 <div id="authPaneLogin">
                     <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
-                        Enter your operator credentials to download games, transmit reviews, submit suggestions, and report bugs.
+                        Enter your credentials to download games, transmit reviews, submit suggestions, and report bugs.
                     </p>
                     <form id="loginForm">
                         <div style="margin-bottom: 10px;">
@@ -850,17 +837,33 @@
                             <label style="display: block; font-size: 11px; margin-bottom: 3px; font-weight: bold;">SECURITY PASSCODE:</label>
                             <input type="password" id="loginPassword" class="form-input" style="width: 100%; padding: 6px 10px;" placeholder="Password..." required>
                         </div>
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
                             <button type="submit" class="btn-pixel btn-pixel-accent">AUTHENTICATE</button>
-                            <span style="font-size: 11px; color: var(--text-dim);">Admin &amp; User clearance supported</span>
+                            <span style="font-size: 11px; color: var(--text-dim);">Admin &amp; User supported</span>
                         </div>
                     </form>
+
+                    <!-- Integrated Social Sign In Strip inside Sign In -->
+                    <div class="auth-social-integrated-box">
+                        <div class="auth-social-label">OR QUICK SIGN-IN WITH PROVIDER</div>
+                        <div class="auth-social-buttons-grid">
+                            <button type="button" class="btn-pixel social-provider-btn" data-provider="google">
+                                <span style="font-weight: bold; color: #ea4335;">[ G ]</span> Google
+                            </button>
+                            <button type="button" class="btn-pixel social-provider-btn" data-provider="github">
+                                <span style="font-weight: bold;">[ 🐱 ]</span> GitHub
+                            </button>
+                            <button type="button" class="btn-pixel social-provider-btn" data-provider="apple">
+                                <span style="font-weight: bold;">[  ]</span> Apple
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Form 2: Register -->
                 <div id="authPaneRegister" style="display: none;">
                     <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
-                        Create a free user account. Users have download and interaction clearance (no administrator privileges).
+                        Create a free user account to unlock downloads, reviews, suggestions, and reactions.
                     </p>
                     <form id="registerForm">
                         <div style="margin-bottom: 10px;">
@@ -875,43 +878,41 @@
                             <label style="display: block; font-size: 11px; margin-bottom: 3px; font-weight: bold;">PASSWORD:</label>
                             <input type="password" id="regPassword" class="form-input" style="width: 100%; padding: 6px 10px;" placeholder="At least 4 characters..." required>
                         </div>
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
                             <button type="submit" class="btn-pixel btn-pixel-accent">CREATE ACCOUNT</button>
-                            <span style="font-size: 11px; color: var(--text-dim);">Role: Standard User</span>
+                            <span style="font-size: 11px; color: var(--text-dim);">Standard User</span>
                         </div>
                     </form>
+
+                    <!-- Integrated Social Sign Up Strip inside Register -->
+                    <div class="auth-social-integrated-box">
+                        <div class="auth-social-label">OR INSTANT REGISTER WITH PROVIDER</div>
+                        <div class="auth-social-buttons-grid">
+                            <button type="button" class="btn-pixel social-provider-btn" data-provider="google">
+                                <span style="font-weight: bold; color: #ea4335;">[ G ]</span> Google
+                            </button>
+                            <button type="button" class="btn-pixel social-provider-btn" data-provider="github">
+                                <span style="font-weight: bold;">[ 🐱 ]</span> GitHub
+                            </button>
+                            <button type="button" class="btn-pixel social-provider-btn" data-provider="apple">
+                                <span style="font-weight: bold;">[  ]</span> Apple
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Form 3: Social / Instant Login (Google, Apple ID, GitHub) -->
-                <div id="authPaneSocial" style="display: none;">
-                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
-                        Quick sign-in with your provider. Only your desired on-site username is required!
+                <!-- Prompt for username after clicking a provider in either tab -->
+                <div id="socialUsernameBox" style="display: none; background: var(--bg-card); border: 1px dashed var(--border-color); padding: 12px; margin-top: 14px;">
+                    <div style="font-size: 11.5px; font-weight: bold; margin-bottom: 6px; color: var(--link-color);" id="socialProviderLabel">
+                        LINKING ACCOUNT
+                    </div>
+                    <p style="font-size: 11px; color: var(--text-dim); margin-bottom: 8px;">
+                        Enter your desired call-sign / username for this profile:
                     </p>
-                    <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px;">
-                        <button type="button" class="btn-pixel social-provider-btn" data-provider="google" style="justify-content: flex-start; padding: 8px 12px;">
-                            <span style="font-weight: bold; color: #ea4335;">[ G ]</span> &nbsp; Sign in with Google
-                        </button>
-                        <button type="button" class="btn-pixel social-provider-btn" data-provider="apple" style="justify-content: flex-start; padding: 8px 12px;">
-                            <span style="font-weight: bold;">[  ]</span> &nbsp; Sign in with Apple ID
-                        </button>
-                        <button type="button" class="btn-pixel social-provider-btn" data-provider="github" style="justify-content: flex-start; padding: 8px 12px;">
-                            <span style="font-weight: bold;">[ 🐱 ]</span> &nbsp; Sign in with GitHub
-                        </button>
-                    </div>
-
-                    <!-- Prompt for username after clicking a provider -->
-                    <div id="socialUsernameBox" style="display: none; background: var(--bg-card); border: 1px dashed var(--border-color); padding: 12px; margin-top: 10px;">
-                        <div style="font-size: 11.5px; font-weight: bold; margin-bottom: 6px; color: var(--link-color);" id="socialProviderLabel">
-                            LINKING ACCOUNT
-                        </div>
-                        <p style="font-size: 11px; color: var(--text-dim); margin-bottom: 8px;">
-                            Enter your unique call-sign / username for this profile:
-                        </p>
-                        <input type="text" id="socialUsername" class="form-input" style="width: 100%; padding: 6px 10px; margin-bottom: 10px;" placeholder="Your call-sign...">
-                        <button type="button" id="btnSubmitSocial" class="btn-pixel btn-pixel-accent" style="width: 100%;">
-                            CONFIRM &amp; SIGN IN
-                        </button>
-                    </div>
+                    <input type="text" id="socialUsername" class="form-input" style="width: 100%; padding: 6px 10px; margin-bottom: 10px;" placeholder="Your call-sign...">
+                    <button type="button" id="btnSubmitSocial" class="btn-pixel btn-pixel-accent" style="width: 100%;">
+                        CONFIRM &amp; SIGN IN
+                    </button>
                 </div>
 
                 <!-- Status Feedback -->

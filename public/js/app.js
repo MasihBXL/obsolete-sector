@@ -172,10 +172,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const authModalClose = document.getElementById('authModalClose');
     const authTabLogin = document.getElementById('authTabLogin');
     const authTabRegister = document.getElementById('authTabRegister');
-    const authTabSocial = document.getElementById('authTabSocial');
     const authPaneLogin = document.getElementById('authPaneLogin');
     const authPaneRegister = document.getElementById('authPaneRegister');
-    const authPaneSocial = document.getElementById('authPaneSocial');
     const loginForm = document.getElementById('loginForm');
     const loginIdentifier = document.getElementById('loginIdentifier');
     const loginPassword = document.getElementById('loginPassword');
@@ -493,26 +491,22 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function switchAuthTab(tab) {
-        [authTabLogin, authTabRegister, authTabSocial].forEach(t => t.classList.remove('active-auth-tab'));
-        authPaneLogin.style.display = 'none';
-        authPaneRegister.style.display = 'none';
-        authPaneSocial.style.display = 'none';
+        [authTabLogin, authTabRegister].forEach(t => { if (t) t.classList.remove('active-auth-tab'); });
+        if (authPaneLogin) authPaneLogin.style.display = 'none';
+        if (authPaneRegister) authPaneRegister.style.display = 'none';
+        if (socialUsernameBox) socialUsernameBox.style.display = 'none';
 
         if (tab === 'login') {
-            authTabLogin.classList.add('active-auth-tab');
-            authPaneLogin.style.display = 'block';
+            if (authTabLogin) authTabLogin.classList.add('active-auth-tab');
+            if (authPaneLogin) authPaneLogin.style.display = 'block';
         } else if (tab === 'register') {
-            authTabRegister.classList.add('active-auth-tab');
-            authPaneRegister.style.display = 'block';
-        } else if (tab === 'social') {
-            authTabSocial.classList.add('active-auth-tab');
-            authPaneSocial.style.display = 'block';
+            if (authTabRegister) authTabRegister.classList.add('active-auth-tab');
+            if (authPaneRegister) authPaneRegister.style.display = 'block';
         }
     }
 
-    authTabLogin.addEventListener('click', () => switchAuthTab('login'));
-    authTabRegister.addEventListener('click', () => switchAuthTab('register'));
-    authTabSocial.addEventListener('click', () => switchAuthTab('social'));
+    if (authTabLogin) authTabLogin.addEventListener('click', () => switchAuthTab('login'));
+    if (authTabRegister) authTabRegister.addEventListener('click', () => switchAuthTab('register'));
 
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
