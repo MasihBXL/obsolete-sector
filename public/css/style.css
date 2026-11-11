@@ -10,36 +10,37 @@
        THEME 1: WINDOWS XP LUNA (Default)
        Dedicated XP Pixel Font Stack: VT323 (Titles) + Share Tech Mono (Body)
        ========================================================================== */
-    --bg-page: #3a6ea5;
-    --xp-bliss-grad: linear-gradient(180deg, #1f4e9a 0%, #3e78cc 35%, #6aa4ec 70%, #9ec6fd 100%);
+    --bg-page: #2258a6;
+    /* Legendary Windows XP Bliss Landscape: Vibrant blue sky down to rolling green grass */
+    --xp-bliss-grad: linear-gradient(180deg, #184b90 0%, #2d6fc7 24%, #5b9bf1 52%, #8ebbfa 65%, #76b73b 68%, #4c9820 80%, #2f6912 100%);
     --banner-bg: rgba(10, 20, 35, 0.25);
     --banner-dot: radial-gradient(#1f3552 1px, transparent 1px);
     --bg-doc: #ece9d8;              /* Classic XP Luna Dialog Grey-Cream */
     --bg-surface: #ffffff;          /* Clean White Content Panel */
-    --bg-card: #f7f7f5;
+    --bg-card: #f4f8fe;             /* Soft XP Ice-Periwinkle Tint */
     --bg-card-inner: #ffffff;
     --border-color: #7f9db9;         /* XP Border Blue */
     --border-dark: #0055ea;          /* XP Royal Blue */
-    --border-subtle: #ece9d8;
+    --border-subtle: #d8e4f4;
 
     --xp-titlebar-bg: linear-gradient(180deg, #0058ee 0%, #3593ff 4%, #288eff 6%, #127dff 8%, #036ffc 10%, #0262ee 14%, #0057e5 20%, #0054e3 40%, #0055e7 60%, #0054e1 80%, #0041a8 100%);
     --xp-titlebar-text: #ffffff;
 
     --xp-taskbar-bg: linear-gradient(180deg, #245edb 0%, #3f8cf3 9%, #245edb 18%, #245edb 92%, #1941a5 100%);
-    --xp-start-bg: linear-gradient(180deg, #3c9a3e 0%, #2e7d32 40%, #1e5e23 100%);
+    --xp-start-bg: linear-gradient(180deg, #5dbb4d 0%, #3ca032 50%, #2f8326 100%);
 
     --text-primary: #111111;
-    --text-muted: #444444;
-    --text-dim: #666666;
+    --text-muted: #3a4149;
+    --text-dim: #5c6470;
 
     --accent: #b00000;              /* Horror Crimson */
     --accent-glow: rgba(176, 0, 0, 0.25);
-    --link-color: #003399;
-    --link-hover: #b00000;
+    --link-color: #0c327d;
+    --link-hover: #0055ea;
 
-    --marquee-bg: #ffffd6;
-    --marquee-border: #e0c868;
-    --marquee-text: #880000;
+    --marquee-bg: #ffffe1;
+    --marquee-border: #d4cf96;
+    --marquee-text: #003399;
 
     --btn-bg: linear-gradient(180deg, #ffffff 0%, #ece9d8 15%, #d4d0c8 85%, #b8b4a8 100%);
     --btn-border: #7f9db9;
@@ -1485,24 +1486,27 @@ body {
 }
 
 /* ==========================================================================
-   HOMEPAGE: HERO INTRO & BIG NAVIGATION CARDS
+   HOMEPAGE: HERO INTRO & BIG NAVIGATION CARDS (WINDOWS XP LUNA STYLING)
    ========================================================================== */
 .home-hero-box {
-    background: var(--bg-card);
-    border: 2px solid var(--border-color);
+    background: linear-gradient(135deg, #eef5fe 0%, #d8e8fc 50%, #c8defa 100%);
+    border: 2px solid #7f9db9;
+    border-top: 4px solid #0055ea;
     padding: 24px;
     margin-bottom: 24px;
     position: relative;
-    box-shadow: inset 1px 1px 0 #ffffff;
+    box-shadow: inset 1px 1px 0 #ffffff, 2px 2px 8px rgba(0, 50, 150, 0.08);
+    border-radius: 4px;
 }
 
 .hero-moptam-name {
     font-family: var(--font-title);
-    font-size: 40px;
+    font-size: 42px;
     line-height: 1.1;
-    color: var(--link-color);
+    color: #0c327d;
     margin: 0 0 10px 0;
     text-transform: uppercase;
+    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 [data-theme="win98"] .hero-moptam-name {
@@ -1510,28 +1514,29 @@ body {
 }
 
 .hero-moptam-tagline {
-    font-size: 15px;
-    line-height: 1.6;
-    color: var(--text-primary);
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: #202428;
     margin-bottom: 16px;
 }
 
 .hero-stats-strip {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 8px;
     padding-top: 14px;
-    border-top: 1px dashed var(--border-color);
+    border-top: 1px solid #b6d2f3;
     font-size: 11.5px;
-    color: var(--text-dim);
 }
 
 .hero-stat-pill {
-    background: var(--bg-card-inner);
-    border: 1px solid var(--border-color);
+    background: #ffffff;
+    border: 1px solid #7f9db9;
     padding: 4px 10px;
     font-weight: bold;
-    color: var(--link-color);
+    color: #003399;
+    border-radius: 3px;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 /* Big Navigation Hub Grid */
@@ -1543,9 +1548,9 @@ body {
 }
 
 .home-nav-card {
-    background: var(--bg-card);
-    border: 2px solid var(--border-color);
-    padding: 18px 20px;
+    background: #ffffff;
+    border: 2px solid #7f9db9;
+    border-radius: 4px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -1553,25 +1558,42 @@ body {
     text-decoration: none;
     color: inherit;
     cursor: pointer;
-    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    position: relative;
 }
 
 .home-nav-card:hover {
-    border-color: var(--accent);
+    border-color: #0055ea;
     transform: translateY(-2px);
-    box-shadow: 3px 3px 0 var(--accent-glow);
+    box-shadow: 0 6px 14px rgba(0, 85, 234, 0.18);
+}
+
+/* Distinctive XP category banners */
+.home-nav-card:nth-child(1) { border-top: 4px solid #0055ea; }
+.home-nav-card:nth-child(2) { border-top: 4px solid #7b1fa2; }
+.home-nav-card:nth-child(3) { border-top: 4px solid #00838f; }
+.home-nav-card:nth-child(4) { border-top: 4px solid #d35400; }
+
+.home-nav-card-inner-pad {
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
 }
 
 .home-nav-card-icon {
-    font-size: 28px;
-    margin-bottom: 8px;
+    font-size: 30px;
+    margin-bottom: 6px;
+    margin-left: 18px;
+    margin-top: 14px;
 }
 
 .home-nav-card-title {
     font-family: var(--font-title);
     font-size: 26px;
-    color: var(--link-color);
-    margin: 0 0 6px 0;
+    color: #0c327d;
+    margin: 0 18px 6px 18px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
@@ -1582,33 +1604,39 @@ body {
 
 .home-nav-card-desc {
     font-size: 12.5px;
-    color: var(--text-muted);
+    color: #444c56;
     line-height: 1.5;
-    margin-bottom: 14px;
+    margin: 0 18px 14px 18px;
     flex-grow: 1;
 }
 
 .home-nav-card-btn {
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    gap: 6px;
+    justify-content: space-between;
     font-weight: bold;
     font-size: 12px;
-    color: var(--link-color);
-    border-top: 1px dashed var(--border-color);
-    padding-top: 10px;
+    color: #003399;
+    background: #f0f4fa;
+    border-top: 1px solid #d8e4f4;
+    padding: 10px 18px;
+    transition: background 0.15s ease, color 0.15s ease;
 }
 
 .home-nav-card:hover .home-nav-card-btn {
-    color: var(--accent);
+    background: #0055ea;
+    color: #ffffff;
 }
 
 /* Latest Update Highlight on Homepage */
 .latest-update-card {
-    background: var(--bg-card-inner);
-    border: 2px solid var(--border-color);
+    background: #ffffed;
+    border: 2px solid #d4cf96;
+    border-left: 6px solid #0055ea;
     padding: 18px 22px;
     margin-bottom: 24px;
+    border-radius: 4px;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.06);
 }
 
 .latest-update-header {
@@ -1617,22 +1645,23 @@ body {
     align-items: center;
     flex-wrap: wrap;
     gap: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
 .latest-update-badge {
-    background: #e61744;
+    background: #d9381e;
     color: #ffffff;
     font-size: 10.5px;
     padding: 3px 8px;
     font-weight: bold;
     letter-spacing: 0.5px;
+    border-radius: 2px;
 }
 
 .latest-update-title {
     font-family: var(--font-title);
     font-size: 24px;
-    color: var(--link-color);
+    color: #003399;
     margin: 0 0 6px 0;
 }
 
@@ -1642,7 +1671,7 @@ body {
 
 .latest-update-excerpt {
     font-size: 13px;
-    color: var(--text-muted);
+    color: #333333;
     line-height: 1.6;
     margin-bottom: 12px;
 }
@@ -2190,40 +2219,42 @@ body {
 }
 
 /* ==========================================================================
-   BUILT-IN RETRO MUSIC PLAYER (WINDOWS XP AUTHENTIC LUNA DIALOG / CREAM THEME)
-   Clean, neutral, nostalgic Windows XP styling
+   BUILT-IN RETRO MUSIC PLAYER (WINDOWS XP MEDIA PLAYER 10 LUNA EDITION)
+   Rich Luna royal blue top, periwinkle-silver casing, high-contrast LCD screen
    ========================================================================== */
 .win-music-player {
-    background: #ece9d8;
+    background: linear-gradient(180deg, #edf4fc 0%, #d5e5f9 60%, #c4daf5 100%);
     border: 2px solid #7f9db9;
-    box-shadow: inset 1px 1px 0 #ffffff, 2px 2px 5px rgba(0,0,0,0.15);
-    padding: 16px;
+    box-shadow: inset 1px 1px 0 #ffffff, 2px 3px 8px rgba(0, 50, 150, 0.12);
+    padding: 0;
     margin-bottom: 24px;
     color: #111111;
-    border-radius: 4px;
+    border-radius: 6px;
+    overflow: hidden;
 }
 
 [data-theme="xp-luna"] .win-music-player {
-    background: #ece9d8;
+    background: linear-gradient(180deg, #edf4fc 0%, #d5e5f9 60%, #c4daf5 100%);
     border: 2px solid #7f9db9;
-    box-shadow: inset 1px 1px 0 #ffffff, 2px 2px 5px rgba(0,0,0,0.15);
+    box-shadow: inset 1px 1px 0 #ffffff, 2px 3px 8px rgba(0, 50, 150, 0.15);
 }
 
 .player-header-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 12px;
-    border-bottom: 1px solid #d4d0c8;
-    padding-bottom: 8px;
+    background: linear-gradient(180deg, #0058ee 0%, #206be6 40%, #0041a8 100%);
+    color: #ffffff;
+    padding: 6px 12px;
+    border-bottom: 1px solid #002d7a;
 }
 
 .player-main-strip {
     display: grid;
-    grid-template-columns: 84px 1fr;
+    grid-template-columns: 92px 1fr;
     gap: 16px;
     align-items: center;
-    margin-bottom: 14px;
+    padding: 14px 16px 10px 16px;
 }
 
 @media (max-width: 600px) {
@@ -2231,14 +2262,14 @@ body {
 }
 
 .player-cover-square {
-    width: 84px;
-    height: 84px;
-    background: #ffffff;
+    width: 92px;
+    height: 92px;
+    background: #000000;
     border: 2px solid #7f9db9;
     overflow: hidden;
     position: relative;
-    box-shadow: inset 1px 1px 2px rgba(0,0,0,0.2);
-    border-radius: 2px;
+    box-shadow: inset 1px 1px 3px rgba(0,0,0,0.4), 1px 1px 4px rgba(0,0,0,0.15);
+    border-radius: 4px;
 }
 
 .player-cover-img {
@@ -2250,18 +2281,19 @@ body {
 }
 
 .player-screen {
-    background: #ffffff;
-    border: 1px solid #7f9db9;
-    padding: 10px 14px;
-    box-shadow: inset 1px 1px 2px rgba(0,0,0,0.12);
+    background: #061325;
+    border: 2px solid #3b628a;
+    padding: 12px 16px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
     position: relative;
-    border-radius: 2px;
+    border-radius: 4px;
 }
 
 .player-track-title {
     font-family: var(--font-title);
-    font-size: 24px;
-    color: #003399;
+    font-size: 26px;
+    color: #4deeea;
+    text-shadow: 0 0 8px rgba(77, 238, 234, 0.4);
     margin: 0 0 4px 0;
     letter-spacing: 0.5px;
     white-space: nowrap;
@@ -2274,26 +2306,26 @@ body {
 }
 
 .player-track-artist {
-    font-size: 11.5px;
-    color: #555555;
-    margin-bottom: 8px;
+    font-size: 12px;
+    color: #8be9fd;
+    margin-bottom: 10px;
 }
 
 .player-scrubber-row {
     display: flex;
     align-items: center;
     gap: 10px;
-    font-size: 11px;
+    font-size: 11.5px;
     font-family: var(--font-mono);
-    color: #333333;
+    color: #44f77c;
 }
 
 .player-seek-slider {
     flex-grow: 1;
     -webkit-appearance: none;
     height: 6px;
-    background: #d4d0c8;
-    border: 1px solid #999999;
+    background: #112845;
+    border: 1px solid #336699;
     border-radius: 3px;
     outline: none;
     cursor: pointer;
@@ -2303,11 +2335,11 @@ body {
     -webkit-appearance: none;
     width: 14px;
     height: 14px;
-    background: linear-gradient(180deg, #ffffff 0%, #ece9d8 40%, #c4c0b4 100%);
-    border: 1px solid #003399;
+    background: linear-gradient(180deg, #66b3ff 0%, #0055ea 100%);
+    border: 1px solid #ffffff;
     border-radius: 50%;
     cursor: pointer;
-    box-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    box-shadow: 0 0 4px #0055ea;
 }
 
 .player-controls-row {
@@ -2316,8 +2348,9 @@ body {
     align-items: center;
     flex-wrap: wrap;
     gap: 10px;
-    padding-top: 10px;
-    border-top: 1px solid #d4d0c8;
+    padding: 10px 16px 14px 16px;
+    background: rgba(255, 255, 255, 0.4);
+    border-top: 1px solid #bed6f4;
 }
 
 .player-btn-group {
@@ -2357,17 +2390,17 @@ body {
     align-items: center;
     gap: 8px;
     font-size: 11px;
-    color: #444;
+    color: #0c327d;
     font-weight: bold;
 }
 
 .player-vol-slider {
     width: 80px;
     -webkit-appearance: none;
-    height: 5px;
+    height: 6px;
     background: #d4d0c8;
-    border: 1px solid #999;
-    border-radius: 2px;
+    border: 1px solid #7f9db9;
+    border-radius: 3px;
     outline: none;
 }
 
@@ -2381,34 +2414,107 @@ body {
     cursor: pointer;
 }
 
-/* Integrated Social Auth in Sign In / Register */
-.auth-social-integrated-box {
-    border-top: 1px dashed var(--border-color);
-    padding-top: 12px;
-    margin-top: 6px;
+/* ==========================================================================
+   AUTHENTICATION: SOCIAL SINGLE SIGN-ON (SSO) GRID & CARDS
+   ========================================================================== */
+.social-sso-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
 }
 
-.auth-social-label {
-    font-size: 10.5px;
-    font-weight: bold;
-    color: var(--text-dim);
-    margin-bottom: 8px;
-    text-transform: uppercase;
-}
-
-.auth-social-buttons-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-}
-
-.player-vol-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 10px;
-    height: 10px;
-    background: #38bdf8;
+.sso-btn {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 4px;
+    font-size: 13.5px;
+    font-weight: 600;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    transition: transform 0.1s ease, box-shadow 0.15s ease, filter 0.15s ease;
+    user-select: none;
+    border: 1px solid transparent;
 }
+
+.sso-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.sso-btn:active {
+    transform: translateY(0);
+}
+
+.sso-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.sso-btn-google {
+    background: #ffffff;
+    color: #3c4043;
+    border-color: #dadce0;
+}
+
+.sso-btn-google:hover {
+    background: #f8f9fa;
+    border-color: #c6c9ce;
+}
+
+.sso-btn-github {
+    background: #24292e;
+    color: #ffffff;
+    border-color: #1b1f23;
+}
+
+.sso-btn-github:hover {
+    background: #2f363d;
+}
+
+.sso-btn-apple {
+    background: #000000;
+    color: #ffffff;
+    border-color: #000000;
+}
+
+.sso-btn-apple:hover {
+    background: #1c1c1e;
+}
+
+.sso-btn-facebook {
+    background: #1877f2;
+    color: #ffffff;
+    border-color: #166fe5;
+}
+
+.sso-btn-facebook:hover {
+    background: #166fe5;
+}
+
+.auth-divider-strip {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 14px 0 12px 0;
+    color: #7f9db9;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.auth-divider-strip::before, .auth-divider-strip::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #d4d0c8;
+}
+
+.auth-divider-strip::before { margin-right: 10px; }
+.auth-divider-strip::after { margin-left: 10px; }
 
 /* Track list with square covers */
 .track-list-table {

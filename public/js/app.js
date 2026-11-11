@@ -167,27 +167,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const playModalClose = document.getElementById('playModalClose');
     const playIframe = document.getElementById('playIframe');
 
-    // Auth Modal Elements
+    // Auth Modal Elements (Single Sign-On & Identity Verification)
     const authModal = document.getElementById('authModal');
     const authModalClose = document.getElementById('authModalClose');
-    const authTabLogin = document.getElementById('authTabLogin');
-    const authTabRegister = document.getElementById('authTabRegister');
-    const authPaneLogin = document.getElementById('authPaneLogin');
-    const authPaneRegister = document.getElementById('authPaneRegister');
-    const loginForm = document.getElementById('loginForm');
-    const loginIdentifier = document.getElementById('loginIdentifier');
-    const loginPassword = document.getElementById('loginPassword');
-    const registerForm = document.getElementById('registerForm');
-    const regUsername = document.getElementById('regUsername');
-    const regEmail = document.getElementById('regEmail');
-    const regPassword = document.getElementById('regPassword');
+    const authPaneSocialMain = document.getElementById('authPaneSocialMain');
+    const authPaneUsernamePrompt = document.getElementById('authPaneUsernamePrompt');
+    const ssoVerifiedNotice = document.getElementById('ssoVerifiedNotice');
+    const ssoVerifiedEmail = document.getElementById('ssoVerifiedEmail');
+    const ssoUsernameInput = document.getElementById('ssoUsernameInput');
+    const btnConfirmUsername = document.getElementById('btnConfirmUsername');
+    const btnCancelSocial = document.getElementById('btnCancelSocial');
+    const ssoBtns = document.querySelectorAll('.sso-btn');
+    const btnToggleAdminLogin = document.getElementById('btnToggleAdminLogin');
+    const authPaneAdmin = document.getElementById('authPaneAdmin');
+    const adminPasscodeForm = document.getElementById('adminPasscodeForm');
+    const adminPasscodeInput = document.getElementById('adminPasscodeInput');
     const authStatusMsg = document.getElementById('authStatusMsg');
-    const socialProviderBtns = document.querySelectorAll('.social-provider-btn');
-    const socialUsernameBox = document.getElementById('socialUsernameBox');
-    const socialProviderLabel = document.getElementById('socialProviderLabel');
-    const socialUsername = document.getElementById('socialUsername');
-    const btnSubmitSocial = document.getElementById('btnSubmitSocial');
-    let selectedSocialProvider = 'google';
+
+    let pendingSocialAuth = null;
 
     // ========================================================================
     // 1. MULTI-PART VIEW ROUTING (NO SINGLE LONG SCROLL)
@@ -470,12 +467,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (window.soundEngine) window.soundEngine.playSelect();
     }
 
-    function openAuthModal(noticeText = '', defaultTab = 'login') {
+    function openAuthModal(noticeText = '') {
         if (authStatusMsg) {
             authStatusMsg.textContent = noticeText;
             authStatusMsg.style.color = 'var(--accent)';
         }
-        switchAuthTab(defaultTab);
+        if (authPaneSocialMain) authPaneSocialMain.style.display = 'block';
+        if (authPaneUsernamePrompt) authPaneUsernamePrompt.style.display = 'none';
+        if (authPaneAdmin) authPaneAdmin.style.display = 'none';
         authModal.classList.add('open');
         if (window.soundEngine) window.soundEngine.playSelect();
     }
@@ -483,6 +482,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function closeAuthModal() {
         authModal.classList.remove('open');
         if (authStatusMsg) authStatusMsg.textContent = '';
+        pendingSocialAuth = null;
     }
 
     if (authModalClose) authModalClose.addEventListener('click', closeAuthModal);
@@ -490,149 +490,211 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target === authModal) closeAuthModal();
     });
 
-    function switchAuthTab(tab) {
-        [authTabLogin, authTabRegister].forEach(t => { if (t) t.classList.remove('active-auth-tab'); });
-        if (authPaneLogin) authPaneLogin.style.display = 'none';
-        if (authPaneRegister) authPaneRegister.style.display = 'none';
-        if (socialUsernameBox) socialUsernameBox.style.display = 'none';
-
-        if (tab === 'login') {
-            if (authTabLogin) authTabLogin.classList.add('active-auth-tab');
-            if (authPaneLogin) authPaneLogin.style.display = 'block';
-        } else if (tab === 'register') {
-            if (authTabRegister) authTabRegister.classList.add('active-auth-tab');
-            if (authPaneRegister) authPaneRegister.style.display = 'block';
-        }
+    // Toggle Admin Login Panel
+    if (btnToggleAdminLogin && authPaneAdmin) {
+        btnToggleAdminLogin.addEventListener('click', () => {
+            const isShown = authPaneAdmin.style.display === 'block';
+            authPaneAdmin.style.display = isShown ? 'none' : 'block';
+            if (!isShown && adminPasscodeInput) adminPasscodeInput.focus();
+        });
     }
 
-    if (authTabLogin) authTabLogin.addEventListener('click', () => switchAuthTab('login'));
-    if (authTabRegister) authTabRegister.addEventListener('click', () => switchAuthTab('register'));
+    // Submit Admin Master Passcode
+    if (adminPasscodeForm) {
+        adminPasscodeForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const passcode = adminPasscodeInput.value.trim();
+            if (!passcode) return;
 
-    loginForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const identifier = loginIdentifier.value.trim();
-        const password = loginPassword.value;
-        authStatusMsg.textContent = 'Authenticating...';
-        authStatusMsg.style.color = 'var(--link-color)';
+            authStatusMsg.textContent = 'Verifying administrator passcode...';
+            authStatusMsg.style.color = 'var(--link-color)';
 
-        try {
-            const res = await fetch('/api/auth/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ identifier, password })
-            });
-            const data = await res.json();
-            if (res.ok && data.success) {
-                authToken = data.token;
-                currentUser = data.user;
-                localStorage.setItem('auth_token', authToken);
-                authStatusMsg.textContent = `Clearance granted: Welcome ${currentUser.username}`;
-                authStatusMsg.style.color = '#2e7d32';
-                setTimeout(() => {
-                    closeAuthModal();
-                    updateUserUI();
-                    loadReactions();
-                    if (currentSelectedGame) loadGameFeedback(currentSelectedGame.id);
-                }, 600);
-            } else {
-                authStatusMsg.textContent = data.error || 'Authentication denied.';
+            try {
+                const res = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ identifier: 'admin', password: passcode })
+                });
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    authToken = data.token;
+                    currentUser = data.user;
+                    localStorage.setItem('auth_token', authToken);
+                    authStatusMsg.textContent = `Clearance Granted: Welcome Administrator.`;
+                    authStatusMsg.style.color = '#2e7d32';
+                    setTimeout(() => {
+                        closeAuthModal();
+                        updateUserUI();
+                        loadReactions();
+                        if (currentSelectedGame) loadGameFeedback(currentSelectedGame.id);
+                    }, 500);
+                } else {
+                    authStatusMsg.textContent = data.error || 'Access Denied: Invalid passcode.';
+                    authStatusMsg.style.color = 'var(--accent)';
+                }
+            } catch (err) {
+                authStatusMsg.textContent = 'Server connection error.';
                 authStatusMsg.style.color = 'var(--accent)';
             }
-        } catch (err) {
-            authStatusMsg.textContent = 'Server connection error.';
-            authStatusMsg.style.color = 'var(--accent)';
-        }
-    });
+        });
+    }
 
-    registerForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const username = regUsername.value.trim();
-        const email = regEmail.value.trim();
-        const password = regPassword.value;
-        authStatusMsg.textContent = 'Generating operator account...';
-        authStatusMsg.style.color = 'var(--link-color)';
-
-        try {
-            const res = await fetch('/api/auth/register', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, email, password })
-            });
-            const data = await res.json();
-            if (res.ok && data.success) {
-                authToken = data.token;
-                currentUser = data.user;
-                localStorage.setItem('auth_token', authToken);
-                authStatusMsg.textContent = `Account created! Welcome, ${currentUser.username}.`;
-                authStatusMsg.style.color = '#2e7d32';
-                setTimeout(() => {
-                    closeAuthModal();
-                    updateUserUI();
-                    loadReactions();
-                    if (currentSelectedGame) loadGameFeedback(currentSelectedGame.id);
-                }, 600);
-            } else {
-                authStatusMsg.textContent = data.error || 'Registration failed.';
-                authStatusMsg.style.color = 'var(--accent)';
-            }
-        } catch (err) {
-            authStatusMsg.textContent = 'Server connection error.';
-            authStatusMsg.style.color = 'var(--accent)';
-        }
-    });
-
-    socialProviderBtns.forEach(btn => {
+    // Single Sign-On (SSO) Provider Buttons (Google, GitHub, Apple, Facebook)
+    ssoBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-            selectedSocialProvider = btn.getAttribute('data-provider');
-            const names = { google: 'Google Account', apple: 'Apple ID', github: 'GitHub Account' };
-            socialProviderLabel.textContent = `LINKING ${names[selectedSocialProvider].toUpperCase()}`;
-            socialUsernameBox.style.display = 'block';
-            socialUsername.focus();
+            const provider = btn.getAttribute('data-provider') || 'google';
+            authStatusMsg.textContent = `Opening secure authorization window for ${provider.toUpperCase()}...`;
+            authStatusMsg.style.color = 'var(--link-color)';
+
+            // Open popup authorization dialog
+            const width = 480;
+            const height = 620;
+            const left = Math.max(0, (window.screen.width - width) / 2);
+            const top = Math.max(0, (window.screen.height - height) / 2);
+            const popupUrl = `/auth/oauth-dialog.html?provider=${encodeURIComponent(provider)}`;
+
+            const oauthWindow = window.open(
+                popupUrl,
+                'oauth_sso_window',
+                `width=${width},height=${height},top=${top},left=${left},status=no,toolbar=no,menubar=no`
+            );
+
+            if (!oauthWindow || oauthWindow.closed || typeof oauthWindow.closed === 'undefined') {
+                authStatusMsg.textContent = 'Popup window blocked by browser. Please allow popups or verify below.';
+                authStatusMsg.style.color = 'var(--accent)';
+            }
         });
     });
 
-    btnSubmitSocial.addEventListener('click', async () => {
-        const username = socialUsername.value.trim();
-        if (!username || username.length < 3) {
-            authStatusMsg.textContent = 'Please enter a call-sign of at least 3 characters.';
-            authStatusMsg.style.color = 'var(--accent)';
-            return;
-        }
+    // Listen for verified identity message from the OAuth Popup
+    window.addEventListener('message', async (e) => {
+        if (!e.data || e.data.type !== 'OAUTH_VERIFIED') return;
 
-        authStatusMsg.textContent = `Signing in via ${selectedSocialProvider.toUpperCase()}...`;
+        const { provider, email, name, providerId } = e.data;
+        authStatusMsg.textContent = `Verifying ${provider.toUpperCase()} profile with server...`;
         authStatusMsg.style.color = 'var(--link-color)';
 
         try {
-            const res = await fetch('/api/auth/social', {
+            // Check if user already exists
+            const res = await fetch('/api/auth/social-check', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    provider: selectedSocialProvider,
-                    username: username
-                })
+                body: JSON.stringify({ provider, email, name, providerId })
             });
             const data = await res.json();
-            if (res.ok && data.success) {
+
+            if (data.exists && data.token) {
+                // Existing account! Log in immediately
                 authToken = data.token;
                 currentUser = data.user;
                 localStorage.setItem('auth_token', authToken);
-                authStatusMsg.textContent = `Clearance verified via ${selectedSocialProvider.toUpperCase()}!`;
+                authStatusMsg.textContent = `Identity Verified: Welcome back, ${currentUser.username}!`;
                 authStatusMsg.style.color = '#2e7d32';
+
                 setTimeout(() => {
                     closeAuthModal();
                     updateUserUI();
                     loadReactions();
                     if (currentSelectedGame) loadGameFeedback(currentSelectedGame.id);
-                }, 600);
+                }, 500);
             } else {
-                authStatusMsg.textContent = data.error || 'Social sign-in rejected.';
-                authStatusMsg.style.color = 'var(--accent)';
+                // NEW USER: Ask user what they want their call-sign / username to be!
+                pendingSocialAuth = {
+                    provider: data.provider,
+                    email: data.email,
+                    providerId: data.providerId,
+                    avatar: null
+                };
+
+                // Switch view to Ask Username
+                authPaneSocialMain.style.display = 'none';
+                authPaneUsernamePrompt.style.display = 'block';
+                ssoVerifiedNotice.textContent = `IDENTITY VERIFIED VIA ${provider.toUpperCase()}!`;
+                ssoVerifiedEmail.textContent = email || 'Verified Social Profile';
+                ssoUsernameInput.value = data.suggestedUsername || '';
+                ssoUsernameInput.focus();
+                authStatusMsg.textContent = 'Account verified. Please choose your call-sign:';
+                authStatusMsg.style.color = 'var(--link-color)';
             }
         } catch (err) {
-            authStatusMsg.textContent = 'Server connection error.';
+            authStatusMsg.textContent = 'Authentication error during verification.';
             authStatusMsg.style.color = 'var(--accent)';
         }
     });
+
+    // Handle Confirm Username for new social user
+    if (btnConfirmUsername) {
+        btnConfirmUsername.addEventListener('click', async () => {
+            if (!pendingSocialAuth) {
+                openAuthModal('Session expired. Please select a provider again.');
+                return;
+            }
+
+            const chosenUsername = ssoUsernameInput.value.trim();
+            if (!chosenUsername || chosenUsername.length < 3) {
+                authStatusMsg.textContent = 'Username must be at least 3 characters.';
+                authStatusMsg.style.color = 'var(--accent)';
+                return;
+            }
+
+            authStatusMsg.textContent = 'Finalizing your operator account...';
+            authStatusMsg.style.color = 'var(--link-color)';
+
+            try {
+                const res = await fetch('/api/auth/social-complete', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        provider: pendingSocialAuth.provider,
+                        email: pendingSocialAuth.email,
+                        providerId: pendingSocialAuth.providerId,
+                        username: chosenUsername,
+                        avatar: pendingSocialAuth.avatar
+                    })
+                });
+
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    authToken = data.token;
+                    currentUser = data.user;
+                    localStorage.setItem('auth_token', authToken);
+                    authStatusMsg.textContent = `Account created! Welcome, ${currentUser.username}.`;
+                    authStatusMsg.style.color = '#2e7d32';
+
+                    setTimeout(() => {
+                        closeAuthModal();
+                        updateUserUI();
+                        loadReactions();
+                        if (currentSelectedGame) loadGameFeedback(currentSelectedGame.id);
+                    }, 500);
+                } else {
+                    authStatusMsg.textContent = data.error || 'Registration failed.';
+                    authStatusMsg.style.color = 'var(--accent)';
+                }
+            } catch (err) {
+                authStatusMsg.textContent = 'Server connection error.';
+                authStatusMsg.style.color = 'var(--accent)';
+            }
+        });
+
+        // Also allow Enter key inside ssoUsernameInput
+        if (ssoUsernameInput) {
+            ssoUsernameInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    btnConfirmUsername.click();
+                }
+            });
+        }
+    }
+
+    if (btnCancelSocial) {
+        btnCancelSocial.addEventListener('click', () => {
+            pendingSocialAuth = null;
+            authPaneUsernamePrompt.style.display = 'none';
+            authPaneSocialMain.style.display = 'block';
+            authStatusMsg.textContent = '';
+        });
+    }
 
     // ========================================================================
     // 4. GAMES ARCHIVE: 2D BANNER GALLERY & DEDICATED PER-GAME PAGES

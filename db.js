@@ -139,9 +139,9 @@ function verifyPassword(password, salt, storedHash) {
 }
 
 // User Operations
-function createUser({ username, email, password, role = 'user', provider = 'local', providerId = null }) {
+function createUser({ username, email, password, role = 'user', provider = 'local', providerId = null, avatar = null }) {
     // Check if username or email already exists
-    const existing = db.prepare('SELECT id, username, email FROM users WHERE username = ? OR (email = ? AND email IS NOT NULL)').get(username, email);
+    const existing = db.prepare('SELECT id, username, email FROM users WHERE username = ? COLLATE NOCASE OR (email = ? AND email IS NOT NULL COLLATE NOCASE)').get(username, email);
     if (existing) {
         if (existing.username.toLowerCase() === username.toLowerCase()) {
             throw new Error('This username is already taken. Please choose another.');
@@ -163,11 +163,21 @@ function createUser({ username, email, password, role = 'user', provider = 'loca
     const createdAt = new Date().toISOString();
 
     db.prepare(`
-        INSERT INTO users (id, username, email, password_hash, salt, role, provider, provider_id, created_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `).run(id, username, email || null, passwordHash, salt, role, provider, providerId, createdAt);
+        INSERT INTO users (id, username, email, password_hash, salt, role, provider, provider_id, avatar, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(id, username, email || null, passwordHash, salt, role, provider, providerId, avatar, createdAt);
 
     return getUserById(id);
+}
+
+function getUserByProviderId(provider, providerId) {
+    if (!provider || !providerId) return null;
+    return db.prepare('SELECT * FROM users WHERE provider = ? AND provider_id = ?').get(provider, providerId) || null;
+}
+
+function getUserByEmail(email) {
+    if (!email) return null;
+    return db.prepare('SELECT * FROM users WHERE email = ? COLLATE NOCASE').get(email) || null;
 }
 
 function getUserById(id) {
@@ -367,6 +377,8 @@ module.exports = {
     createUser,
     getUserById,
     getUserByUsernameOrEmail,
+    getUserByProviderId,
+    getUserByEmail,
     getAllUsers,
     deleteUser,
     createSession,

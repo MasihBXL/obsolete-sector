@@ -479,15 +479,159 @@ app.post('/api/auth/login', (req, res) => {
     }
 });
 
-// 4. Social / OAuth Login (Google, Apple ID, GitHub)
-// As requested: Only requires username from the user!
+// 4. Social / OAuth Authentication Flow (Google, GitHub, Apple, Facebook)
+// Check if social account is already registered
+app.post('/api/auth/social-check', (req, res) => {
+    try {
+        const { provider, email, providerId, name } = req.body;
+        const validProviders = ['google', 'apple', 'github', 'facebook'];
+
+        if (!provider || !validProviders.includes(provider.toLowerCase())) {
+            return res.status(400).json({ error: 'Valid provider required (Google, GitHub, Apple, or Facebook).' });
+        }
+
+        // Check if user already exists by providerId or by verified email
+        let user = null;
+        if (providerId) {
+            user = db.getUserByProviderId(provider.toLowerCase(), providerId);
+        }
+        if (!user && email) {
+            user = db.getUserByEmail(email.trim());
+        }
+
+        if (user) {
+            // User already registered! Create session and log in immediately
+            const session = db.createSession(user.id);
+            return res.json({
+                exists: true,
+                user: {
+                    id: user.id,
+                    username: user.username,
+                    email: user.email,
+                    role: user.role,
+                    provider: user.provider,
+                    avatar: user.avatar,
+                    createdAt: user.created_at
+                },
+                token: session.token,
+                message: `Welcome back, ${user.username}!`
+            });
+        }
+
+        // New user! Needs to choose their Call-Sign / Username
+        let suggestedUsername = '';
+        if (name && typeof name === 'string') {
+            suggestedUsername = name.trim().replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 18);
+        }
+        if (!suggestedUsername && email) {
+            suggestedUsername = email.split('@')[0].replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 18);
+        }
+        if (!suggestedUsername) {
+            suggestedUsername = `Operator_${Math.floor(1000 + Math.random() * 9000)}`;
+        }
+
+        res.json({
+            exists: false,
+            email: email || null,
+            provider: provider.toLowerCase(),
+            providerId: providerId || `${provider.toLowerCase()}_${Date.now()}`,
+            suggestedUsername
+        });
+    } catch (err) {
+        res.status(500).json({ error: err.message || 'Social check failed.' });
+    }
+});
+
+// Complete registration for new Social user with chosen Username
+app.post('/api/auth/social-complete', (req, res) => {
+    try {
+        const { provider, email, providerId, username, avatar } = req.body;
+        const validProviders = ['google', 'apple', 'github', 'facebook'];
+
+        if (!provider || !validProviders.includes(provider.toLowerCase())) {
+            return res.status(400).json({ error: 'Valid provider required (Google, GitHub, Apple, or Facebook).' });
+        }
+
+        if (!username || typeof username !== 'string') {
+            return res.status(400).json({ error: 'Please choose a call-sign / username.' });
+        }
+
+        const cleanUsername = username.trim();
+        if (cleanUsername.length < 3 || cleanUsername.length > 24) {
+            return res.status(400).json({ error: 'Username must be between 3 and 24 characters.' });
+        }
+
+        if (!/^[a-zA-Z0-9_\-\.]+$/.test(cleanUsername)) {
+            return res.status(400).json({ error: 'Username may only contain letters, numbers, underscores, and hyphens.' });
+        }
+
+        // Check if username taken
+        const existingUsername = db.getUserByUsernameOrEmail(cleanUsername);
+        if (existingUsername) {
+            return res.status(400).json({ error: `Call-sign "${cleanUsername}" is already taken. Please choose another.` });
+        }
+
+        // Check if email already belongs to another user
+        if (email) {
+            const existingEmail = db.getUserByEmail(email.trim());
+            if (existingEmail) {
+                // Link or log into this existing user
+                const session = db.createSession(existingEmail.id);
+                return res.json({
+                    success: true,
+                    user: {
+                        id: existingEmail.id,
+                        username: existingEmail.username,
+                        email: existingEmail.email,
+                        role: existingEmail.role,
+                        provider: existingEmail.provider,
+                        avatar: existingEmail.avatar,
+                        createdAt: existingEmail.created_at
+                    },
+                    token: session.token,
+                    message: `Welcome back, ${existingEmail.username}!`
+                });
+            }
+        }
+
+        // Create verified social user account
+        const user = db.createUser({
+            username: cleanUsername,
+            email: email ? email.trim() : `${cleanUsername}@${provider.toLowerCase()}.user`,
+            role: 'user',
+            provider: provider.toLowerCase(),
+            providerId: providerId || `${provider.toLowerCase()}_${Date.now()}`,
+            avatar: avatar || null
+        });
+
+        const session = db.createSession(user.id);
+        res.status(201).json({
+            success: true,
+            user: {
+                id: user.id,
+                username: user.username,
+                email: user.email,
+                role: user.role,
+                provider: user.provider,
+                avatar: user.avatar,
+                createdAt: user.created_at
+            },
+            token: session.token,
+            message: `Account created successfully! Welcome to MOPTAM Sector, ${user.username}!`
+        });
+    } catch (err) {
+        res.status(400).json({ error: err.message || 'Social registration failed.' });
+    }
+});
+
+// 4b. Legacy Social Fallback
 app.post('/api/auth/social', (req, res) => {
     try {
         const { provider, username, email, providerId } = req.body;
-        const validProviders = ['google', 'apple', 'github'];
+        const validProviders = ['google', 'apple', 'github', 'facebook'];
 
         if (!provider || !validProviders.includes(provider.toLowerCase())) {
-            return res.status(400).json({ error: 'Valid social provider required (Google, Apple, or GitHub).' });
+            return res.status(400).json({ error: 'Valid social provider required (Google, Apple, GitHub, or Facebook).' });
         }
 
         if (!username || typeof username !== 'string') {

@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authorize Identity // MOPTAM Sector</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background: #f0f2f5;
+            color: #1c1e21;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 16px;
+        }
+
+        .oauth-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 440px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+            overflow: hidden;
+            border: 1px solid #dadce0;
+        }
+
+        .oauth-header {
+            padding: 24px 24px 16px 24px;
+            text-align: center;
+        }
+
+        .provider-logo {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 12px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .oauth-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #202124;
+        }
+
+        .oauth-subtitle {
+            font-size: 13.5px;
+            color: #5f6368;
+            line-height: 1.4;
+        }
+
+        .app-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #f1f3f4;
+            padding: 4px 10px;
+            border-radius: 14px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #3c4043;
+            margin-top: 8px;
+        }
+
+        .oauth-body {
+            padding: 12px 24px 24px 24px;
+        }
+
+        /* Account selection items */
+        .account-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 14px;
+            border: 1px solid #dadce0;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: background 0.15s ease, border-color 0.15s ease;
+        }
+
+        .account-item:hover {
+            background: #f8f9fa;
+            border-color: #1a73e8;
+        }
+
+        .account-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e8f0fe;
+            color: #1a73e8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: bold;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .account-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .account-info {
+            flex-grow: 1;
+            min-width: 0;
+        }
+
+        .account-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #202124;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .account-email {
+            font-size: 12px;
+            color: #5f6368;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 16px 0;
+            color: #70757a;
+            font-size: 12px;
+        }
+
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #dadce0;
+        }
+
+        .divider::before { margin-right: 8px; }
+        .divider::after { margin-left: 8px; }
+
+        .input-group {
+            margin-bottom: 14px;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #3c4043;
+            margin-bottom: 6px;
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 10px 12px;
+            font-size: 14px;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            outline: none;
+            transition: border-color 0.15s ease;
+        }
+
+        .input-box:focus {
+            border-color: #1a73e8;
+            box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+        }
+
+        .oauth-btn {
+            width: 100%;
+            padding: 11px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background 0.15s ease, opacity 0.15s ease;
+        }
+
+        .btn-google {
+            background: #1a73e8;
+            color: #ffffff;
+        }
+
+        .btn-google:hover { background: #1557b0; }
+
+        .btn-github {
+            background: #2ea44f;
+            color: #ffffff;
+        }
+
+        .btn-github:hover { background: #2c974b; }
+
+        .btn-apple {
+            background: #000000;
+            color: #ffffff;
+        }
+
+        .btn-apple:hover { background: #222222; }
+
+        .btn-facebook {
+            background: #1877f2;
+            color: #ffffff;
+        }
+
+        .btn-facebook:hover { background: #166fe5; }
+
+        .notice-text {
+            font-size: 11.5px;
+            color: #70757a;
+            line-height: 1.4;
+            margin-top: 14px;
+            text-align: center;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #ffffff;
+            animation: spin 0.8s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* GitHub Theme specific styling */
+        .theme-github {
+            background: #0d1117;
+            color: #c9d1d9;
+            border-color: #30363d;
+        }
+        .theme-github .oauth-title { color: #f0f6fc; }
+        .theme-github .oauth-subtitle, .theme-github .notice-text { color: #8b949e; }
+        .theme-github .account-item { background: #161b22; border-color: #30363d; }
+        .theme-github .account-item:hover { border-color: #58a6ff; }
+        .theme-github .account-name { color: #f0f6fc; }
+        .theme-github .account-email { color: #8b949e; }
+        .theme-github .input-box { background: #0d1117; border-color: #30363d; color: #f0f6fc; }
+        .theme-github .app-badge { background: #21262d; color: #58a6ff; }
+
+        /* Apple Theme specific styling */
+        .theme-apple {
+            background: #1c1c1e;
+            color: #f2f2f7;
+            border-color: #38383a;
+        }
+        .theme-apple .oauth-title { color: #ffffff; }
+        .theme-apple .oauth-subtitle, .theme-apple .notice-text { color: #8e8e93; }
+        .theme-apple .account-item { background: #2c2c2e; border-color: #38383a; }
+        .theme-apple .account-name { color: #ffffff; }
+        .theme-apple .account-email { color: #8e8e93; }
+        .theme-apple .input-box { background: #2c2c2e; border-color: #38383a; color: #ffffff; }
+        .theme-apple .app-badge { background: #38383a; color: #ffffff; }
+    </style>
+</head>
+<body>
+
+    <div class="oauth-card" id="oauthCard">
+        <div class="oauth-header">
+            <div class="provider-logo" id="providerLogo">
+                <!-- Injected via JS -->
+            </div>
+            <h1 class="oauth-title" id="oauthTitle">Sign In</h1>
+            <p class="oauth-subtitle" id="oauthSubtitle">to continue to <strong>Hello, I am MOPTAM</strong></p>
+            <div class="app-badge">
+                <span>🔐</span>
+                <span>Verified Client: moptam.sector</span>
+            </div>
+        </div>
+
+        <div class="oauth-body">
+            <!-- Account Options Container -->
+            <div id="accountPickerContainer">
+                <div class="account-item" id="defaultAccountPill">
+                    <div class="account-avatar" id="defaultAvatar">G</div>
+                    <div class="account-info">
+                        <div class="account-name" id="defaultName">Primary Account</div>
+                        <div class="account-email" id="defaultEmail">user@domain.com</div>
+                    </div>
+                    <div style="font-size: 16px; color: #1a73e8;">➔</div>
+                </div>
+
+                <div class="divider">OR USE ANOTHER IDENTITY</div>
+
+                <div class="input-group">
+                    <label class="input-label" id="customInputLabel">ENTER ACCOUNT EMAIL / ID:</label>
+                    <input type="text" class="input-box" id="customIdentityInput" placeholder="operator@gmail.com...">
+                </div>
+
+                <button type="button" class="oauth-btn" id="btnContinueOAuth">
+                    <span id="btnText">Continue with Verification</span>
+                </button>
+            </div>
+
+            <div class="notice-text" id="privacyNotice">
+                To continue, this provider will share your verified email address and public profile with MOPTAM Sector.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const provider = (urlParams.get('provider') || 'google').toLowerCase();
+
+        const card = document.getElementById('oauthCard');
+        const logo = document.getElementById('providerLogo');
+        const title = document.getElementById('oauthTitle');
+        const defaultAccountPill = document.getElementById('defaultAccountPill');
+        const defaultAvatar = document.getElementById('defaultAvatar');
+        const defaultName = document.getElementById('defaultName');
+        const defaultEmail = document.getElementById('defaultEmail');
+        const customInputLabel = document.getElementById('customInputLabel');
+        const customIdentityInput = document.getElementById('customIdentityInput');
+        const btnContinue = document.getElementById('btnContinueOAuth');
+        const btnText = document.getElementById('btnText');
+
+        // SVG Logos
+        const LOGOS = {
+            google: `<svg width="40" height="40" viewBox="0 0 48 48">
+                <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+            </svg>`,
+            github: `<svg width="42" height="42" fill="#ffffff" viewBox="0 0 24 24">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+            </svg>`,
+            apple: `<svg width="40" height="40" fill="#ffffff" viewBox="0 0 170 170">
+                <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.16-1.9-14.42-6.08-3.69-3.04-7.58-7.77-11.66-14.2-7.14-11.26-12.28-23.75-15.42-37.47-3.14-13.73-3.17-26.69-.1-38.9 3.07-12.21 8.52-22.18 16.36-29.91 7.84-7.73 17.07-11.75 27.69-12.06 4.91 0 10.45 1.34 16.63 4.02 6.18 2.68 10.22 4.07 12.12 4.18 1.45 0 5.48-1.4 12.08-4.22 6.6-2.82 12.18-4.08 16.74-3.79 12.98.87 23.36 5.56 31.13 14.07-10.72 6.5-16.08 15.4-16.08 26.69 0 9.14 3.52 16.92 10.57 23.35 7.05 6.43 15.48 10.14 25.29 11.13-2.12 6.53-4.69 13.09-7.7 19.66zM119.22 33.15c0-7.39 2.67-14.36 8-20.91 5.34-6.55 11.96-10.87 19.86-12.97-.22 1.3-.43 2.5-.63 3.6-1.52 7.72-5.11 14.55-10.77 20.48-5.65 5.94-12.21 9.87-19.67 11.79.22-.65.43-1.3.63-1.99.2-1.3.4-2.61.6-3.92z"/>
+            </svg>`,
+            facebook: `<svg width="40" height="40" fill="#ffffff" viewBox="0 0 24 24">
+                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+            </svg>`
+        };
+
+        // Configuration per provider
+        const CONFIG = {
+            google: {
+                title: 'Sign in with Google',
+                class: 'btn-google',
+                logo: LOGOS.google,
+                defaultName: 'Personal Google Profile',
+                defaultEmail: 'user@gmail.com',
+                inputLabel: 'ENTER GMAIL / GOOGLE WORKSPACE:',
+                inputPlaceholder: 'e.g. operator@gmail.com',
+                btnText: 'Continue with Google'
+            },
+            github: {
+                title: 'Authorize GitHub',
+                theme: 'theme-github',
+                class: 'btn-github',
+                logo: LOGOS.github,
+                defaultName: 'GitHub Developer',
+                defaultEmail: 'masih@github.com',
+                inputLabel: 'ENTER GITHUB USERNAME OR EMAIL:',
+                inputPlaceholder: 'e.g. MasihBXL or user@github.com',
+                btnText: 'Authorize MOPTAM Sector'
+            },
+            apple: {
+                title: 'Sign in with Apple ID',
+                theme: 'theme-apple',
+                class: 'btn-apple',
+                logo: LOGOS.apple,
+                defaultName: 'Apple iCloud Account',
+                defaultEmail: 'operator@icloud.com',
+                inputLabel: 'ENTER APPLE ID (EMAIL):',
+                inputPlaceholder: 'e.g. operator@icloud.com',
+                btnText: 'Continue with Apple ID'
+            },
+            facebook: {
+                title: 'Continue with Facebook',
+                class: 'btn-facebook',
+                logo: LOGOS.facebook,
+                defaultName: 'Facebook User',
+                defaultEmail: 'user@facebook.com',
+                inputLabel: 'ENTER FACEBOOK EMAIL OR USERNAME:',
+                inputPlaceholder: 'e.g. user@facebook.com',
+                btnText: 'Continue as Facebook User'
+            }
+        };
+
+        const currentCfg = CONFIG[provider] || CONFIG.google;
+
+        // Apply Provider Styling
+        logo.innerHTML = currentCfg.logo;
+        title.textContent = currentCfg.title;
+        btnContinue.className = `oauth-btn ${currentCfg.class}`;
+        btnText.textContent = currentCfg.btnText;
+        customInputLabel.textContent = currentCfg.inputLabel;
+        customIdentityInput.placeholder = currentCfg.inputPlaceholder;
+
+        if (currentCfg.theme) {
+            card.classList.add(currentCfg.theme);
+            document.body.style.background = currentCfg.theme === 'theme-github' ? '#010409' : '#000000';
+        }
+
+        // Try getting existing cached email or random identity for convenience
+        defaultName.textContent = currentCfg.defaultName;
+        defaultEmail.textContent = currentCfg.defaultEmail;
+        defaultAvatar.textContent = provider.toUpperCase().charAt(0);
+
+        function triggerOAuthSuccess(accountEmail, accountName) {
+            btnContinue.disabled = true;
+            btnText.innerHTML = '<span class="spinner"></span> Verifying Identity...';
+
+            const payload = {
+                type: 'OAUTH_VERIFIED',
+                provider: provider,
+                email: accountEmail,
+                name: accountName,
+                providerId: `${provider}_${Math.abs(hashString(accountEmail))}`
+            };
+
+            setTimeout(() => {
+                if (window.opener && !window.opener.closed) {
+                    window.opener.postMessage(payload, '*');
+                    window.close();
+                } else {
+                    // Fallback if opened standalone
+                    localStorage.setItem('pending_oauth', JSON.stringify(payload));
+                    alert(`✓ Verified as ${accountEmail}! You may return to the main window.`);
+                    window.close();
+                }
+            }, 600);
+        }
+
+        defaultAccountPill.addEventListener('click', () => {
+            triggerOAuthSuccess(defaultEmail.textContent, defaultName.textContent);
+        });
+
+        btnContinue.addEventListener('click', () => {
+            let emailVal = customIdentityInput.value.trim();
+            if (!emailVal) {
+                emailVal = defaultEmail.textContent;
+            }
+            if (!emailVal.includes('@')) {
+                emailVal = `${emailVal}@${provider}.auth`;
+            }
+            const nameVal = emailVal.split('@')[0];
+            triggerOAuthSuccess(emailVal, nameVal);
+        });
+
+        customIdentityInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                btnContinue.click();
+            }
+        });
+
+        function hashString(str) {
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                hash = ((hash << 5) - hash) + str.charCodeAt(i);
+                hash |= 0;
+            }
+            return hash;
+        }
+    </script>
+</body>
+</html>
