@@ -532,8 +532,8 @@
 }
 
 body {
-    background: var(--xp-bliss-grad);
-    background-attachment: fixed;
+    background: #184b90 url('/assets/images/bliss.jpg') no-repeat center center fixed;
+    background-size: cover;
     color: var(--text-primary);
     font-family: var(--font-mono);
     font-size: 13.5px;
@@ -542,6 +542,25 @@ body {
     padding-bottom: 44px;
     position: relative;
     overflow-x: hidden;
+}
+
+html[data-theme="win98"] body {
+    background: #008080 !important;
+}
+html[data-theme="green"] body {
+    background: #030d05 !important;
+}
+html[data-theme="amber"] body {
+    background: #0a0400 !important;
+}
+html[data-theme="blood"] body {
+    background: #0c0101 !important;
+}
+html[data-theme="backrooms"] body {
+    background: #3c382a !important;
+}
+html[data-theme="dark"] body {
+    background: #000000 !important;
 }
 
 /* Base Pixel Button */
@@ -601,11 +620,9 @@ body {
 
 .banner {
     flex: 1;
-    min-width: 30px;
-    background-color: var(--banner-bg);
-    background-image: var(--banner-dot);
-    background-size: 8px 8px;
-    opacity: 0.75;
+    min-width: 20px;
+    background: transparent !important;
+    opacity: 1;
 }
 
 .doc {
@@ -1486,27 +1503,27 @@ body {
 }
 
 /* ==========================================================================
-   HOMEPAGE: HERO INTRO & BIG NAVIGATION CARDS (WINDOWS XP LUNA STYLING)
+   HOMEPAGE: HERO INTRO & AUTHENTIC WINDOWS XP EXPLORER TASKS (2003-2005 LUNA)
+   Pure Windows XP Luna design: NO modern colored top lines, authentic dialogs
    ========================================================================== */
 .home-hero-box {
-    background: linear-gradient(135deg, #eef5fe 0%, #d8e8fc 50%, #c8defa 100%);
-    border: 2px solid #7f9db9;
-    border-top: 4px solid #0055ea;
-    padding: 24px;
+    background: #ece9d8;
+    border: 2px solid;
+    border-color: #ffffff #aca899 #aca899 #ffffff;
+    padding: 20px 22px;
     margin-bottom: 24px;
     position: relative;
-    box-shadow: inset 1px 1px 0 #ffffff, 2px 2px 8px rgba(0, 50, 150, 0.08);
-    border-radius: 4px;
+    box-shadow: inset 1px 1px 0 #ffffff, 1px 1px 2px rgba(0, 0, 0, 0.15);
+    border-radius: 2px;
 }
 
 .hero-moptam-name {
     font-family: var(--font-title);
-    font-size: 42px;
+    font-size: 38px;
     line-height: 1.1;
-    color: #0c327d;
-    margin: 0 0 10px 0;
+    color: #003399;
+    margin: 0 0 8px 0;
     text-transform: uppercase;
-    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 [data-theme="win98"] .hero-moptam-name {
@@ -1514,29 +1531,29 @@ body {
 }
 
 .hero-moptam-tagline {
-    font-size: 14.5px;
-    line-height: 1.65;
-    color: #202428;
-    margin-bottom: 16px;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: #111111;
+    margin-bottom: 14px;
 }
 
 .hero-stats-strip {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    padding-top: 14px;
-    border-top: 1px solid #b6d2f3;
-    font-size: 11.5px;
+    padding-top: 12px;
+    border-top: 1px solid #d4d0c8;
+    font-size: 11px;
 }
 
 .hero-stat-pill {
     background: #ffffff;
     border: 1px solid #7f9db9;
-    padding: 4px 10px;
+    padding: 3px 8px;
     font-weight: bold;
     color: #003399;
-    border-radius: 3px;
-    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
+    border-radius: 2px;
+    box-shadow: inset 1px 1px 1px rgba(0,0,0,0.06);
 }
 
 /* Big Navigation Hub Grid */
@@ -1547,96 +1564,145 @@ body {
     margin-bottom: 28px;
 }
 
-.home-nav-card {
-    background: #ffffff;
-    border: 2px solid #7f9db9;
-    border-radius: 4px;
+/* Authentic Windows XP Explorer Task Box (Luna Royal Blue + Ice Periwinkle) */
+.xp-task-card {
+    background: #d6dff7;
+    border: 1px solid #7f9db9;
+    border-radius: 4px 4px 0 0;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
-    text-decoration: none;
-    color: inherit;
     cursor: pointer;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.15s ease, transform 0.12s ease;
     overflow: hidden;
-    position: relative;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.home-nav-card:hover {
-    border-color: #0055ea;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 14px rgba(0, 85, 234, 0.18);
+.xp-task-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 2px 3px 8px rgba(0, 50, 150, 0.22);
 }
 
-/* Distinctive XP category banners */
-.home-nav-card:nth-child(1) { border-top: 4px solid #0055ea; }
-.home-nav-card:nth-child(2) { border-top: 4px solid #7b1fa2; }
-.home-nav-card:nth-child(3) { border-top: 4px solid #00838f; }
-.home-nav-card:nth-child(4) { border-top: 4px solid #d35400; }
-
-.home-nav-card-inner-pad {
-    padding: 16px 18px;
+.xp-task-card-header {
+    background: linear-gradient(90deg, #225ad7 0%, #397ff4 50%, #6899f0 100%);
+    color: #ffffff;
+    padding: 6px 12px;
     display: flex;
-    flex-direction: column;
-    flex-grow: 1;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+    border-bottom: 1px solid #1946a6;
 }
 
-.home-nav-card-icon {
-    font-size: 30px;
-    margin-bottom: 6px;
-    margin-left: 18px;
-    margin-top: 14px;
+.xp-task-card:hover .xp-task-card-header {
+    background: linear-gradient(90deg, #2b67eb 0%, #468dfa 50%, #7db0f8 100%);
 }
 
-.home-nav-card-title {
-    font-family: var(--font-title);
-    font-size: 26px;
-    color: #0c327d;
-    margin: 0 18px 6px 18px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-[data-theme="win98"] .home-nav-card-title {
-    font-size: 14px;
-}
-
-.home-nav-card-desc {
-    font-size: 12.5px;
-    color: #444c56;
-    line-height: 1.5;
-    margin: 0 18px 14px 18px;
-    flex-grow: 1;
-}
-
-.home-nav-card-btn {
+.xp-task-card-title-group {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    font-weight: bold;
-    font-size: 12px;
-    color: #003399;
-    background: #f0f4fa;
-    border-top: 1px solid #d8e4f4;
-    padding: 10px 18px;
-    transition: background 0.15s ease, color 0.15s ease;
+    gap: 8px;
 }
 
-.home-nav-card:hover .home-nav-card-btn {
-    background: #0055ea;
+.xp-task-card-title {
+    font-family: var(--font-title);
+    font-size: 20px;
     color: #ffffff;
+    letter-spacing: 0.5px;
+    text-shadow: 1px 1px 1px #001f5c;
+}
+
+[data-theme="win98"] .xp-task-card-title {
+    font-size: 11px;
+}
+
+.xp-task-chevron {
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    background: #ffffff;
+    color: #225ad7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+    font-weight: bold;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+.xp-task-card-body {
+    background: #d6dff7;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: space-between;
+}
+
+.xp-task-card-desc {
+    font-size: 12px;
+    color: #0c2045;
+    line-height: 1.5;
+    margin-bottom: 14px;
+}
+
+.xp-task-card-action {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.xp-btn-action {
+    background: linear-gradient(180deg, #ffffff 0%, #ece9d8 20%, #d4d0c8 85%, #b8b4a8 100%) !important;
+    border: 1px solid #003c74 !important;
+    color: #000000 !important;
+    font-size: 11px !important;
+    font-weight: bold !important;
+    padding: 5px 12px !important;
+    border-radius: 3px !important;
+    box-shadow: inset 0 1px 0 #ffffff, 1px 1px 2px rgba(0,0,0,0.15) !important;
+}
+
+.xp-task-card:hover .xp-btn-action {
+    background: linear-gradient(180deg, #fff7e6 0%, #fedc9c 15%, #fec467 85%, #fca731 100%) !important;
+    border-color: #ff9900 !important;
+    color: #000000 !important;
 }
 
 /* Latest Update Highlight on Homepage */
 .latest-update-card {
-    background: #ffffed;
-    border: 2px solid #d4cf96;
-    border-left: 6px solid #0055ea;
-    padding: 18px 22px;
+    background: #ffffe1;
+    border: 1px solid #aca899;
+    border-left: 5px solid #0055ea;
+    padding: 16px 20px;
     margin-bottom: 24px;
-    border-radius: 4px;
-    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.06);
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.latest-update-badge {
+    background: #0055ea;
+    color: #ffffff;
+    font-size: 10px;
+    padding: 2px 7px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    border-radius: 2px;
+}
+
+.latest-update-title {
+    font-family: var(--font-title);
+    font-size: 22px;
+    color: #003399;
+    margin: 0 0 6px 0;
+}
+
+[data-theme="win98"] .latest-update-title {
+    font-size: 13px;
+}
+
+.latest-update-excerpt {
+    font-size: 12.5px;
+    color: #222222;
+    line-height: 1.55;
+    margin-bottom: 10px;
 }
 
 .latest-update-header {
