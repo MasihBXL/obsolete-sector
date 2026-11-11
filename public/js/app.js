@@ -167,21 +167,33 @@ document.addEventListener('DOMContentLoaded', () => {
     const playModalClose = document.getElementById('playModalClose');
     const playIframe = document.getElementById('playIframe');
 
-    // Auth Modal Elements (Single Sign-On & Identity Verification)
+    // Auth Modal Elements (Windows XP Luna Authentication & Tabs)
     const authModal = document.getElementById('authModal');
     const authModalClose = document.getElementById('authModalClose');
-    const authPaneSocialMain = document.getElementById('authPaneSocialMain');
+    const authTabSocial = document.getElementById('authTabSocial');
+    const authTabLogin = document.getElementById('authTabLogin');
+    const authTabRegister = document.getElementById('authTabRegister');
+    const authTabAdmin = document.getElementById('authTabAdmin');
+    const authPaneSocial = document.getElementById('authPaneSocial');
+    const authPaneLogin = document.getElementById('authPaneLogin');
+    const authPaneRegister = document.getElementById('authPaneRegister');
+    const authPaneAdmin = document.getElementById('authPaneAdmin');
     const authPaneUsernamePrompt = document.getElementById('authPaneUsernamePrompt');
+    const loginForm = document.getElementById('loginForm');
+    const loginIdentifier = document.getElementById('loginIdentifier');
+    const loginPassword = document.getElementById('loginPassword');
+    const registerForm = document.getElementById('registerForm');
+    const regUsername = document.getElementById('regUsername');
+    const regEmail = document.getElementById('regEmail');
+    const regPassword = document.getElementById('regPassword');
+    const adminPasscodeForm = document.getElementById('adminPasscodeForm');
+    const adminPasscodeInput = document.getElementById('adminPasscodeInput');
     const ssoVerifiedNotice = document.getElementById('ssoVerifiedNotice');
     const ssoVerifiedEmail = document.getElementById('ssoVerifiedEmail');
     const ssoUsernameInput = document.getElementById('ssoUsernameInput');
     const btnConfirmUsername = document.getElementById('btnConfirmUsername');
     const btnCancelSocial = document.getElementById('btnCancelSocial');
     const ssoBtns = document.querySelectorAll('.sso-btn');
-    const btnToggleAdminLogin = document.getElementById('btnToggleAdminLogin');
-    const authPaneAdmin = document.getElementById('authPaneAdmin');
-    const adminPasscodeForm = document.getElementById('adminPasscodeForm');
-    const adminPasscodeInput = document.getElementById('adminPasscodeInput');
     const authStatusMsg = document.getElementById('authStatusMsg');
 
     let pendingSocialAuth = null;
@@ -467,14 +479,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (window.soundEngine) window.soundEngine.playSelect();
     }
 
-    function openAuthModal(noticeText = '') {
+    function openAuthModal(noticeText = '', defaultTab = 'social') {
         if (authStatusMsg) {
             authStatusMsg.textContent = noticeText;
             authStatusMsg.style.color = 'var(--accent)';
         }
-        if (authPaneSocialMain) authPaneSocialMain.style.display = 'block';
-        if (authPaneUsernamePrompt) authPaneUsernamePrompt.style.display = 'none';
-        if (authPaneAdmin) authPaneAdmin.style.display = 'none';
+        switchAuthTab(defaultTab);
         authModal.classList.add('open');
         if (window.soundEngine) window.soundEngine.playSelect();
     }
@@ -490,12 +500,115 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target === authModal) closeAuthModal();
     });
 
-    // Toggle Admin Login Panel
-    if (btnToggleAdminLogin && authPaneAdmin) {
-        btnToggleAdminLogin.addEventListener('click', () => {
-            const isShown = authPaneAdmin.style.display === 'block';
-            authPaneAdmin.style.display = isShown ? 'none' : 'block';
-            if (!isShown && adminPasscodeInput) adminPasscodeInput.focus();
+    function switchAuthTab(tab) {
+        [authTabSocial, authTabLogin, authTabRegister, authTabAdmin].forEach(t => {
+            if (t) t.classList.remove('active-auth-tab');
+        });
+        if (authPaneSocial) authPaneSocial.style.display = 'none';
+        if (authPaneLogin) authPaneLogin.style.display = 'none';
+        if (authPaneRegister) authPaneRegister.style.display = 'none';
+        if (authPaneAdmin) authPaneAdmin.style.display = 'none';
+        if (authPaneUsernamePrompt) authPaneUsernamePrompt.style.display = 'none';
+
+        if (tab === 'social') {
+            if (authTabSocial) authTabSocial.classList.add('active-auth-tab');
+            if (authPaneSocial) authPaneSocial.style.display = 'block';
+        } else if (tab === 'login') {
+            if (authTabLogin) authTabLogin.classList.add('active-auth-tab');
+            if (authPaneLogin) authPaneLogin.style.display = 'block';
+            if (loginIdentifier) loginIdentifier.focus();
+        } else if (tab === 'register') {
+            if (authTabRegister) authTabRegister.classList.add('active-auth-tab');
+            if (authPaneRegister) authPaneRegister.style.display = 'block';
+            if (regUsername) regUsername.focus();
+        } else if (tab === 'admin') {
+            if (authTabAdmin) authTabAdmin.classList.add('active-auth-tab');
+            if (authPaneAdmin) authPaneAdmin.style.display = 'block';
+            if (adminPasscodeInput) adminPasscodeInput.focus();
+        }
+    }
+
+    if (authTabSocial) authTabSocial.addEventListener('click', () => switchAuthTab('social'));
+    if (authTabLogin) authTabLogin.addEventListener('click', () => switchAuthTab('login'));
+    if (authTabRegister) authTabRegister.addEventListener('click', () => switchAuthTab('register'));
+    if (authTabAdmin) authTabAdmin.addEventListener('click', () => switchAuthTab('admin'));
+
+    // Manual Sign In Form Submission
+    if (loginForm) {
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const identifier = loginIdentifier.value.trim();
+            const password = loginPassword.value;
+            authStatusMsg.textContent = 'Authenticating credentials...';
+            authStatusMsg.style.color = 'var(--link-color)';
+
+            try {
+                const res = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ identifier, password })
+                });
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    authToken = data.token;
+                    currentUser = data.user;
+                    localStorage.setItem('auth_token', authToken);
+                    authStatusMsg.textContent = `Clearance granted: Welcome ${currentUser.username}!`;
+                    authStatusMsg.style.color = '#2e7d32';
+                    setTimeout(() => {
+                        closeAuthModal();
+                        updateUserUI();
+                        loadReactions();
+                        if (currentSelectedGame) loadGameFeedback(currentSelectedGame.id);
+                    }, 500);
+                } else {
+                    authStatusMsg.textContent = data.error || 'Authentication denied: Invalid credentials.';
+                    authStatusMsg.style.color = 'var(--accent)';
+                }
+            } catch (err) {
+                authStatusMsg.textContent = 'Server connection error.';
+                authStatusMsg.style.color = 'var(--accent)';
+            }
+        });
+    }
+
+    // Manual Registration Form Submission
+    if (registerForm) {
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = regUsername.value.trim();
+            const email = regEmail.value.trim();
+            const password = regPassword.value;
+            authStatusMsg.textContent = 'Generating operator account...';
+            authStatusMsg.style.color = 'var(--link-color)';
+
+            try {
+                const res = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, email, password })
+                });
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    authToken = data.token;
+                    currentUser = data.user;
+                    localStorage.setItem('auth_token', authToken);
+                    authStatusMsg.textContent = `Account created! Welcome, ${currentUser.username}.`;
+                    authStatusMsg.style.color = '#2e7d32';
+                    setTimeout(() => {
+                        closeAuthModal();
+                        updateUserUI();
+                        loadReactions();
+                        if (currentSelectedGame) loadGameFeedback(currentSelectedGame.id);
+                    }, 500);
+                } else {
+                    authStatusMsg.textContent = data.error || 'Registration failed.';
+                    authStatusMsg.style.color = 'var(--accent)';
+                }
+            } catch (err) {
+                authStatusMsg.textContent = 'Server connection error.';
+                authStatusMsg.style.color = 'var(--accent)';
+            }
         });
     }
 
@@ -607,7 +720,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
 
                 // Switch view to Ask Username
-                authPaneSocialMain.style.display = 'none';
+                if (authPaneSocial) authPaneSocial.style.display = 'none';
+                if (authPaneLogin) authPaneLogin.style.display = 'none';
+                if (authPaneRegister) authPaneRegister.style.display = 'none';
+                if (authPaneAdmin) authPaneAdmin.style.display = 'none';
                 authPaneUsernamePrompt.style.display = 'block';
                 ssoVerifiedNotice.textContent = `IDENTITY VERIFIED VIA ${provider.toUpperCase()}!`;
                 ssoVerifiedEmail.textContent = email || 'Verified Social Profile';
@@ -638,6 +754,63 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             authStatusMsg.textContent = 'Finalizing your operator account...';
+            authStatusMsg.style.color = 'var(--link-color)';
+
+            try {
+                const res = await fetch('/api/auth/social-complete', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        provider: pendingSocialAuth.provider,
+                        email: pendingSocialAuth.email,
+                        providerId: pendingSocialAuth.providerId,
+                        username: chosenUsername,
+                        avatar: pendingSocialAuth.avatar
+                    })
+                });
+
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    authToken = data.token;
+                    currentUser = data.user;
+                    localStorage.setItem('auth_token', authToken);
+                    authStatusMsg.textContent = `Account created! Welcome, ${currentUser.username}.`;
+                    authStatusMsg.style.color = '#2e7d32';
+
+                    setTimeout(() => {
+                        closeAuthModal();
+                        updateUserUI();
+                        loadReactions();
+                        if (currentSelectedGame) loadGameFeedback(currentSelectedGame.id);
+                    }, 500);
+                } else {
+                    authStatusMsg.textContent = data.error || 'Registration failed.';
+                    authStatusMsg.style.color = 'var(--accent)';
+                }
+            } catch (err) {
+                authStatusMsg.textContent = 'Server connection error.';
+                authStatusMsg.style.color = 'var(--accent)';
+            }
+        });
+
+        // Also allow Enter key inside ssoUsernameInput
+        if (ssoUsernameInput) {
+            ssoUsernameInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    btnConfirmUsername.click();
+                }
+            });
+        }
+    }
+
+    if (btnCancelSocial) {
+        btnCancelSocial.addEventListener('click', () => {
+            pendingSocialAuth = null;
+            authPaneUsernamePrompt.style.display = 'none';
+            switchAuthTab('social');
+            authStatusMsg.textContent = '';
+        });
+    }
             authStatusMsg.style.color = 'var(--link-color)';
 
             try {
