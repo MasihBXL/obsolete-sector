@@ -52,6 +52,16 @@
                         </div>
                     </div>
 
+                    <!-- Windows XP Explorer Address Bar & Navigation Toolbar -->
+                    <div class="xp-address-bar">
+                        <span class="xp-address-label">Address</span>
+                        <div class="xp-address-input-box">
+                            <span>📁</span>
+                            <span id="xpAddressText" style="color: #003399;">C:\Documents and Settings\MOPTAM\Creative_Hub\home.htm</span>
+                        </div>
+                        <button class="xp-go-btn" id="xpGoBtn">➔ [Go]</button>
+                    </div>
+
                     <!-- Top Navigation Bar (Multi-Part View Routing) -->
                     <div class="footer_top">
                         <div class="footertext">
@@ -190,150 +200,207 @@
                     </div>
 
                     <!-- ==========================================================================
-                         PART 2: GAMES ARCHIVE - FREE DOWNLOADS, STEAM & PER-GAME FEEDBACK
+                         PART 2: GAMES ARCHIVE - 2D BANNER GALLERY & DEDICATED GAME PAGES
                          ========================================================================== -->
                     <div id="view-games" class="site-view">
-                        <div class="page-header-box">
-                            <h2 class="page-main-title"><span>■</span> GAMES ARCHIVE</h2>
-                            <p class="page-subtitle">
-                                Standalone free indie games, Steam commercial releases, community reviews, suggestions, and bug reports.
-                            </p>
-                        </div>
-
-                        <!-- Filter Controls -->
-                        <div class="lr" style="margin-bottom: 14px;">
-                            <span style="font-size: 12px; font-weight: bold; color: var(--link-color);">FILTER BY TYPE:</span>
-                            <div class="lr-actions">
-                                <button class="btn-pixel filter-btn active" data-filter="ALL">ALL GAMES</button>
-                                <button class="btn-pixel filter-btn" data-filter="FREE">FREE DOWNLOADS</button>
-                                <button class="btn-pixel filter-btn" data-filter="PAID">STEAM RELEASES</button>
-                                <button class="btn-pixel filter-btn" data-filter="PSYCHOLOGICAL">PSYCH</button>
-                                <button class="btn-pixel filter-btn" data-filter="ANALOG">ANALOG TECH</button>
-                                <button class="btn-pixel filter-btn" data-filter="SURVIVAL">SURVIVAL</button>
+                        
+                        <!-- VIEW 2A: GAMES GALLERY VIEW (2D BANNERS) -->
+                        <div id="gamesGalleryView">
+                            <div class="page-header-box">
+                                <h2 class="page-main-title"><span>■</span> GAMES ARCHIVE // 2D BANNER GALLERY</h2>
+                                <p class="page-subtitle">
+                                    Visual showcase of standalone indie games and Steam commercial releases. Click any game banner to open its dedicated archive page.
+                                </p>
                             </div>
+
+                            <!-- Filter Controls -->
+                            <div class="lr" style="margin-bottom: 16px;">
+                                <span style="font-size: 12px; font-weight: bold; color: var(--link-color);">FILTER BY TYPE:</span>
+                                <div class="lr-actions">
+                                    <button class="btn-pixel filter-btn active" data-filter="ALL">ALL GAMES (4)</button>
+                                    <button class="btn-pixel filter-btn" data-filter="FREE">FREE DOWNLOADS</button>
+                                    <button class="btn-pixel filter-btn" data-filter="PAID">STEAM RELEASES</button>
+                                    <button class="btn-pixel filter-btn" data-filter="PSYCHOLOGICAL">PSYCH</button>
+                                    <button class="btn-pixel filter-btn" data-filter="ANALOG">ANALOG TECH</button>
+                                    <button class="btn-pixel filter-btn" data-filter="SURVIVAL">SURVIVAL</button>
+                                </div>
+                            </div>
+
+                            <!-- 2D Banner Cards Gallery Grid -->
+                            <div id="gamesGalleryGrid" class="games-gallery-grid"></div>
                         </div>
 
-                        <!-- Split View CRT Monitor & Active Game Box -->
-                        <div class="catalogue">
-                            <div class="cataloguetop">
+                        <!-- VIEW 2B: INDIVIDUAL DEDICATED GAME PAGE -->
+                        <div id="gameDetailPage" class="game-dedicated-page" style="display: none;">
+                            
+                            <!-- Breadcrumb Navigation Bar -->
+                            <div class="game-page-breadcrumbs">
+                                <button type="button" id="btnBackToGamesGallery" class="btn-pixel" style="font-size: 11px;">
+                                    &larr; BACK TO GAMES GALLERY
+                                </button>
+                                <span>/</span>
+                                <span style="color: var(--text-muted);">GAMES ARCHIVE</span>
+                                <span>/</span>
+                                <strong id="gameBreadcrumbTitle" style="color: var(--link-color);">CHAMBER PROTOCOL</strong>
+                            </div>
+
+                            <!-- Dedicated Game Hero Banner -->
+                            <div class="game-page-hero-banner">
+                                <img id="gameDetailHeroImg" class="game-page-hero-img" src="/assets/images/cover_chamber.svg" alt="Game Banner">
+                                <div class="screen-scanline-fx"></div>
+                                <div style="position: absolute; bottom: 12px; left: 14px; background: rgba(0,0,0,0.85); padding: 8px 14px; border: 1px solid var(--border-color);">
+                                    <span id="gameDetailPriceBadge" class="badge-free">FREE DOWNLOAD</span>
+                                    <span id="gameDetailVersion" style="color: #fff; font-size: 12px; margin-left: 6px; font-weight: bold;">v1.4.2</span>
+                                </div>
+                            </div>
+
+                            <!-- Two-column layout for details -->
+                            <div class="game-page-grid">
                                 
-                                <!-- Screen Housing on Left -->
-                                <div class="cataloguepreview">
-                                    <div class="screen-housing">
-                                        <img id="cataloguePreviewImg" src="/assets/images/cover_chamber.svg" class="cataloguepreviewimg" alt="game preview">
-                                        <div class="screen-scanline-fx"></div>
+                                <!-- Main Column: Story, Features & Media -->
+                                <div>
+                                    <div class="cat-header" style="margin-bottom: 8px;">
+                                        <h2 id="gameDetailTitle" class="cat-title" style="font-size: 32px;">CHAMBER PROTOCOL</h2>
+                                    </div>
+                                    <div id="gameDetailSubtitle" class="cat-subtitle" style="font-size: 14px; margin-bottom: 12px;">12-gauge tactical roulette in an abandoned facility</div>
+                                    <div id="gameDetailTags" class="cat-tags" style="margin-bottom: 16px;"></div>
+
+                                    <div style="background: var(--bg-card); border: 1px solid var(--border-color); padding: 16px; margin-bottom: 20px;">
+                                        <h4 style="font-family: var(--font-title); font-size: 20px; color: var(--link-color); margin: 0 0 8px 0;">
+                                            ■ ATMOSPHERIC SYNOPSIS &amp; LOGS
+                                        </h4>
+                                        <p id="gameDetailDesc" style="font-size: 13.5px; line-height: 1.6; color: var(--text-primary); margin: 0;"></p>
+                                    </div>
+
+                                    <!-- Screenshots Strip -->
+                                    <div style="margin-bottom: 20px;">
+                                        <h4 style="font-family: var(--font-title); font-size: 20px; color: var(--link-color); margin: 0 0 8px 0;">
+                                            ■ ARCHIVE SCREENSHOTS &amp; TELEMETRY
+                                        </h4>
+                                        <div id="gameDetailScreenshots" class="modal-gallery"></div>
+                                    </div>
+
+                                    <!-- Specifications / Features List -->
+                                    <div style="background: var(--bg-card); border: 1px solid var(--border-color); padding: 16px;">
+                                        <h4 style="font-family: var(--font-title); font-size: 20px; color: var(--link-color); margin: 0 0 8px 0;">
+                                            ■ MECHANICAL SYSTEMS &amp; FEATURES
+                                        </h4>
+                                        <ul id="gameDetailFeaturesList" style="padding-left: 20px; font-size: 13px; line-height: 1.6; margin: 0;"></ul>
                                     </div>
                                 </div>
 
-                                <!-- Active Game Details on Right -->
-                                <div class="cataloguedetails">
-                                    <div>
-                                        <div class="cat-header">
-                                            <h3 id="catTitle" class="cat-title">CHAMBER PROTOCOL</h3>
-                                            <div style="display: flex; gap: 6px; align-items: center;">
-                                                <span id="catPriceBadge" class="badge-free">FREE DOWNLOAD</span>
-                                                <span id="catVersion" class="cat-version">v1.4.2</span>
-                                            </div>
-                                        </div>
-                                        <div id="catSubtitle" class="cat-subtitle">12-gauge tactical roulette in an abandoned facility</div>
-                                        <div id="catTags" class="cat-tags">
-                                            <span class="tag-badge">HORROR</span>
-                                            <span class="tag-badge">ANALOG</span>
-                                        </div>
-                                        <div id="catDesc" class="cat-desc">
-                                            Loading transmission data...
-                                        </div>
-                                    </div>
+                                <!-- Sidebar Column: Download / Steam Actions, Meta & Reactions -->
+                                <div>
+                                    <div class="game-page-sidebar-box">
+                                        <h3 style="font-family: var(--font-title); font-size: 22px; color: var(--link-color); margin: 0 0 12px 0;">
+                                            ACQUISITION CLEARANCE
+                                        </h3>
 
-                                    <div>
-                                        <div class="cat-meta-row">
-                                            <span id="catSize">FILE SIZE: 48.5 MB</span>
-                                            <span id="catDate">DATE: 2026-10-15</span>
-                                            <span id="catDownloads">DOWNLOADS: 1422</span>
-                                        </div>
-                                        
-                                        <!-- Actions Row: Download vs Steam vs Play In Browser -->
-                                        <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;">
-                                            <button id="btnDownload" class="btn-pixel btn-pixel-accent">
+                                        <table class="game-page-meta-table">
+                                            <tr>
+                                                <td>STATUS:</td>
+                                                <td id="gameMetaStatus" style="color: #2e7d32; font-weight: bold;">FREE DOWNLOAD</td>
+                                            </tr>
+                                            <tr>
+                                                <td>PLATFORMS:</td>
+                                                <td id="gameMetaPlatforms">Windows, Linux</td>
+                                            </tr>
+                                            <tr>
+                                                <td>ARCHIVE SIZE:</td>
+                                                <td id="gameMetaSize">48.5 MB</td>
+                                            </tr>
+                                            <tr>
+                                                <td>RELEASED:</td>
+                                                <td id="gameMetaDate">2026-10-15</td>
+                                            </tr>
+                                            <tr>
+                                                <td>DOWNLOADS:</td>
+                                                <td id="gameMetaDownloads">1422</td>
+                                            </tr>
+                                        </table>
+
+                                        <!-- Actions Row -->
+                                        <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px;">
+                                            <button id="btnPageDownload" class="btn-pixel btn-pixel-accent" style="width: 100%; justify-content: center; padding: 10px;">
                                                 <span>▼</span> DIRECT DOWNLOAD
                                             </button>
-                                            <a id="btnSteam" href="#" target="_blank" class="btn-pixel btn-steam" style="display: none; text-decoration: none;">
+                                            <a id="btnPageSteam" href="#" target="_blank" class="btn-pixel btn-steam" style="width: 100%; justify-content: center; padding: 10px; display: none; text-decoration: none;">
                                                 <span>⚡</span> BUY / WISHLIST ON STEAM
                                             </a>
-                                            <button id="btnPlayBrowser" class="btn-pixel" style="display: none;">
+                                            <button id="btnPagePlayBrowser" class="btn-pixel" style="width: 100%; justify-content: center; display: none;">
                                                 <span>▶</span> PLAY IN BROWSER
-                                            </button>
-                                            <button id="btnDetails" class="btn-pixel">
-                                                <span>[+]</span> EXPAND SPEC SHEET
                                             </button>
                                         </div>
 
                                         <!-- Live Reactions Bar -->
-                                        <div class="reactions-bar" style="padding-top: 8px; border-top: 1px dashed var(--border-color); display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
-                                            <span style="font-size: 11px; color: var(--text-dim); font-weight: bold;">REACTIONS:</span>
-                                            <button class="btn-pixel rx-btn" data-type="heart" title="Appreciate">❤️ <span class="rx-count" data-type="heart">0</span></button>
-                                            <button class="btn-pixel rx-btn" data-type="skull" title="Dread / Horror">💀 <span class="rx-count" data-type="skull">0</span></button>
-                                            <button class="btn-pixel rx-btn" data-type="fire" title="Intense">🔥 <span class="rx-count" data-type="fire">0</span></button>
-                                            <button class="btn-pixel rx-btn" data-type="tape" title="Atmospheric Tape">📼 <span class="rx-count" data-type="tape">0</span></button>
+                                        <div style="border-top: 1px dashed var(--border-color); padding-top: 12px;">
+                                            <div style="font-size: 11px; font-weight: bold; color: var(--text-dim); margin-bottom: 8px;">
+                                                FIELD REACTIONS:
+                                            </div>
+                                            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                                                <button class="btn-pixel rx-btn" data-type="heart" title="Appreciate">❤️ <span class="rx-count" data-type="heart">0</span></button>
+                                                <button class="btn-pixel rx-btn" data-type="skull" title="Dread / Horror">💀 <span class="rx-count" data-type="skull">0</span></button>
+                                                <button class="btn-pixel rx-btn" data-type="fire" title="Intense">🔥 <span class="rx-count" data-type="fire">0</span></button>
+                                                <button class="btn-pixel rx-btn" data-type="tape" title="Atmospheric Tape">📼 <span class="rx-count" data-type="tape">0</span></button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
                             </div>
 
-                            <!-- Selector Table (Game List) -->
-                            <div id="catalogueList" class="cataloguelist"></div>
-                        </div>
-
-                        <!-- Per-Game Community Feedback Section: Opinions, Suggestions & Bug Reports -->
-                        <div class="game-feedback-section" id="gameFeedbackSection">
-                            <div class="feedback-tab-bar">
-                                <span style="font-family: var(--font-title); font-size: 22px; color: var(--link-color); margin-right: 12px;">
-                                    COMMUNITY INTEL // <span id="feedbackGameTargetTitle">CHAMBER PROTOCOL</span>
-                                </span>
-                                <button type="button" class="btn-pixel feedback-tab-btn active" data-fb-type="all">ALL (0)</button>
-                                <button type="button" class="btn-pixel feedback-tab-btn" data-fb-type="comment">💬 OPINIONS</button>
-                                <button type="button" class="btn-pixel feedback-tab-btn" data-fb-type="suggestion">💡 SUGGESTIONS</button>
-                                <button type="button" class="btn-pixel feedback-tab-btn" data-fb-type="bug_report">🐛 BUG REPORTS</button>
-                            </div>
-
-                            <!-- Feedback Submission Box -->
-                            <div class="feedback-form-box">
-                                <div id="fbAuthPrompt" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 10px;">
-                                    <span style="font-size: 12px; color: var(--text-muted);">
-                                        🔒 Sign in with your call-sign to leave an opinion, give suggestions, or report bugs.
+                            <!-- Dedicated Game Feedback Section: Opinions, Suggestions & Bug Reports -->
+                            <div class="game-feedback-section" id="gameFeedbackSection">
+                                <div class="feedback-tab-bar">
+                                    <span style="font-family: var(--font-title); font-size: 22px; color: var(--link-color); margin-right: 12px;">
+                                        COMMUNITY INTEL // <span id="feedbackGameTargetTitle">CHAMBER PROTOCOL</span>
                                     </span>
-                                    <button type="button" id="btnPromptFbAuth" class="btn-pixel">SIGN IN / REGISTER</button>
+                                    <button type="button" class="btn-pixel feedback-tab-btn active" data-fb-type="all">ALL (0)</button>
+                                    <button type="button" class="btn-pixel feedback-tab-btn" data-fb-type="comment">💬 OPINIONS</button>
+                                    <button type="button" class="btn-pixel feedback-tab-btn" data-fb-type="suggestion">💡 SUGGESTIONS</button>
+                                    <button type="button" class="btn-pixel feedback-tab-btn" data-fb-type="bug_report">🐛 BUG REPORTS</button>
                                 </div>
 
-                                <form id="gameFeedbackForm" style="display: none;">
-                                    <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 8px; flex-wrap: wrap;">
-                                        <span style="font-size: 11.5px; font-weight: bold; color: var(--link-color);">SUBMISSION TYPE:</span>
-                                        <label style="font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 4px;">
-                                            <input type="radio" name="fbType" value="comment" checked> 💬 Opinion / Review
-                                        </label>
-                                        <label style="font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 4px;">
-                                            <input type="radio" name="fbType" value="suggestion"> 💡 Suggestion
-                                        </label>
-                                        <label style="font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 4px;">
-                                            <input type="radio" name="fbType" value="bug_report"> 🐛 Bug Report
-                                        </label>
+                                <!-- Feedback Submission Box -->
+                                <div class="feedback-form-box">
+                                    <div id="fbAuthPrompt" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 10px;">
+                                        <span style="font-size: 12px; color: var(--text-muted);">
+                                            🔒 Sign in with your call-sign to leave an opinion, give suggestions, or report bugs.
+                                        </span>
+                                        <button type="button" id="btnPromptFbAuth" class="btn-pixel">SIGN IN / REGISTER</button>
                                     </div>
-                                    <div style="margin-bottom: 8px;">
-                                        <textarea id="fbContent" class="form-textarea" style="width: 100%; min-height: 55px; padding: 6px 10px; border: 1px solid var(--border-color); font-family: var(--font-mono);" placeholder="Transmit your opinion, feature suggestion, or bug encounter details..." required></textarea>
-                                    </div>
-                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                        <button type="submit" id="btnSubmitFeedback" class="btn-pixel btn-pixel-accent">TRANSMIT INTEL</button>
-                                        <span id="fbSubmitStatus" style="font-size: 11.5px; font-weight: bold;"></span>
-                                    </div>
-                                </form>
+
+                                    <form id="gameFeedbackForm" style="display: none;">
+                                        <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 8px; flex-wrap: wrap;">
+                                            <span style="font-size: 11.5px; font-weight: bold; color: var(--link-color);">SUBMISSION TYPE:</span>
+                                            <label style="font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                                                <input type="radio" name="fbType" value="comment" checked> 💬 Opinion / Review
+                                            </label>
+                                            <label style="font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                                                <input type="radio" name="fbType" value="suggestion"> 💡 Suggestion
+                                            </label>
+                                            <label style="font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                                                <input type="radio" name="fbType" value="bug_report"> 🐛 Bug Report
+                                            </label>
+                                        </div>
+                                        <div style="margin-bottom: 8px;">
+                                            <textarea id="fbContent" class="form-textarea" style="width: 100%; min-height: 55px; padding: 6px 10px; border: 1px solid var(--border-color); font-family: var(--font-mono);" placeholder="Transmit your opinion, feature suggestion, or bug encounter details..." required></textarea>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                                            <button type="submit" id="btnSubmitFeedback" class="btn-pixel btn-pixel-accent">TRANSMIT INTEL</button>
+                                            <span id="fbSubmitStatus" style="font-size: 11.5px; font-weight: bold;"></span>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <!-- List of feedback items -->
+                                <div id="gameFeedbackList">
+                                    <div style="font-size: 12px; color: var(--text-dim); text-align: center; padding: 12px;">Loading community transmissions...</div>
+                                </div>
                             </div>
 
-                            <!-- List of feedback items -->
-                            <div id="gameFeedbackList">
-                                <div style="font-size: 12px; color: var(--text-dim); text-align: center; padding: 12px;">Loading community transmissions...</div>
-                            </div>
                         </div>
+
                     </div>
 
                     <!-- ==========================================================================
@@ -361,25 +428,94 @@
                     </div>
 
                     <!-- ==========================================================================
-                         PART 4: AUDIO LAB & SOUND VAULT - MUSIC & FOLEY SFX
+                         PART 4: AUDIO LAB & SOUND VAULT - BUILT-IN MUSIC PLAYER & FOLEY SFX
                          ========================================================================== -->
                     <div id="view-audio" class="site-view">
                         <div class="page-header-box">
                             <h2 class="page-main-title"><span>■</span> AUDIO LAB &amp; SOUND VAULT</h2>
                             <p class="page-subtitle">
-                                Analog synthesizer albums, tape-decay dark ambient soundtracks, and tactical mechanical sound effects crafted by MOPTAM.
+                                Built-in retro audio player, analog synthesizer albums, tape decay experiments, and tactical mechanical sound effects crafted by MOPTAM.
                             </p>
                         </div>
 
-                        <!-- Section A: Original Soundtracks & Albums -->
-                        <div style="margin-bottom: 24px;">
-                            <div class="lr" style="margin-bottom: 12px;">
-                                <h3 style="font-family: var(--font-title); font-size: 24px; color: var(--link-color); margin: 0;">
-                                    ▲ ALBUMS &amp; ORIGINAL SOUNDTRACKS
-                                </h3>
-                                <span style="font-size: 11px; color: var(--text-dim);">ANALOG SYNTHS &amp; TAPE LOOPS</span>
+                        <!-- BUILT-IN RETRO AUDIO PLAYER (WINDOWS XP / WINAMP STYLE) -->
+                        <div class="win-music-player" id="builtInPlayer">
+                            
+                            <!-- Player Header -->
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid rgba(56,189,248,0.3); padding-bottom: 8px;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="font-size: 16px;">📻</span>
+                                    <span style="font-family: var(--font-title); font-size: 18px; color: #38bdf8; letter-spacing: 0.5px;">MOPTAM DIGITAL MEDIA AUDIO DECK v2.0</span>
+                                </div>
+                                <span id="playerStatusIndicator" style="font-size: 10px; color: #4ade80; font-family: var(--font-mono); font-weight: bold;">● READY</span>
                             </div>
-                            <div id="musicGrid" class="music-grid"></div>
+
+                            <!-- Screen & Cover Display -->
+                            <div class="player-main-strip">
+                                <div class="player-cover-square">
+                                    <img id="playerCurrentCover" src="/assets/images/cover_chamber.svg" class="player-cover-img" alt="Track Cover">
+                                </div>
+                                <div class="player-screen">
+                                    <h3 id="playerCurrentTitle" class="player-track-title">Ground Loop Frequency</h3>
+                                    <div id="playerCurrentArtist" class="player-track-artist">MOPTAM &bull; Tango Circuit [2026]</div>
+                                    
+                                    <!-- Scrubber / Progress -->
+                                    <div class="player-scrubber-row">
+                                        <span id="playerTimeCurrent">00:00</span>
+                                        <input type="range" id="playerSeekSlider" class="player-seek-slider" min="0" max="100" value="0">
+                                        <span id="playerTimeDuration">03:42</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Transport Controls & Actions -->
+                            <div class="player-controls-row">
+                                <div class="player-btn-group">
+                                    <button type="button" id="btnPlayerPrev" class="player-btn" title="Previous Track">
+                                        <span>⏮</span> PREV
+                                    </button>
+                                    <button type="button" id="btnPlayerRewind" class="player-btn" title="Rewind 5s">
+                                        <span>⏪</span> -5s
+                                    </button>
+                                    <button type="button" id="btnPlayerPlay" class="player-btn" style="background: #0284c7; color: #fff;" title="Play / Pause">
+                                        <span id="playerPlayIcon">▶</span> <span id="playerPlayText">PLAY</span>
+                                    </button>
+                                    <button type="button" id="btnPlayerForward" class="player-btn" title="Forward 5s">
+                                        <span>⏩</span> +5s
+                                    </button>
+                                    <button type="button" id="btnPlayerNext" class="player-btn" title="Next Track">
+                                        <span>⏭</span> NEXT
+                                    </button>
+                                    <button type="button" id="btnPlayerStop" class="player-btn" title="Stop">
+                                        <span>⏹</span> STOP
+                                    </button>
+                                </div>
+
+                                <div style="display: flex; align-items: center; gap: 14px;">
+                                    <!-- Volume -->
+                                    <div class="player-volume-group">
+                                        <span>🔊 VOL:</span>
+                                        <input type="range" id="playerVolume" class="player-vol-slider" min="0" max="100" value="80">
+                                    </div>
+
+                                    <!-- Download Track Button -->
+                                    <button type="button" id="btnPlayerDownloadTrack" class="player-btn" style="border-color: #4ade80; color: #4ade80;">
+                                        <span>💾</span> DOWNLOAD TRACK
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Tracklist Directory with Square Covers -->
+                        <div style="margin-bottom: 24px;">
+                            <div class="lr" style="margin-bottom: 10px;">
+                                <h3 style="font-family: var(--font-title); font-size: 24px; color: var(--link-color); margin: 0;">
+                                    ▲ ALBUMS &amp; AUDIO ARCHIVE TRACKS
+                                </h3>
+                                <span style="font-size: 11px; color: var(--text-dim);">CLICK ANY TRACK TO PLAY</span>
+                            </div>
+                            <div id="musicTracksList"></div>
                         </div>
 
                         <!-- Section B: Sound Effects & Foley Vault -->

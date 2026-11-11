@@ -694,6 +694,28 @@ app.get('/api/music', (req, res) => {
     res.json(getMusic());
 });
 
+// Download simulated music track as audio file
+app.get('/api/music/track/:id/download', (req, res) => {
+    const music = getMusic();
+    let foundTrack = null;
+    let albumTitle = 'MOPTAM_Archive';
+    for (const alb of music) {
+        if (alb.tracks) {
+            const t = alb.tracks.find(tr => tr.id === req.params.id);
+            if (t) {
+                foundTrack = t;
+                albumTitle = alb.title;
+                break;
+            }
+        }
+    }
+    const filename = foundTrack ? `${foundTrack.title.replace(/[^a-zA-Z0-9_-]/g, '_')}.mp3` : `MOPTAM_Track_${req.params.id}.mp3`;
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.setHeader('Content-Type', 'audio/mpeg');
+    const dummyAudio = Buffer.alloc(1024 * 32, 0x4d); // audio payload buffer
+    res.send(dummyAudio);
+});
+
 app.get('/api/updates', (req, res) => {
     res.json(getUpdates());
 });

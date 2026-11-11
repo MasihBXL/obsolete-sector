@@ -4,14 +4,47 @@
     "title": "TANGO CIRCUIT",
     "year": "2026",
     "genre": "ANALOG SYNTHESIZER / INDUSTRIAL",
-    "tracksCount": 8,
+    "tracksCount": 4,
     "description": "Raw analog oscillator recordings, metallic reverbs, and dystopian tape loops crafted for cold nights in concrete bunkers.",
+    "coverImage": "/assets/images/cover_chamber.svg",
     "bandcampUrl": "https://bandcamp.com",
     "tracks": [
-      "01. Ground Loop Frequency",
-      "02. Relay Chime in Sub-Level 3",
-      "03. Tungsten Filament Glow",
-      "04. Hydraulic Breath"
+      {
+        "id": "tc-01",
+        "title": "Ground Loop Frequency",
+        "duration": "03:42",
+        "cover": "/assets/images/cover_chamber.svg",
+        "synth": "ambient_drone",
+        "artist": "MOPTAM",
+        "album": "Tango Circuit"
+      },
+      {
+        "id": "tc-02",
+        "title": "Relay Chime in Sub-Level 3",
+        "duration": "02:18",
+        "cover": "/assets/images/screen_terminal.svg",
+        "synth": "relay_click",
+        "artist": "MOPTAM",
+        "album": "Tango Circuit"
+      },
+      {
+        "id": "tc-03",
+        "title": "Tungsten Filament Glow",
+        "duration": "04:05",
+        "cover": "/assets/images/cover_signal.svg",
+        "synth": "crt_hum",
+        "artist": "MOPTAM",
+        "album": "Tango Circuit"
+      },
+      {
+        "id": "tc-04",
+        "title": "Hydraulic Breath",
+        "duration": "03:12",
+        "cover": "/assets/images/cover_machine.svg",
+        "synth": "analog_click",
+        "artist": "MOPTAM",
+        "album": "Tango Circuit"
+      }
     ]
   },
   {
@@ -19,14 +52,47 @@
     "title": "MOLDRISE (ORIGINAL SOUNDTRACK)",
     "year": "2025",
     "genre": "DARK AMBIENT / FOLEY",
-    "tracksCount": 12,
+    "tracksCount": 4,
     "description": "Original score for the experimental industrial simulation. Subterranean rumblings, piston exhausts, and bio-mechanical drones.",
+    "coverImage": "/assets/images/cover_sub.svg",
     "bandcampUrl": "https://bandcamp.com",
     "tracks": [
-      "01. Pressure Seal Integrity",
-      "02. Shift Log 48",
-      "03. Biological Grinding Chamber",
-      "04. Shift Over (Silence)"
+      {
+        "id": "mr-01",
+        "title": "Pressure Seal Integrity",
+        "duration": "03:55",
+        "cover": "/assets/images/cover_sub.svg",
+        "synth": "ambient_drone",
+        "artist": "MOPTAM",
+        "album": "Moldrise OST"
+      },
+      {
+        "id": "mr-02",
+        "title": "Shift Log 48",
+        "duration": "02:44",
+        "cover": "/assets/images/screen_machinery.svg",
+        "synth": "floppy_seek",
+        "artist": "MOPTAM",
+        "album": "Moldrise OST"
+      },
+      {
+        "id": "mr-03",
+        "title": "Biological Grinding Chamber",
+        "duration": "05:10",
+        "cover": "/assets/images/cover_machine.svg",
+        "synth": "analog_click",
+        "artist": "MOPTAM",
+        "album": "Moldrise OST"
+      },
+      {
+        "id": "mr-04",
+        "title": "Shift Over (Subterranean Silence)",
+        "duration": "01:50",
+        "cover": "/assets/images/cover_chamber.svg",
+        "synth": "crt_hum",
+        "artist": "MOPTAM",
+        "album": "Moldrise OST"
+      }
     ]
   },
   {
@@ -34,13 +100,38 @@
     "title": "LADEN LETHE [EP]",
     "year": "2024",
     "genre": "LO-FI HORROR ELECTRONICA",
-    "tracksCount": 6,
+    "tracksCount": 3,
     "description": "Short tape-decay experiments and 1-bit soundscapes recorded onto worn magnetic microcassettes.",
+    "coverImage": "/assets/images/cover_signal.svg",
     "bandcampUrl": "https://bandcamp.com",
     "tracks": [
-      "01. Headphone Bleed",
-      "02. Cathode Ray Tube Hum",
-      "03. Static Snow"
+      {
+        "id": "ll-01",
+        "title": "Headphone Bleed",
+        "duration": "02:30",
+        "cover": "/assets/images/cover_signal.svg",
+        "synth": "ambient_drone",
+        "artist": "MOPTAM",
+        "album": "Laden Lethe EP"
+      },
+      {
+        "id": "ll-02",
+        "title": "Cathode Ray Tube Hum",
+        "duration": "03:15",
+        "cover": "/assets/images/screen_terminal.svg",
+        "synth": "crt_hum",
+        "artist": "MOPTAM",
+        "album": "Laden Lethe EP"
+      },
+      {
+        "id": "ll-03",
+        "title": "Magnetic Static Snow",
+        "duration": "02:05",
+        "cover": "/assets/images/cover_sub.svg",
+        "synth": "floppy_seek",
+        "artist": "MOPTAM",
+        "album": "Laden Lethe EP"
+      }
     ]
   }
 ]

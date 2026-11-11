@@ -8,6 +8,14 @@ document.addEventListener('DOMContentLoaded', () => {
     let allArt = [];
     let currentArtFilter = 'ALL';
 
+    // Music Player State
+    let allAlbums = [];
+    let allTracks = [];
+    let currentTrackIndex = 0;
+    let isPlaying = false;
+    let audioPlaybackTimer = null;
+    let currentTrackPlaybackSeconds = 0;
+
     // User & Authentication State
     let currentUser = null;
     let authToken = localStorage.getItem('auth_token') || '';
@@ -30,28 +38,36 @@ document.addEventListener('DOMContentLoaded', () => {
         guestbook: document.getElementById('view-guestbook')
     };
     const navLinkItems = document.querySelectorAll('.nav-link-item');
+    const xpAddressText = document.getElementById('xpAddressText');
 
     // Homepage Elements
     const homeLatestUpdateDate = document.getElementById('homeLatestUpdateDate');
     const homeLatestUpdateTitle = document.getElementById('homeLatestUpdateTitle');
     const homeLatestUpdateBody = document.getElementById('homeLatestUpdateBody');
 
-    // Catalogue / Games Archive
-    const gamesListEl = document.getElementById('catalogueList');
-    const previewImgEl = document.getElementById('cataloguePreviewImg');
-    const catTitleEl = document.getElementById('catTitle');
-    const catSubtitleEl = document.getElementById('catSubtitle');
-    const catVersionEl = document.getElementById('catVersion');
-    const catPriceBadge = document.getElementById('catPriceBadge');
-    const catTagsEl = document.getElementById('catTags');
-    const catDescEl = document.getElementById('catDesc');
-    const catSizeEl = document.getElementById('catSize');
-    const catDateEl = document.getElementById('catDate');
-    const catDownloadsEl = document.getElementById('catDownloads');
-    const btnDownloadEl = document.getElementById('btnDownload');
-    const btnSteamEl = document.getElementById('btnSteam');
-    const btnDetailsEl = document.getElementById('btnDetails');
-    const btnPlayBrowserEl = document.getElementById('btnPlayBrowser');
+    // Games Archive Elements (Gallery View vs Dedicated Page)
+    const gamesGalleryView = document.getElementById('gamesGalleryView');
+    const gamesGalleryGrid = document.getElementById('gamesGalleryGrid');
+    const gameDetailPage = document.getElementById('gameDetailPage');
+    const btnBackToGamesGallery = document.getElementById('btnBackToGamesGallery');
+    const gameBreadcrumbTitle = document.getElementById('gameBreadcrumbTitle');
+    const gameDetailHeroImg = document.getElementById('gameDetailHeroImg');
+    const gameDetailPriceBadge = document.getElementById('gameDetailPriceBadge');
+    const gameDetailVersion = document.getElementById('gameDetailVersion');
+    const gameDetailTitle = document.getElementById('gameDetailTitle');
+    const gameDetailSubtitle = document.getElementById('gameDetailSubtitle');
+    const gameDetailTags = document.getElementById('gameDetailTags');
+    const gameDetailDesc = document.getElementById('gameDetailDesc');
+    const gameDetailScreenshots = document.getElementById('gameDetailScreenshots');
+    const gameDetailFeaturesList = document.getElementById('gameDetailFeaturesList');
+    const gameMetaStatus = document.getElementById('gameMetaStatus');
+    const gameMetaPlatforms = document.getElementById('gameMetaPlatforms');
+    const gameMetaSize = document.getElementById('gameMetaSize');
+    const gameMetaDate = document.getElementById('gameMetaDate');
+    const gameMetaDownloads = document.getElementById('gameMetaDownloads');
+    const btnPageDownload = document.getElementById('btnPageDownload');
+    const btnPageSteam = document.getElementById('btnPageSteam');
+    const btnPagePlayBrowser = document.getElementById('btnPagePlayBrowser');
     const gameFilterBtns = document.querySelectorAll('.filter-btn');
 
     // Game Community Feedback & Bug Reports
@@ -77,8 +93,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const artModalMedium = document.getElementById('artModalMedium');
     const artModalDesc = document.getElementById('artModalDesc');
 
-    // Audio & SFX Elements
-    const musicGridEl = document.getElementById('musicGrid');
+    // Built-In Music Player Elements
+    const playerCurrentCover = document.getElementById('playerCurrentCover');
+    const playerCurrentTitle = document.getElementById('playerCurrentTitle');
+    const playerCurrentArtist = document.getElementById('playerCurrentArtist');
+    const playerTimeCurrent = document.getElementById('playerTimeCurrent');
+    const playerTimeDuration = document.getElementById('playerTimeDuration');
+    const playerSeekSlider = document.getElementById('playerSeekSlider');
+    const btnPlayerPlay = document.getElementById('btnPlayerPlay');
+    const playerPlayIcon = document.getElementById('playerPlayIcon');
+    const playerPlayText = document.getElementById('playerPlayText');
+    const btnPlayerPrev = document.getElementById('btnPlayerPrev');
+    const btnPlayerNext = document.getElementById('btnPlayerNext');
+    const btnPlayerRewind = document.getElementById('btnPlayerRewind');
+    const btnPlayerForward = document.getElementById('btnPlayerForward');
+    const btnPlayerStop = document.getElementById('btnPlayerStop');
+    const btnPlayerDownloadTrack = document.getElementById('btnPlayerDownloadTrack');
+    const playerVolume = document.getElementById('playerVolume');
+    const playerStatusIndicator = document.getElementById('playerStatusIndicator');
+    const musicTracksList = document.getElementById('musicTracksList');
     const sfxGridEl = document.getElementById('sfxGrid');
 
     // Devlogs / Updates Elements
@@ -130,8 +163,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const dlBtnCancel = document.getElementById('dlBtnCancel');
 
     // Modals
-    const gameModal = document.getElementById('gameModal');
-    const modalClose = document.getElementById('modalClose');
     const playModal = document.getElementById('playModal');
     const playModalClose = document.getElementById('playModalClose');
     const playIframe = document.getElementById('playIframe');
@@ -166,10 +197,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function handleRoute() {
         const rawHash = window.location.hash.replace('#', '').trim().toLowerCase();
-        let targetView = 'home';
 
+        // Check if routing to specific game page: e.g. #game/buckshot-chamber or #games/buckshot-chamber
+        if (rawHash.startsWith('game/') || rawHash.startsWith('games/')) {
+            const parts = rawHash.split('/');
+            const gameId = parts[1];
+            switchView('games');
+            if (allGames.length > 0) {
+                const found = allGames.find(g => g.id === gameId);
+                if (found) {
+                    openDedicatedGamePage(found);
+                    return;
+                }
+            }
+            return;
+        }
+
+        let targetView = 'home';
         if (rawHash === 'games' || rawHash === 'catalogue') {
             targetView = 'games';
+            showGamesGalleryView();
         } else if (rawHash === 'art') {
             targetView = 'art';
         } else if (rawHash === 'audio' || rawHash === 'music') {
@@ -206,10 +253,20 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Scroll to top of window
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        // Update Windows XP Explorer Address Bar Text
+        if (xpAddressText) {
+            const addresses = {
+                home: 'C:\\Documents and Settings\\MOPTAM\\Creative_Hub\\home.htm',
+                games: 'C:\\Games\\MOPTAM_Archive\\catalogue.htm',
+                art: 'C:\\Documents and Settings\\MOPTAM\\My Pictures\\Art_Gallery.htm',
+                audio: 'C:\\Documents and Settings\\MOPTAM\\My Music\\Audio_Lab.htm',
+                updates: 'C:\\Documents and Settings\\MOPTAM\\Dispatches\\devlogs.htm',
+                guestbook: 'C:\\Network Connections\\MOPTAM\\guestbook.htm'
+            };
+            xpAddressText.textContent = addresses[viewName] || `C:\\MOPTAM\\${viewName}.htm`;
+        }
 
-        // Play subtle sound
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         if (window.soundEngine) window.soundEngine.playSelect();
     }
 
@@ -287,7 +344,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Windows Titlebar Window Buttons
+    // Window Minimize/Max/Close
     const winBtnMin = document.getElementById('winBtnMin');
     const winBtnMax = document.getElementById('winBtnMax');
     const winBtnClose = document.getElementById('winBtnClose');
@@ -295,24 +352,20 @@ document.addEventListener('DOMContentLoaded', () => {
     if (winBtnMin) {
         winBtnMin.addEventListener('click', () => {
             const doc = document.querySelector('.doccontents');
-            if (doc) {
-                doc.style.display = doc.style.display === 'none' ? 'block' : 'none';
-            }
+            if (doc) doc.style.display = doc.style.display === 'none' ? 'block' : 'none';
         });
     }
 
     if (winBtnMax) {
         winBtnMax.addEventListener('click', () => {
             const doc = document.querySelector('.doc');
-            if (doc) {
-                doc.classList.toggle('maximized');
-            }
+            if (doc) doc.classList.toggle('maximized');
         });
     }
 
     if (winBtnClose) {
         winBtnClose.addEventListener('click', () => {
-            if (confirm('Leave Hello, I am MOPTAM creative hub?')) {
+            if (confirm('Exit Hello, I am MOPTAM portal?')) {
                 window.location.hash = '#home';
             }
         });
@@ -461,7 +514,6 @@ document.addEventListener('DOMContentLoaded', () => {
     authTabRegister.addEventListener('click', () => switchAuthTab('register'));
     authTabSocial.addEventListener('click', () => switchAuthTab('social'));
 
-    // Login Form
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const identifier = loginIdentifier.value.trim();
@@ -498,7 +550,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Register Form
     registerForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const username = regUsername.value.trim();
@@ -536,7 +587,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Social Login
     socialProviderBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             selectedSocialProvider = btn.getAttribute('data-provider');
@@ -591,27 +641,35 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ========================================================================
-    // 4. GAMES ARCHIVE & COMMUNITY FEEDBACK
+    // 4. GAMES ARCHIVE: 2D BANNER GALLERY & DEDICATED PER-GAME PAGES
     // ========================================================================
 
     async function loadGames() {
         try {
             const res = await fetch('/api/games');
             allGames = await res.json();
-            renderGamesList();
-            if (allGames.length > 0) {
-                selectGame(allGames[0]);
+            renderGamesGallery();
+            
+            // Check if URL hash points to a specific game
+            const rawHash = window.location.hash.replace('#', '').trim().toLowerCase();
+            if (rawHash.startsWith('game/') || rawHash.startsWith('games/')) {
+                const parts = rawHash.split('/');
+                const target = allGames.find(g => g.id === parts[1]);
+                if (target) {
+                    openDedicatedGamePage(target);
+                    return;
+                }
             }
         } catch (e) {
-            if (gamesListEl) {
-                gamesListEl.innerHTML = '<div style="color:red; padding:10px;">Failed to load archive database.</div>';
+            if (gamesGalleryGrid) {
+                gamesGalleryGrid.innerHTML = '<div style="color:red; padding:10px;">Failed to load archive database.</div>';
             }
         }
     }
 
-    function renderGamesList() {
-        if (!gamesListEl) return;
-        gamesListEl.innerHTML = '';
+    function renderGamesGallery() {
+        if (!gamesGalleryGrid) return;
+        gamesGalleryGrid.innerHTML = '';
 
         const filtered = allGames.filter(g => {
             if (currentFilter === 'ALL') return true;
@@ -621,96 +679,160 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         if (filtered.length === 0) {
-            gamesListEl.innerHTML = '<div style="padding: 12px; font-size: 12px; color: var(--text-dim);">No game builds matched this filter.</div>';
+            gamesGalleryGrid.innerHTML = '<div style="padding: 16px; font-size: 13px; color: var(--text-dim);">No game builds matched this filter.</div>';
             return;
         }
 
         filtered.forEach(game => {
-            const row = document.createElement('div');
-            row.className = 'gamerow';
-            if (currentSelectedGame && currentSelectedGame.id === game.id) {
-                row.classList.add('selected');
-            }
-
             const isFree = game.isFree !== false;
-            const priceTag = isFree ? '<span class="badge-free">FREE</span>' : `<span class="badge-steam">${game.price || 'STEAM'}</span>`;
+            const priceBadge = isFree ? '<span class="badge-free">FREE DOWNLOAD</span>' : `<span class="badge-steam">STEAM: ${game.price || '$6.99'}</span>`;
+            const bannerImg = game.coverImage || '/assets/images/cover_chamber.svg';
 
-            row.innerHTML = `
-                <div class="game-row-title">
-                    <span>${game.title}</span>
-                    ${priceTag}
+            const card = document.createElement('div');
+            card.className = 'game-banner-card';
+            card.innerHTML = `
+                <div class="game-banner-frame">
+                    <img src="${bannerImg}" class="game-banner-img" alt="${escapeHtml(game.title)}">
+                    <div class="screen-scanline-fx"></div>
+                    <div class="game-banner-badge-strip">
+                        ${priceBadge}
+                        <span class="tag-badge" style="background: rgba(0,0,0,0.85); color: #fff;">v${game.version || '1.0'}</span>
+                    </div>
                 </div>
-                <div class="game-row-info">
-                    <span>${game.tags ? game.tags[0] : 'HORROR'}</span> &bull; 
-                    <span>[v${game.version || '1.0'}]</span> &bull; 
-                    <span>${game.fileSize || '30 MB'}</span>
+                <div class="game-banner-content">
+                    <div>
+                        <h3 class="game-banner-title">${escapeHtml(game.title)}</h3>
+                        <div class="game-banner-subtitle">${escapeHtml(game.subtitle || '')}</div>
+                        <div class="cat-tags" style="margin-bottom: 10px;">
+                            ${game.tags ? game.tags.slice(0, 3).map(t => `<span class="tag-badge">${t}</span>`).join('') : ''}
+                        </div>
+                    </div>
+                    <div class="game-banner-meta">
+                        <span>SIZE: ${game.fileSize || '35 MB'}</span>
+                        <div class="game-banner-cta-btn">
+                            OPEN GAME PAGE ➔
+                        </div>
+                    </div>
                 </div>
             `;
 
-            row.addEventListener('click', () => selectGame(game));
-            row.addEventListener('mouseenter', () => {
+            card.addEventListener('click', () => {
+                location.hash = `#game/${game.id}`;
+            });
+
+            card.addEventListener('mouseenter', () => {
                 if (window.soundEngine) window.soundEngine.playHover();
             });
 
-            gamesListEl.appendChild(row);
+            gamesGalleryGrid.appendChild(card);
         });
     }
 
-    function selectGame(game) {
+    function showGamesGalleryView() {
+        if (gamesGalleryView) gamesGalleryView.style.display = 'block';
+        if (gameDetailPage) gameDetailPage.style.display = 'none';
+        currentSelectedGame = null;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function openDedicatedGamePage(game) {
         currentSelectedGame = game;
+        if (gamesGalleryView) gamesGalleryView.style.display = 'none';
+        if (gameDetailPage) gameDetailPage.style.display = 'block';
 
-        if (catTitleEl) catTitleEl.textContent = game.title;
-        if (catSubtitleEl) catSubtitleEl.textContent = game.subtitle || '';
-        if (catVersionEl) catVersionEl.textContent = `v${game.version || '1.0'}`;
-        if (catDescEl) catDescEl.textContent = game.description || '';
-        if (catSizeEl) catSizeEl.textContent = `FILE SIZE: ${game.fileSize || '35 MB'}`;
-        if (catDateEl) catDateEl.textContent = `DATE: ${game.releaseDate || '2026'}`;
-        if (catDownloadsEl) catDownloadsEl.textContent = `DOWNLOADS: ${game.downloadsCount || 0}`;
-
-        if (previewImgEl) {
-            previewImgEl.src = game.coverImage || '/assets/images/cover_chamber.svg';
+        // Update Address Bar
+        if (xpAddressText) {
+            xpAddressText.textContent = `C:\\Games\\MOPTAM_Archive\\${game.id}\\launch.htm`;
         }
+
+        // Fill dedicated page content
+        if (gameBreadcrumbTitle) gameBreadcrumbTitle.textContent = game.title;
+        if (gameDetailHeroImg) gameDetailHeroImg.src = game.coverImage || '/assets/images/cover_chamber.svg';
+        if (gameDetailTitle) gameDetailTitle.textContent = game.title;
+        if (gameDetailSubtitle) gameDetailSubtitle.textContent = game.subtitle || '';
+        if (gameDetailVersion) gameDetailVersion.textContent = `v${game.version || '1.0'}`;
+        if (gameDetailDesc) gameDetailDesc.textContent = game.description || '';
+        if (gameMetaPlatforms) gameMetaPlatforms.textContent = (game.platforms || ['Windows']).join(', ');
+        if (gameMetaSize) gameMetaSize.textContent = game.fileSize || '40 MB';
+        if (gameMetaDate) gameMetaDate.textContent = game.releaseDate || '2026';
+        if (gameMetaDownloads) gameMetaDownloads.textContent = game.downloadsCount || 0;
 
         // Tags
-        if (catTagsEl && game.tags) {
-            catTagsEl.innerHTML = game.tags.map(t => `<span class="tag-badge">${t}</span>`).join('');
+        if (gameDetailTags && game.tags) {
+            gameDetailTags.innerHTML = game.tags.map(t => `<span class="tag-badge">${t}</span>`).join('');
         }
 
-        // Price badge and download/steam buttons
+        // Features list
+        if (gameDetailFeaturesList && game.features) {
+            gameDetailFeaturesList.innerHTML = game.features.map(f => `<li>${escapeHtml(f)}</li>`).join('');
+        }
+
+        // Screenshots Gallery
+        if (gameDetailScreenshots) {
+            const screens = game.screenshots && game.screenshots.length > 0 ? game.screenshots : [game.coverImage];
+            gameDetailScreenshots.innerHTML = screens.map(s => `
+                <img src="${s}" class="modal-thumb" style="aspect-ratio: 16/9; object-fit: cover; cursor: pointer;" alt="screenshot">
+            `).join('');
+
+            gameDetailScreenshots.querySelectorAll('.modal-thumb').forEach(thumb => {
+                thumb.addEventListener('click', () => {
+                    if (gameDetailHeroImg) gameDetailHeroImg.src = thumb.src;
+                    if (window.soundEngine) window.soundEngine.playSelect();
+                });
+            });
+        }
+
+        // Price, Download & Steam buttons
         const isFree = game.isFree !== false;
-        if (catPriceBadge) {
+        if (gameDetailPriceBadge) {
             if (isFree) {
-                catPriceBadge.className = 'badge-free';
-                catPriceBadge.textContent = 'FREE DOWNLOAD';
+                gameDetailPriceBadge.className = 'badge-free';
+                gameDetailPriceBadge.textContent = 'FREE DOWNLOAD';
             } else {
-                catPriceBadge.className = 'badge-steam';
-                catPriceBadge.textContent = `STEAM: ${game.price || '$6.99'}`;
+                gameDetailPriceBadge.className = 'badge-steam';
+                gameDetailPriceBadge.textContent = `STEAM: ${game.price || '$6.99'}`;
             }
         }
 
-        if (btnDownloadEl) {
-            btnDownloadEl.style.display = isFree ? 'inline-flex' : 'none';
+        if (gameMetaStatus) {
+            gameMetaStatus.textContent = isFree ? 'FREE DOWNLOAD' : `PAID RELEASE (${game.price || '$6.99'})`;
+            gameMetaStatus.style.color = isFree ? '#2e7d32' : '#0284c7';
         }
 
-        if (btnSteamEl) {
+        if (btnPageDownload) {
+            btnPageDownload.style.display = isFree ? 'inline-flex' : 'none';
+            btnPageDownload.onclick = () => {
+                if (!currentUser) {
+                    openAuthModal('An operator account is required to download archive files.', 'login');
+                } else {
+                    startDownloadProcess(game);
+                }
+            };
+        }
+
+        if (btnPageSteam) {
             if (!isFree) {
-                btnSteamEl.style.display = 'inline-flex';
-                btnSteamEl.href = game.steamUrl || (game.externalLinks && game.externalLinks.steam) || 'https://store.steampowered.com';
+                btnPageSteam.style.display = 'inline-flex';
+                btnPageSteam.href = game.steamUrl || (game.externalLinks && game.externalLinks.steam) || 'https://store.steampowered.com';
             } else {
-                btnSteamEl.style.display = 'none';
+                btnPageSteam.style.display = 'none';
             }
         }
 
-        if (btnPlayBrowserEl) {
-            btnPlayBrowserEl.style.display = game.playInBrowserUrl ? 'inline-flex' : 'none';
+        if (btnPagePlayBrowser) {
+            if (game.playInBrowserUrl) {
+                btnPagePlayBrowser.style.display = 'inline-flex';
+                btnPagePlayBrowser.onclick = () => {
+                    document.getElementById('playGameTitle').textContent = `RUNNING // ${game.title}`;
+                    playIframe.src = game.playInBrowserUrl;
+                    playModal.classList.add('open');
+                };
+            } else {
+                btnPagePlayBrowser.style.display = 'none';
+            }
         }
 
-        // Update selected row
-        const rows = document.querySelectorAll('.gamerow');
-        rows.forEach(r => r.classList.remove('selected'));
-        renderGamesList();
-
-        // Update reactions display for this game
+        // Update Reactions for this game
         updateReactionButtons();
 
         // Load community feedback for this game
@@ -719,7 +841,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         loadGameFeedback(game.id, currentFeedbackType);
 
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         if (window.soundEngine) window.soundEngine.playSelect();
+    }
+
+    if (btnBackToGamesGallery) {
+        btnBackToGamesGallery.addEventListener('click', () => {
+            location.hash = '#games';
+        });
     }
 
     // Filter Buttons
@@ -728,22 +857,10 @@ document.addEventListener('DOMContentLoaded', () => {
             gameFilterBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             currentFilter = btn.getAttribute('data-filter');
-            renderGamesList();
+            renderGamesGallery();
             if (window.soundEngine) window.soundEngine.playSelect();
         });
     });
-
-    // Direct Download
-    if (btnDownloadEl) {
-        btnDownloadEl.addEventListener('click', () => {
-            if (!currentSelectedGame) return;
-            if (!currentUser) {
-                openAuthModal('An operator account is required to download archive files.', 'login');
-                return;
-            }
-            startDownloadProcess(currentSelectedGame);
-        });
-    }
 
     function startDownloadProcess(game) {
         if (!downloadDialog) return;
@@ -769,10 +886,8 @@ document.addEventListener('DOMContentLoaded', () => {
             downloadDialog.classList.remove('open');
             window.location.href = `/api/games/${game.id}/download?token=${authToken}`;
             setTimeout(() => {
-                if (currentSelectedGame && currentSelectedGame.id === game.id) {
-                    currentSelectedGame.downloadsCount = (currentSelectedGame.downloadsCount || 0) + 1;
-                    if (catDownloadsEl) catDownloadsEl.textContent = `DOWNLOADS: ${currentSelectedGame.downloadsCount}`;
-                }
+                game.downloadsCount = (game.downloadsCount || 0) + 1;
+                if (gameMetaDownloads) gameMetaDownloads.textContent = game.downloadsCount;
             }, 1000);
         };
 
@@ -785,76 +900,6 @@ document.addEventListener('DOMContentLoaded', () => {
             clearInterval(interval);
             downloadDialog.classList.remove('open');
         };
-    }
-
-    // Expand Spec Sheet Modal
-    if (btnDetailsEl) {
-        btnDetailsEl.addEventListener('click', () => {
-            if (!currentSelectedGame) return;
-            const game = currentSelectedGame;
-            document.getElementById('modalGameTitle').textContent = game.title;
-            document.getElementById('modalHeroImg').src = game.coverImage || '/assets/images/cover_chamber.svg';
-            document.getElementById('modalGameDesc').textContent = game.description || '';
-            document.getElementById('modalVersion').textContent = game.version || '1.0';
-            document.getElementById('modalFileSize').textContent = game.fileSize || '35 MB';
-            document.getElementById('modalDownloads').textContent = game.downloadsCount || '0';
-
-            const featuresList = document.getElementById('modalFeaturesList');
-            featuresList.innerHTML = '';
-            if (game.features && game.features.length) {
-                game.features.forEach(f => {
-                    const li = document.createElement('li');
-                    li.textContent = f;
-                    featuresList.appendChild(li);
-                });
-            }
-
-            const modalDownloadBtn = document.getElementById('modalDownloadBtn');
-            const modalSteamBtn = document.getElementById('modalSteamBtn');
-            const modalItchBtn = document.getElementById('modalItchBtn');
-
-            const isFree = game.isFree !== false;
-            modalDownloadBtn.style.display = isFree ? 'inline-block' : 'none';
-            modalDownloadBtn.onclick = () => {
-                gameModal.classList.remove('open');
-                if (!currentUser) {
-                    openAuthModal('Account required to download.', 'login');
-                } else {
-                    startDownloadProcess(game);
-                }
-            };
-
-            const steamUrl = game.steamUrl || (game.externalLinks && game.externalLinks.steam);
-            if (steamUrl) {
-                modalSteamBtn.style.display = 'inline-block';
-                modalSteamBtn.href = steamUrl;
-            } else {
-                modalSteamBtn.style.display = 'none';
-            }
-
-            if (game.externalLinks && game.externalLinks.itch) {
-                modalItchBtn.style.display = 'inline-block';
-                modalItchBtn.href = game.externalLinks.itch;
-            } else {
-                modalItchBtn.style.display = 'none';
-            }
-
-            gameModal.classList.add('open');
-        });
-    }
-
-    if (modalClose) {
-        modalClose.addEventListener('click', () => gameModal.classList.remove('open'));
-    }
-
-    // Play in Browser
-    if (btnPlayBrowserEl) {
-        btnPlayBrowserEl.addEventListener('click', () => {
-            if (!currentSelectedGame || !currentSelectedGame.playInBrowserUrl) return;
-            document.getElementById('playGameTitle').textContent = `RUNNING // ${currentSelectedGame.title}`;
-            playIframe.src = currentSelectedGame.playInBrowserUrl;
-            playModal.classList.add('open');
-        });
     }
 
     if (playModalClose) {
@@ -1001,9 +1046,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 gameFeedbackList.appendChild(itemEl);
             });
 
-            // Bind delete buttons for admin
             document.querySelectorAll('.btn-delete-feedback').forEach(btn => {
-                btn.addEventListener('click', async (e) => {
+                btn.addEventListener('click', async () => {
                     const id = btn.getAttribute('data-id');
                     if (confirm('Delete this feedback entry?')) {
                         await fetch(`/api/admin/feedback/${id}`, {
@@ -1165,50 +1209,235 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ========================================================================
-    // 8. AUDIO LAB & SOUND VAULT (MUSIC & TACTILE SFX)
+    // 8. BUILT-IN MUSIC PLAYER & AUDIO LAB (PLAY, SCRUB, DOWNLOAD, COVERS)
     // ========================================================================
 
     async function loadMusic() {
-        if (!musicGridEl) return;
         try {
             const res = await fetch('/api/music');
-            const albums = await res.json();
-            musicGridEl.innerHTML = '';
-
-            albums.forEach(album => {
-                const card = document.createElement('div');
-                card.className = 'music-card';
-
-                const tracksHtml = album.tracks ? album.tracks.map(t => `<li style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 2px;">${escapeHtml(t)}</li>`).join('') : '';
-
-                card.innerHTML = `
-                    <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px;">
-                        <h4 style="font-family: var(--font-title); font-size: 20px; color: var(--link-color); margin: 0;">${escapeHtml(album.title)}</h4>
-                        <span style="font-size: 10px; color: var(--text-dim); border: 1px solid var(--border-color); padding: 1px 4px;">${album.year}</span>
-                    </div>
-                    <div style="font-size: 11px; color: var(--accent); font-weight: bold; margin-bottom: 6px;">${album.genre}</div>
-                    <p style="font-size: 12px; color: var(--text-muted); line-height: 1.45; margin-bottom: 8px;">${escapeHtml(album.description)}</p>
-                    
-                    <div style="background: var(--bg-card-inner); border: 1px solid var(--border-color); padding: 8px; margin-bottom: 10px;">
-                        <span style="font-size: 10.5px; font-weight: bold; color: var(--text-dim); display: block; margin-bottom: 4px;">TRACKLIST SAMPLER:</span>
-                        <ul style="padding-left: 16px; margin: 0;">${tracksHtml}</ul>
-                    </div>
-
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <span style="font-size: 11px; color: var(--text-dim);">${album.tracksCount} Tracks Mastered</span>
-                        <a href="${album.bandcampUrl || 'https://bandcamp.com'}" target="_blank" class="btn-pixel" style="text-decoration: none;">
-                            <span>▶</span> STREAM ON BANDCAMP
-                        </a>
-                    </div>
-                `;
-
-                musicGridEl.appendChild(card);
+            allAlbums = await res.json();
+            
+            // Flatten tracks
+            allTracks = [];
+            allAlbums.forEach(album => {
+                if (album.tracks && Array.isArray(album.tracks)) {
+                    album.tracks.forEach(track => {
+                        allTracks.push({
+                            ...track,
+                            albumTitle: album.title,
+                            albumCover: album.coverImage || '/assets/images/cover_chamber.svg'
+                        });
+                    });
+                }
             });
+
+            renderTracksList();
+            if (allTracks.length > 0) {
+                loadTrackIntoPlayer(0, false);
+            }
         } catch (e) {
-            musicGridEl.innerHTML = '<div style="color: red; padding: 10px;">Failed to load music releases.</div>';
+            if (musicTracksList) musicTracksList.innerHTML = '<div style="color: red; padding: 10px;">Failed to load music tracks.</div>';
         }
     }
 
+    function renderTracksList() {
+        if (!musicTracksList) return;
+        musicTracksList.innerHTML = '';
+
+        allTracks.forEach((track, idx) => {
+            const row = document.createElement('div');
+            row.className = 'track-row';
+            if (idx === currentTrackIndex) row.classList.add('active');
+
+            const coverSquare = track.cover || track.albumCover || '/assets/images/cover_chamber.svg';
+
+            row.innerHTML = `
+                <!-- Square Cover next to track name -->
+                <div class="track-cover-square">
+                    <img src="${coverSquare}" class="track-cover-img" alt="Cover">
+                </div>
+                <div class="track-info-col">
+                    <div class="track-name">${escapeHtml(track.title)}</div>
+                    <div class="track-artist">${escapeHtml(track.artist || 'MOPTAM')} &bull; ${escapeHtml(track.albumTitle || 'Archive Release')}</div>
+                </div>
+                <div class="track-actions">
+                    <span style="font-size: 11px; font-family: var(--font-mono); margin-right: 8px;">${track.duration || '03:30'}</span>
+                    <button type="button" class="btn-pixel btn-track-play" style="font-size: 10px; padding: 3px 8px;">
+                        ${(idx === currentTrackIndex && isPlaying) ? '❚❚ PAUSE' : '▶ PLAY'}
+                    </button>
+                    <a href="/api/music/track/${track.id}/download" download class="btn-pixel" style="font-size: 10px; padding: 3px 8px; text-decoration: none;">
+                        💾 DL
+                    </a>
+                </div>
+            `;
+
+            row.querySelector('.btn-track-play').addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (currentTrackIndex === idx) {
+                    togglePlayTrack();
+                } else {
+                    loadTrackIntoPlayer(idx, true);
+                }
+            });
+
+            row.addEventListener('click', () => {
+                loadTrackIntoPlayer(idx, true);
+            });
+
+            musicTracksList.appendChild(row);
+        });
+    }
+
+    function loadTrackIntoPlayer(index, autoPlay = true) {
+        if (index < 0 || index >= allTracks.length) return;
+        currentTrackIndex = index;
+        const track = allTracks[currentTrackIndex];
+
+        if (playerCurrentTitle) playerCurrentTitle.textContent = track.title;
+        if (playerCurrentArtist) playerCurrentArtist.textContent = `${track.artist || 'MOPTAM'} • ${track.albumTitle || 'Archive Release'}`;
+        if (playerCurrentCover) playerCurrentCover.src = track.cover || track.albumCover || '/assets/images/cover_chamber.svg';
+        if (playerTimeDuration) playerTimeDuration.textContent = track.duration || '03:30';
+
+        currentTrackPlaybackSeconds = 0;
+        updatePlayerTimeDisplay();
+
+        if (btnPlayerDownloadTrack) {
+            btnPlayerDownloadTrack.onclick = () => {
+                window.location.href = `/api/music/track/${track.id}/download`;
+            };
+        }
+
+        renderTracksList();
+
+        if (autoPlay) {
+            playTrack();
+        } else {
+            stopTrackTimer();
+            isPlaying = false;
+            updatePlayButtonUI();
+        }
+    }
+
+    function togglePlayTrack() {
+        if (isPlaying) {
+            pauseTrack();
+        } else {
+            playTrack();
+        }
+    }
+
+    function playTrack() {
+        isPlaying = true;
+        updatePlayButtonUI();
+        if (playerStatusIndicator) playerStatusIndicator.textContent = '● PLAYING';
+        
+        // Start synthetic audio playback stream
+        const track = allTracks[currentTrackIndex];
+        if (track && window.soundEngine) {
+            window.soundEngine.auditionSample(track.synth || 'ambient_drone');
+        }
+
+        startTrackTimer();
+        renderTracksList();
+    }
+
+    function pauseTrack() {
+        isPlaying = false;
+        updatePlayButtonUI();
+        if (playerStatusIndicator) playerStatusIndicator.textContent = '❚❚ PAUSED';
+        stopTrackTimer();
+        renderTracksList();
+    }
+
+    function updatePlayButtonUI() {
+        if (playerPlayIcon) playerPlayIcon.textContent = isPlaying ? '❚❚' : '▶';
+        if (playerPlayText) playerPlayText.textContent = isPlaying ? 'PAUSE' : 'PLAY';
+    }
+
+    function startTrackTimer() {
+        stopTrackTimer();
+        audioPlaybackTimer = setInterval(() => {
+            currentTrackPlaybackSeconds += 1;
+            updatePlayerTimeDisplay();
+
+            // Loop or next track at 3.5 minutes (210s)
+            if (currentTrackPlaybackSeconds >= 210) {
+                currentTrackPlaybackSeconds = 0;
+                loadTrackIntoPlayer((currentTrackIndex + 1) % allTracks.length, true);
+            }
+        }, 1000);
+    }
+
+    function stopTrackTimer() {
+        if (audioPlaybackTimer) {
+            clearInterval(audioPlaybackTimer);
+            audioPlaybackTimer = null;
+        }
+    }
+
+    function updatePlayerTimeDisplay() {
+        const m = Math.floor(currentTrackPlaybackSeconds / 60);
+        const s = currentTrackPlaybackSeconds % 60;
+        const timeStr = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+        if (playerTimeCurrent) playerTimeCurrent.textContent = timeStr;
+        if (playerSeekSlider) {
+            playerSeekSlider.value = Math.min(100, Math.floor((currentTrackPlaybackSeconds / 210) * 100));
+        }
+    }
+
+    // Transport buttons
+    if (btnPlayerPlay) btnPlayerPlay.addEventListener('click', togglePlayTrack);
+    if (btnPlayerStop) {
+        btnPlayerStop.addEventListener('click', () => {
+            stopTrackTimer();
+            isPlaying = false;
+            currentTrackPlaybackSeconds = 0;
+            updatePlayerTimeDisplay();
+            updatePlayButtonUI();
+            if (playerStatusIndicator) playerStatusIndicator.textContent = '■ STOPPED';
+            renderTracksList();
+        });
+    }
+
+    if (btnPlayerPrev) {
+        btnPlayerPrev.addEventListener('click', () => {
+            const nextIdx = (currentTrackIndex - 1 + allTracks.length) % allTracks.length;
+            loadTrackIntoPlayer(nextIdx, isPlaying);
+        });
+    }
+
+    if (btnPlayerNext) {
+        btnPlayerNext.addEventListener('click', () => {
+            const nextIdx = (currentTrackIndex + 1) % allTracks.length;
+            loadTrackIntoPlayer(nextIdx, isPlaying);
+        });
+    }
+
+    if (btnPlayerRewind) {
+        btnPlayerRewind.addEventListener('click', () => {
+            currentTrackPlaybackSeconds = Math.max(0, currentTrackPlaybackSeconds - 5);
+            updatePlayerTimeDisplay();
+            if (window.soundEngine) window.soundEngine.playSelect();
+        });
+    }
+
+    if (btnPlayerForward) {
+        btnPlayerForward.addEventListener('click', () => {
+            currentTrackPlaybackSeconds = Math.min(210, currentTrackPlaybackSeconds + 5);
+            updatePlayerTimeDisplay();
+            if (window.soundEngine) window.soundEngine.playSelect();
+        });
+    }
+
+    if (playerSeekSlider) {
+        playerSeekSlider.addEventListener('input', (e) => {
+            const pct = parseInt(e.target.value);
+            currentTrackPlaybackSeconds = Math.floor((pct / 100) * 210);
+            updatePlayerTimeDisplay();
+        });
+    }
+
+    // Load SFX library
     async function loadSfx() {
         if (!sfxGridEl) return;
         try {
@@ -1286,7 +1515,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }
 
-            // Also load latest into homepage
             if (updates.length > 0) {
                 const latest = updates[0];
                 if (homeLatestUpdateDate) homeLatestUpdateDate.textContent = latest.date;
@@ -1342,7 +1570,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 guestbookListEl.appendChild(row);
             });
 
-            // Bind admin delete buttons
             document.querySelectorAll('.btn-delete-gb').forEach(b => {
                 b.addEventListener('click', async () => {
                     const id = b.getAttribute('data-id');
@@ -1470,7 +1697,6 @@ document.addEventListener('DOMContentLoaded', () => {
             closeTerminal();
             closeAuthModal();
             if (artModal) artModal.classList.remove('open');
-            if (gameModal) gameModal.classList.remove('open');
             if (playModal) {
                 playIframe.src = 'about:blank';
                 playModal.classList.remove('open');
