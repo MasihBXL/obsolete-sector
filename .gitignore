@@ -2,4 +2,7 @@ node_modules/
 npm-debug.log
 .DS_Store
 *.log
+cloudflared.exe
+data/*.db-wal
+data/*.db-shm
 uploads/games/*.tmp
