@@ -442,15 +442,17 @@ document.addEventListener('DOMContentLoaded', () => {
         loadGuestbook();
     }
 
-    authBtn.addEventListener('click', () => {
-        if (currentUser) {
-            if (confirm(`Terminate current session for [${currentUser.username}]?`)) {
-                logout();
+    if (authBtn) {
+        authBtn.addEventListener('click', () => {
+            if (currentUser) {
+                if (confirm(`Terminate current session for [${currentUser.username}]?`)) {
+                    logout();
+                }
+            } else {
+                openAuthModal('OPERATOR AUTHENTICATION', 'login');
             }
-        } else {
-            openAuthModal('OPERATOR AUTHENTICATION', 'login');
-        }
-    });
+        });
+    }
 
     if (btnGbPromptAuth) {
         btnGbPromptAuth.addEventListener('click', () => {
@@ -808,63 +810,6 @@ document.addEventListener('DOMContentLoaded', () => {
             pendingSocialAuth = null;
             authPaneUsernamePrompt.style.display = 'none';
             switchAuthTab('social');
-            authStatusMsg.textContent = '';
-        });
-    }
-            authStatusMsg.style.color = 'var(--link-color)';
-
-            try {
-                const res = await fetch('/api/auth/social-complete', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        provider: pendingSocialAuth.provider,
-                        email: pendingSocialAuth.email,
-                        providerId: pendingSocialAuth.providerId,
-                        username: chosenUsername,
-                        avatar: pendingSocialAuth.avatar
-                    })
-                });
-
-                const data = await res.json();
-                if (res.ok && data.success) {
-                    authToken = data.token;
-                    currentUser = data.user;
-                    localStorage.setItem('auth_token', authToken);
-                    authStatusMsg.textContent = `Account created! Welcome, ${currentUser.username}.`;
-                    authStatusMsg.style.color = '#2e7d32';
-
-                    setTimeout(() => {
-                        closeAuthModal();
-                        updateUserUI();
-                        loadReactions();
-                        if (currentSelectedGame) loadGameFeedback(currentSelectedGame.id);
-                    }, 500);
-                } else {
-                    authStatusMsg.textContent = data.error || 'Registration failed.';
-                    authStatusMsg.style.color = 'var(--accent)';
-                }
-            } catch (err) {
-                authStatusMsg.textContent = 'Server connection error.';
-                authStatusMsg.style.color = 'var(--accent)';
-            }
-        });
-
-        // Also allow Enter key inside ssoUsernameInput
-        if (ssoUsernameInput) {
-            ssoUsernameInput.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    btnConfirmUsername.click();
-                }
-            });
-        }
-    }
-
-    if (btnCancelSocial) {
-        btnCancelSocial.addEventListener('click', () => {
-            pendingSocialAuth = null;
-            authPaneUsernamePrompt.style.display = 'none';
-            authPaneSocialMain.style.display = 'block';
             authStatusMsg.textContent = '';
         });
     }
