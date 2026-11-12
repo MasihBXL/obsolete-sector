@@ -2080,49 +2080,371 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ========================================================================
-    // 9. DEVLOGS & LATEST UPDATE ON HOMEPAGE
+    // 9. DEVLOGS, SPOTLIGHT RANDOM COMMENTS & REACTIONS (HOMEPAGE & DEVLOGS)
     // ========================================================================
+
+    let devlogCommentsSummary = {};
+    let cachedUpdates = [];
+
+    async function loadDevlogCommentsSummary() {
+        try {
+            const res = await fetch('/api/devlogs/comments/summary');
+            if (res.ok) {
+                devlogCommentsSummary = await res.json();
+            }
+        } catch (e) {
+            devlogCommentsSummary = {};
+        }
+    }
+
+    function renderDevlogSpotlightHtml(devlogId) {
+        const comments = devlogCommentsSummary[devlogId] || [];
+        if (comments.length === 0) {
+            return `
+                <div class="spotlight-comment-inner">
+                    <span class="spotlight-bubble-icon">💭</span>
+                    <span class="spotlight-empty-label">No transmissions logged yet.</span>
+                </div>
+                <button type="button" class="spotlight-expand-pill" data-target="${devlogId}">+ Add Comment</button>
+            `;
+        }
+        // Pick ONE random comment!
+        const randomComment = comments[Math.floor(Math.random() * comments.length)];
+        const cleanContent = randomComment.content.length > 70 
+            ? randomComment.content.slice(0, 67) + '...' 
+            : randomComment.content;
+
+        return `
+            <div class="spotlight-comment-inner" title="${escapeHtml(randomComment.content)}">
+                <span class="spotlight-bubble-icon">💬</span>
+                <span class="spotlight-comment-quote">"${escapeHtml(cleanContent)}"</span>
+                <span class="spotlight-author-tag">— ${escapeHtml(randomComment.username)}</span>
+            </div>
+            <button type="button" class="spotlight-expand-pill" data-target="${devlogId}">View all (${comments.length}) ▾</button>
+        `;
+    }
+
+    function renderDevlogReactionsBarHtml(devlogId) {
+        const counts = gameReactions[devlogId] || {};
+        const userHas = userReactionsMap[devlogId] || {};
+        const comments = devlogCommentsSummary[devlogId] || [];
+
+        return `
+            <div class="devlog-rx-group" data-target-id="${devlogId}">
+                <button type="button" class="btn-pixel devlog-rx-btn ${userHas.heart ? 'active' : ''}" data-target="${devlogId}" data-type="heart" title="Love / Respect">
+                    ❤️ <span class="rx-num">${counts.heart || 0}</span>
+                </button>
+                <button type="button" class="btn-pixel devlog-rx-btn ${userHas.skull ? 'active' : ''}" data-target="${devlogId}" data-type="skull" title="Dread / Horror">
+                    💀 <span class="rx-num">${counts.skull || 0}</span>
+                </button>
+                <button type="button" class="btn-pixel devlog-rx-btn ${userHas.fire ? 'active' : ''}" data-target="${devlogId}" data-type="fire" title="Fire / Hype">
+                    🔥 <span class="rx-num">${counts.fire || 0}</span>
+                </button>
+                <button type="button" class="btn-pixel devlog-rx-btn ${userHas.tape ? 'active' : ''}" data-target="${devlogId}" data-type="tape" title="Energy / Analog">
+                    ⚡ <span class="rx-num">${counts.tape || 0}</span>
+                </button>
+            </div>
+            <button type="button" class="btn-pixel devlog-comments-toggle-btn" data-target="${devlogId}">
+                💬 Comments (${comments.length}) ▾
+            </button>
+        `;
+    }
+
+    async function handleToggleReaction(targetId, reactionType) {
+        if (!currentUser) {
+            openAuthModal('Sign in to leave reactions on games and devlog dispatches.', 'login');
+            return;
+        }
+
+        try {
+            const res = await fetch('/api/reactions/toggle', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${authToken}`
+                },
+                body: JSON.stringify({ targetId, reactionType })
+            });
+            const data = await res.json();
+            if (data.success && data.reactions) {
+                gameReactions = data.reactions.counts || {};
+                userReactionsMap = data.reactions.userReactions || {};
+                updateReactionButtons();
+                updateAllDevlogReactionBars();
+                if (window.soundEngine) window.soundEngine.playSelect();
+            }
+        } catch (e) {}
+    }
+
+    function updateAllDevlogReactionBars() {
+        document.querySelectorAll('.devlog-rx-group').forEach(group => {
+            const targetId = group.getAttribute('data-target-id');
+            if (!targetId) return;
+            const counts = gameReactions[targetId] || {};
+            const userHas = userReactionsMap[targetId] || {};
+
+            group.querySelectorAll('.devlog-rx-btn').forEach(btn => {
+                const type = btn.getAttribute('data-type');
+                const numSpan = btn.querySelector('.rx-num');
+                if (numSpan) numSpan.textContent = counts[type] || 0;
+                if (userHas[type]) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        });
+    }
+
+    async function toggleDevlogCommentsDrawer(devlogId) {
+        const drawer = document.getElementById(`commentsDrawer_${devlogId}`);
+        if (!drawer) return;
+
+        const isCurrentlyOpen = drawer.classList.contains('open');
+        if (isCurrentlyOpen) {
+            drawer.classList.remove('open');
+        } else {
+            drawer.classList.add('open');
+            await refreshDevlogCommentsList(devlogId);
+        }
+        if (window.soundEngine) window.soundEngine.playSelect();
+    }
+
+    async function refreshDevlogCommentsList(devlogId) {
+        const listEl = document.getElementById(`commentsList_${devlogId}`);
+        const inputArea = document.getElementById(`commentInputArea_${devlogId}`);
+        if (!listEl) return;
+
+        listEl.innerHTML = '<div style="font-size: 11px; color: var(--text-dim); padding: 4px;">Accessing transmission stream...</div>';
+
+        try {
+            const res = await fetch(`/api/devlogs/${devlogId}/comments`);
+            const comments = await res.json();
+
+            devlogCommentsSummary[devlogId] = comments;
+
+            // Refresh spotlight boxes and comment counts for this devlog
+            refreshSpotlightDisplay(devlogId);
+
+            if (comments.length === 0) {
+                listEl.innerHTML = '<div style="font-size: 11px; color: var(--text-dim); padding: 6px 0;">No comments logged yet. Transmit your reaction below!</div>';
+            } else {
+                listEl.innerHTML = comments.map(c => {
+                    const avatarSrc = c.user_avatar || getThemeDefaultAvatarInfo().url;
+                    const rolePill = c.user_role === 'admin'
+                        ? `<span style="background: var(--accent); color: #fff; font-size: 9px; padding: 1px 4px; border-radius: 2px;">ADMIN</span>`
+                        : `<span style="background: #0055ea; color: #fff; font-size: 9px; padding: 1px 4px; border-radius: 2px;">USER</span>`;
+                    const deleteBtn = (currentUser && (currentUser.role === 'admin' || currentUser.username === c.username))
+                        ? `<button type="button" class="btn-delete-comment" data-id="${c.id}" data-devlog="${devlogId}" style="background:none; border:none; color:red; cursor:pointer; font-size:10px;">[DELETE]</button>`
+                        : '';
+
+                    return `
+                        <div class="devlog-comment-item">
+                            <img class="devlog-comment-avatar" src="${avatarSrc}" alt="Avatar">
+                            <div class="devlog-comment-content">
+                                <div class="devlog-comment-meta">
+                                    <div style="display: flex; align-items: center; gap: 6px;">
+                                        <span class="devlog-comment-author">${escapeHtml(c.username)}</span>
+                                        ${rolePill}
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <span class="devlog-comment-date">${c.created_at ? c.created_at.slice(0, 10) : ''}</span>
+                                        ${deleteBtn}
+                                    </div>
+                                </div>
+                                <div class="devlog-comment-text">${escapeHtml(c.content)}</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                listEl.querySelectorAll('.btn-delete-comment').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        const commentId = btn.getAttribute('data-id');
+                        if (confirm('Delete this comment transmission?')) {
+                            await fetch(`/api/devlogs/comments/${commentId}`, {
+                                method: 'DELETE',
+                                headers: { 'Authorization': `Bearer ${authToken}` }
+                            });
+                            await refreshDevlogCommentsList(devlogId);
+                        }
+                    });
+                });
+            }
+
+            // Render Input Area
+            if (inputArea) {
+                if (currentUser) {
+                    inputArea.innerHTML = `
+                        <div class="devlog-comment-form">
+                            <textarea class="devlog-comment-textarea" id="textarea_${devlogId}" placeholder="Enter comment transmission as [${currentUser.username}]... (Max 1000 characters)"></textarea>
+                            <div style="display: flex; justify-content: flex-end; gap: 8px;">
+                                <button type="button" class="btn-pixel btn-pixel-accent btn-submit-comment" data-devlog="${devlogId}">
+                                    TRANSMIT COMMENT ➔
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    const submitBtn = inputArea.querySelector('.btn-submit-comment');
+                    const textarea = inputArea.querySelector(`#textarea_${devlogId}`);
+                    submitBtn.addEventListener('click', async () => {
+                        const content = textarea.value.trim();
+                        if (!content) return;
+                        submitBtn.disabled = true;
+                        try {
+                            const postRes = await fetch(`/api/devlogs/${devlogId}/comments`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': `Bearer ${authToken}`
+                                },
+                                body: JSON.stringify({ content })
+                            });
+                            if (postRes.ok) {
+                                textarea.value = '';
+                                await refreshDevlogCommentsList(devlogId);
+                                if (window.soundEngine) window.soundEngine.playSelect();
+                            }
+                        } catch(e) {} finally {
+                            submitBtn.disabled = false;
+                        }
+                    });
+                } else {
+                    inputArea.innerHTML = `
+                        <div style="background: rgba(0,0,0,0.03); border: 1px dashed var(--border-color); padding: 8px 12px; margin-top: 8px; font-size: 11px; display: flex; justify-content: space-between; align-items: center;">
+                            <span>Sign in to post comments under this devlog.</span>
+                            <button type="button" class="btn-pixel btn-login-prompt" style="font-size: 10.5px;">SIGN IN</button>
+                        </div>
+                    `;
+                    inputArea.querySelector('.btn-login-prompt').addEventListener('click', () => {
+                        openAuthModal('Sign in to leave a comment on this devlog.', 'login');
+                    });
+                }
+            }
+        } catch (e) {
+            listEl.innerHTML = '<div style="font-size: 11px; color: var(--accent);">Failed to load comments stream.</div>';
+        }
+    }
+
+    function refreshSpotlightDisplay(devlogId) {
+        document.querySelectorAll(`.devlog-spotlight-box[data-devlog-id="${devlogId}"], #homeLatestSpotlightBox`).forEach(box => {
+            box.innerHTML = renderDevlogSpotlightHtml(devlogId);
+            const pill = box.querySelector('.spotlight-expand-pill');
+            if (pill) {
+                pill.addEventListener('click', () => toggleDevlogCommentsDrawer(devlogId));
+            }
+        });
+
+        document.querySelectorAll(`.devlog-comments-toggle-btn[data-target="${devlogId}"]`).forEach(btn => {
+            const count = (devlogCommentsSummary[devlogId] || []).length;
+            btn.innerHTML = `💬 Comments (${count}) ▾`;
+        });
+    }
 
     async function loadUpdates() {
         try {
+            await loadDevlogCommentsSummary();
             const res = await fetch('/api/updates');
             const updates = await res.json();
-            
+            cachedUpdates = updates;
+
+            // 1. Render Devlogs list in Devlogs View
             if (updatesListEl) {
                 updatesListEl.innerHTML = '';
                 if (updates.length === 0) {
                     updatesListEl.innerHTML = '<div style="font-size: 12px; color: var(--text-dim); padding: 12px;">No transmissions logged yet.</div>';
-                    return;
+                } else {
+                    updates.forEach(u => {
+                        const box = document.createElement('div');
+                        box.className = 'devlog-card';
+                        box.style.background = 'var(--bg-card)';
+                        box.style.border = '1px solid var(--border-color)';
+                        box.style.padding = '14px 18px';
+                        box.style.marginBottom = '18px';
+
+                        box.innerHTML = `
+                            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px;">
+                                <h3 style="font-family: var(--font-title); font-size: 22px; color: var(--link-color); margin: 0;">${escapeHtml(u.title)}</h3>
+                                <span style="font-size: 11px; color: var(--text-dim); font-weight: bold;">${u.date}</span>
+                            </div>
+
+                            <!-- Subtle Random Spotlight Comment -->
+                            <div class="devlog-spotlight-box" data-devlog-id="${u.id}">
+                                ${renderDevlogSpotlightHtml(u.id)}
+                            </div>
+
+                            <div style="font-size: 12.5px; line-height: 1.6; color: var(--text-primary); white-space: pre-wrap;">${escapeHtml(u.body)}</div>
+
+                            <!-- Devlog Actions Bar (Reactions + Comments Toggle) -->
+                            <div class="devlog-actions-bar">
+                                ${renderDevlogReactionsBarHtml(u.id)}
+                            </div>
+
+                            <!-- Collapsible Comments Drawer -->
+                            <div class="devlog-comments-drawer" id="commentsDrawer_${u.id}">
+                                <div class="devlog-comments-list" id="commentsList_${u.id}"></div>
+                                <div class="devlog-comment-input-area" id="commentInputArea_${u.id}"></div>
+                            </div>
+                        `;
+                        updatesListEl.appendChild(box);
+                    });
                 }
-
-                updates.forEach(u => {
-                    const box = document.createElement('div');
-                    box.style.background = 'var(--bg-card)';
-                    box.style.border = '1px solid var(--border-color)';
-                    box.style.padding = '14px 18px';
-                    box.style.marginBottom = '14px';
-
-                    box.innerHTML = `
-                        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
-                            <h3 style="font-family: var(--font-title); font-size: 22px; color: var(--link-color); margin: 0;">${escapeHtml(u.title)}</h3>
-                            <span style="font-size: 11px; color: var(--text-dim); font-weight: bold;">${u.date}</span>
-                        </div>
-                        <div style="font-size: 12.5px; line-height: 1.6; color: var(--text-primary); white-space: pre-wrap;">${escapeHtml(u.body)}</div>
-                        <div style="margin-top: 10px; font-size: 10.5px; color: var(--text-dim); border-top: 1px dashed var(--border-color); padding-top: 6px;">
-                            LOGGED BY: MOPTAM // VERIFIED DISPATCH
-                        </div>
-                    `;
-                    updatesListEl.appendChild(box);
-                });
             }
 
+            // 2. Render Latest Update on Homepage
             if (updates.length > 0) {
                 const latest = updates[0];
                 if (homeLatestUpdateDate) homeLatestUpdateDate.textContent = latest.date;
                 if (homeLatestUpdateTitle) homeLatestUpdateTitle.textContent = latest.title;
                 if (homeLatestUpdateBody) homeLatestUpdateBody.textContent = latest.body;
+
+                const homeSpotlight = document.getElementById('homeLatestSpotlightBox');
+                if (homeSpotlight) {
+                    homeSpotlight.setAttribute('data-devlog-id', latest.id);
+                    homeSpotlight.innerHTML = renderDevlogSpotlightHtml(latest.id);
+                }
+
+                const homeActionBar = document.getElementById('homeLatestActionBar');
+                if (homeActionBar) {
+                    homeActionBar.innerHTML = renderDevlogReactionsBarHtml(latest.id);
+                }
+
+                const homeCommentsDrawer = document.getElementById('homeLatestCommentsDrawer');
+                if (homeCommentsDrawer) {
+                    homeCommentsDrawer.id = `commentsDrawer_${latest.id}`;
+                    const listEl = homeCommentsDrawer.querySelector('#homeLatestCommentsList');
+                    if (listEl) listEl.id = `commentsList_${latest.id}`;
+                    const inputArea = homeCommentsDrawer.querySelector('#homeLatestCommentInputArea');
+                    if (inputArea) inputArea.id = `commentInputArea_${latest.id}`;
+                }
             }
-        } catch (e) {}
+
+            // 3. Attach Event Listeners for All Devlog Reactions & Comments Buttons
+            document.querySelectorAll('.devlog-rx-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const target = btn.getAttribute('data-target');
+                    const type = btn.getAttribute('data-type');
+                    handleToggleReaction(target, type);
+                });
+            });
+
+            document.querySelectorAll('.devlog-comments-toggle-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const target = btn.getAttribute('data-target');
+                    toggleDevlogCommentsDrawer(target);
+                });
+            });
+
+            document.querySelectorAll('.spotlight-expand-pill').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const target = btn.getAttribute('data-target');
+                    toggleDevlogCommentsDrawer(target);
+                });
+            });
+
+        } catch (e) {
+            console.error('Error loading updates:', e);
+        }
     }
 
     // ========================================================================

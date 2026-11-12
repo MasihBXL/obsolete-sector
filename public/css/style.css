@@ -3979,3 +3979,316 @@ html[data-theme="dark"] body {
     background: #ede3c0;
 }
 
+/* ==========================================================================
+   DEVLOG SPOTLIGHT COMMENTS, REACTIONS & COMMENTS DRAWER
+   ========================================================================== */
+.devlog-spotlight-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    background: rgba(0, 50, 150, 0.04);
+    border: 1px solid var(--border-subtle, #d8e4f4);
+    border-radius: 3px;
+    padding: 3px 8px;
+    margin: 4px 0 10px 0;
+    font-size: 11px;
+    max-width: 100%;
+}
+
+.spotlight-comment-inner {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    min-width: 0;
+}
+
+.spotlight-bubble-icon {
+    font-size: 11px;
+    flex-shrink: 0;
+}
+
+.spotlight-comment-quote {
+    color: var(--text-muted);
+    font-style: italic;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 11px;
+}
+
+.spotlight-author-tag {
+    color: var(--link-color);
+    font-weight: bold;
+    font-size: 10.5px;
+    flex-shrink: 0;
+    margin-left: 2px;
+}
+
+.spotlight-empty-label {
+    color: var(--text-dim);
+    font-size: 10.5px;
+    font-style: italic;
+}
+
+.spotlight-expand-pill {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--link-color);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 2px;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.1s ease;
+}
+
+.spotlight-expand-pill:hover {
+    background: var(--link-color);
+    color: #ffffff;
+}
+
+/* Devlogs Actions Bar (Reactions + Comments Toggle) */
+.devlog-actions-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--border-color);
+}
+
+.devlog-rx-group {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+.devlog-rx-btn {
+    padding: 3px 8px !important;
+    font-size: 11px !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.devlog-rx-btn.active {
+    background: #0055ea !important;
+    color: #ffffff !important;
+    border-color: #003399 !important;
+}
+
+[data-theme="win98"] .devlog-rx-btn.active {
+    background: #000080 !important;
+    color: #ffffff !important;
+    border: 2px inset #ffffff !important;
+}
+
+[data-theme="dark"] .devlog-rx-btn.active,
+[data-theme="green"] .devlog-rx-btn.active,
+[data-theme="amber"] .devlog-rx-btn.active,
+[data-theme="blood"] .devlog-rx-btn.active,
+[data-theme="backrooms"] .devlog-rx-btn.active {
+    background: var(--accent) !important;
+    color: var(--bg-primary, #000) !important;
+    box-shadow: 0 0 6px var(--glow);
+}
+
+.devlog-comments-toggle-btn {
+    font-size: 11px !important;
+    padding: 3px 10px !important;
+}
+
+/* Collapsible Comments Drawer */
+.devlog-comments-drawer {
+    display: none;
+    margin-top: 12px;
+    padding: 12px 14px;
+    background: var(--bg-card-inner, #ffffff);
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+    box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.devlog-comments-drawer.open {
+    display: block;
+}
+
+.devlog-comments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 280px;
+    overflow-y: auto;
+    margin-bottom: 12px;
+    padding-right: 4px;
+}
+
+.devlog-comment-item {
+    display: flex;
+    gap: 8px;
+    padding: 6px 0;
+    border-bottom: 1px dotted var(--border-subtle, #d8e4f4);
+    font-size: 11.5px;
+}
+
+.devlog-comment-item:last-child {
+    border-bottom: none;
+}
+
+.devlog-comment-avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 3px;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    background: #ffffff;
+}
+
+.devlog-comment-content {
+    flex-grow: 1;
+    min-width: 0;
+}
+
+.devlog-comment-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2px;
+}
+
+.devlog-comment-author {
+    color: var(--link-color);
+    font-weight: bold;
+    font-size: 11px;
+}
+
+.devlog-comment-date {
+    color: var(--text-dim);
+    font-size: 10px;
+}
+
+.devlog-comment-text {
+    color: var(--text-primary);
+    line-height: 1.45;
+    word-break: break-word;
+    white-space: pre-wrap;
+    font-size: 11.5px;
+}
+
+.devlog-comment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    border-top: 1px solid var(--border-subtle, #d8e4f4);
+    padding-top: 10px;
+}
+
+.devlog-comment-textarea {
+    width: 100%;
+    min-height: 50px;
+    padding: 6px 8px;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    background: var(--bg-surface, #ffffff);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 2px;
+    outline: none;
+    resize: vertical;
+}
+
+/* Theme overrides for devlog comments */
+[data-theme="win98"] .devlog-spotlight-box {
+    background: #d4d0c8;
+    border: 1px solid #808080;
+    border-radius: 0;
+}
+[data-theme="win98"] .devlog-comments-drawer {
+    background: #c0c0c0;
+    border: 2px inset #ffffff;
+    border-radius: 0;
+}
+[data-theme="win98"] .devlog-comment-textarea {
+    background: #ffffff;
+    border: 2px inset #ffffff;
+    border-radius: 0;
+}
+
+[data-theme="dark"] .devlog-spotlight-box {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: #2b3442;
+}
+[data-theme="dark"] .devlog-comments-drawer {
+    background: #0d1117;
+    border-color: #2b3442;
+}
+[data-theme="dark"] .devlog-comment-textarea {
+    background: #050608;
+    border-color: #2b3442;
+    color: #e2e8f0;
+}
+
+[data-theme="green"] .devlog-spotlight-box {
+    background: rgba(0, 255, 65, 0.04);
+    border-color: #00ff41;
+}
+[data-theme="green"] .devlog-comments-drawer {
+    background: #000000;
+    border-color: #00ff41;
+}
+[data-theme="green"] .devlog-comment-textarea {
+    background: #000000;
+    border-color: #00ff41;
+    color: #00ff41;
+}
+
+[data-theme="amber"] .devlog-spotlight-box {
+    background: rgba(255, 176, 0, 0.04);
+    border-color: #ffb000;
+}
+[data-theme="amber"] .devlog-comments-drawer {
+    background: #050300;
+    border-color: #ffb000;
+}
+[data-theme="amber"] .devlog-comment-textarea {
+    background: #050300;
+    border-color: #ffb000;
+    color: #ffb000;
+}
+
+[data-theme="blood"] .devlog-spotlight-box {
+    background: rgba(255, 42, 42, 0.04);
+    border-color: #800a0a;
+}
+[data-theme="blood"] .devlog-comments-drawer {
+    background: #0d0202;
+    border-color: #800a0a;
+}
+[data-theme="blood"] .devlog-comment-textarea {
+    background: #050000;
+    border-color: #800a0a;
+    color: #ff2a2a;
+}
+
+[data-theme="backrooms"] .devlog-spotlight-box {
+    background: rgba(100, 80, 40, 0.05);
+    border-color: #8c7c50;
+}
+[data-theme="backrooms"] .devlog-comments-drawer {
+    background: #ede3c0;
+    border-color: #8c7c50;
+}
+[data-theme="backrooms"] .devlog-comment-textarea {
+    background: #fbf7ec;
+    border-color: #8c7c50;
+    color: #3b3017;
+}
+

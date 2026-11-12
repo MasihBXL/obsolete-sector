@@ -207,7 +207,7 @@
                         </div>
 
                         <!-- Latest Update Highlight on Homepage -->
-                        <div class="latest-update-card">
+                        <div class="latest-update-card" id="homeLatestUpdateCard">
                             <div class="latest-update-header">
                                 <div style="display: flex; align-items: center; gap: 8px;">
                                     <span class="latest-update-badge">LATEST UPDATE</span>
@@ -216,9 +216,27 @@
                                 <a href="#updates" class="btn-pixel" style="font-size: 11px;">VIEW ALL UPDATES ➔</a>
                             </div>
                             <h3 id="homeLatestUpdateTitle" class="latest-update-title">[Chamber Protocol] v1.4.2 Hotfix &amp; CRT Audio Overhaul</h3>
+
+                            <!-- Subtle Random Spotlight Comment -->
+                            <div id="homeLatestSpotlightBox" class="devlog-spotlight-box">
+                                <div class="spotlight-comment-inner">
+                                    <span class="spotlight-bubble-icon">💭</span>
+                                    <span class="spotlight-empty-label">Loading comments...</span>
+                                </div>
+                            </div>
+
                             <p id="homeLatestUpdateBody" class="latest-update-excerpt">
                                 Implemented analog audio synthesizer improvements, reduced latency on shell cocking sound, and fixed a rare glitch when handcuffs were used consecutively.
                             </p>
+
+                            <!-- Devlog Actions Bar (Reactions + Comments Toggle) -->
+                            <div id="homeLatestActionBar" class="devlog-actions-bar"></div>
+
+                            <!-- Collapsible Comments Drawer -->
+                            <div id="homeLatestCommentsDrawer" class="devlog-comments-drawer">
+                                <div id="homeLatestCommentsList" class="devlog-comments-list"></div>
+                                <div id="homeLatestCommentInputArea" class="devlog-comment-input-area"></div>
+                            </div>
                         </div>
 
                         <!-- Guestbook Call to Action -->

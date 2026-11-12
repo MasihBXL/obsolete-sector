@@ -78,6 +78,18 @@ function initSchema() {
             created_at TEXT NOT NULL,
             FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
         );
+
+        CREATE TABLE IF NOT EXISTS devlog_comments (
+            id TEXT PRIMARY KEY,
+            devlog_id TEXT NOT NULL,
+            user_id TEXT,
+            username TEXT NOT NULL,
+            user_role TEXT DEFAULT 'user',
+            user_avatar TEXT,
+            content TEXT NOT NULL,
+            created_at TEXT NOT NULL,
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+        );
     `);
 
     // Ensure default Admin account exists
@@ -374,6 +386,49 @@ function deleteGameFeedback(id) {
     db.prepare('DELETE FROM game_feedback WHERE id = ?').run(id);
 }
 
+// Devlog Comments Operations
+function addDevlogComment({ devlogId, userId, username, userRole = 'user', userAvatar = null, content }) {
+    const id = 'dvc-' + crypto.randomUUID();
+    const createdAt = new Date().toISOString();
+
+    db.prepare(`
+        INSERT INTO devlog_comments (id, devlog_id, user_id, username, user_role, user_avatar, content, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(id, devlogId, userId, username, userRole, userAvatar, content, createdAt);
+
+    return { id, devlog_id: devlogId, user_id: userId, username, user_role: userRole, user_avatar: userAvatar, content, created_at: createdAt };
+}
+
+function getDevlogComments(devlogId) {
+    return db.prepare(`
+        SELECT c.id, c.devlog_id, c.user_id, c.username, c.user_role, COALESCE(u.avatar, c.user_avatar) as user_avatar, c.content, c.created_at
+        FROM devlog_comments c
+        LEFT JOIN users u ON c.user_id = u.id
+        WHERE c.devlog_id = ?
+        ORDER BY c.created_at ASC
+    `).all(devlogId);
+}
+
+function deleteDevlogComment(id) {
+    db.prepare('DELETE FROM devlog_comments WHERE id = ?').run(id);
+}
+
+function getAllDevlogCommentsGrouped() {
+    const all = db.prepare(`
+        SELECT c.id, c.devlog_id, c.user_id, c.username, c.user_role, COALESCE(u.avatar, c.user_avatar) as user_avatar, c.content, c.created_at
+        FROM devlog_comments c
+        LEFT JOIN users u ON c.user_id = u.id
+        ORDER BY c.created_at DESC
+    `).all();
+
+    const grouped = {};
+    for (const c of all) {
+        if (!grouped[c.devlog_id]) grouped[c.devlog_id] = [];
+        grouped[c.devlog_id].push(c);
+    }
+    return grouped;
+}
+
 // Run schema initialization
 initSchema();
 
@@ -399,5 +454,9 @@ module.exports = {
     logDownload,
     addGameFeedback,
     getGameFeedback,
-    deleteGameFeedback
+    deleteGameFeedback,
+    addDevlogComment,
+    getDevlogComments,
+    deleteDevlogComment,
+    getAllDevlogCommentsGrouped
 };

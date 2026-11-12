@@ -1158,7 +1158,7 @@ app.get('/api/reactions', (req, res) => {
     res.json(data);
 });
 
-// 2. Toggle reaction on a game (Requires User Account)
+// 2. Toggle reaction on a game or devlog (Requires User Account)
 app.post('/api/games/:id/reactions', requireUser, (req, res) => {
     const { reactionType } = req.body;
     const allowed = ['heart', 'skull', 'fire', 'tape'];
@@ -1169,6 +1169,72 @@ app.post('/api/games/:id/reactions', requireUser, (req, res) => {
     const result = db.toggleReaction(req.params.id, req.user.id, reactionType);
     const updated = db.getReactionsForGames(req.user.id);
     res.json({ success: true, action: result.action, reactions: updated });
+});
+
+// General Reaction Toggle (Supports games, devlogs, dispatches)
+app.post('/api/reactions/toggle', requireUser, (req, res) => {
+    const { targetId, reactionType } = req.body;
+    const allowed = ['heart', 'skull', 'fire', 'tape'];
+    if (!targetId || !reactionType || !allowed.includes(reactionType)) {
+        return res.status(400).json({ error: 'Valid targetId and reactionType required.' });
+    }
+
+    const result = db.toggleReaction(targetId, req.user.id, reactionType);
+    const updated = db.getReactionsForGames(req.user.id);
+    res.json({ success: true, action: result.action, reactions: updated });
+});
+
+// Devlog Comments Routes
+app.get('/api/devlogs/comments/summary', (req, res) => {
+    try {
+        const grouped = db.getAllDevlogCommentsGrouped();
+        res.json(grouped);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+app.get('/api/devlogs/:id/comments', (req, res) => {
+    try {
+        const comments = db.getDevlogComments(req.params.id);
+        res.json(comments);
+    } catch (err) {
+        res.status(500).json({ error: err.message || 'Failed to fetch comments' });
+    }
+});
+
+app.post('/api/devlogs/:id/comments', requireUser, (req, res) => {
+    try {
+        const { content } = req.body;
+        if (!content || typeof content !== 'string' || content.trim().length === 0) {
+            return res.status(400).json({ error: 'Transmission content cannot be empty.' });
+        }
+        if (content.trim().length > 1000) {
+            return res.status(400).json({ error: 'Transmission content exceeds 1000 character maximum.' });
+        }
+
+        const newComment = db.addDevlogComment({
+            devlogId: req.params.id,
+            userId: req.user.id,
+            username: req.user.username,
+            userRole: req.user.role,
+            userAvatar: req.user.avatar || null,
+            content: content.trim()
+        });
+
+        res.status(201).json({ success: true, comment: newComment });
+    } catch (err) {
+        res.status(500).json({ error: err.message || 'Failed to post comment.' });
+    }
+});
+
+app.delete('/api/devlogs/comments/:id', requireUser, (req, res) => {
+    try {
+        db.deleteDevlogComment(req.params.id);
+        res.json({ success: true });
+    } catch (err) {
+        res.status(500).json({ error: err.message || 'Failed to delete comment.' });
+    }
 });
 
 // ============================================================================
