@@ -1956,6 +1956,21 @@ document.addEventListener('DOMContentLoaded', () => {
             };
         }
 
+        // Dynamic Retro SoundCloud & Spotify Links
+        const playerSoundCloudLink = document.getElementById('playerSoundCloudLink');
+        const playerSpotifyLink = document.getElementById('playerSpotifyLink');
+        const scUrl = track.soundcloudUrl || (track.album && track.album.soundcloudUrl) || 'https://soundcloud.com';
+        const spUrl = track.spotifyUrl || (track.album && track.album.spotifyUrl) || 'https://spotify.com';
+
+        if (playerSoundCloudLink) {
+            playerSoundCloudLink.href = scUrl;
+            playerSoundCloudLink.title = `Listen to "${track.title}" on SoundCloud`;
+        }
+        if (playerSpotifyLink) {
+            playerSpotifyLink.href = spUrl;
+            playerSpotifyLink.title = `Listen to "${track.title}" on Spotify`;
+        }
+
         renderTracksList();
 
         if (autoPlay) {

@@ -2852,6 +2852,121 @@ html[data-theme="dark"] body {
     border-top: 1px solid #d4d0c8;
 }
 
+/* Retro Streaming Links Strip (SoundCloud & Spotify) */
+.player-streaming-strip {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 8px 16px;
+    background: #e3dfce;
+    border-top: 1px dashed #c0bca8;
+}
+
+.player-stream-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: bold;
+    color: #4a5568;
+    font-family: var(--font-mono);
+}
+
+.player-stream-badge {
+    background: #2b6cb0;
+    color: #ffffff;
+    font-size: 9.5px;
+    padding: 2px 6px;
+    border-radius: 2px;
+    letter-spacing: 0.5px;
+}
+
+.player-stream-links {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.player-stream-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px !important;
+    font-size: 10.5px !important;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.12s ease;
+}
+
+.retro-stream-icon {
+    display: inline-block;
+    vertical-align: middle;
+    flex-shrink: 0;
+}
+
+/* SoundCloud retro orange tint */
+.player-stream-soundcloud {
+    border-color: #ff5500 !important;
+    color: #ff5500 !important;
+}
+.player-stream-soundcloud:hover {
+    background: #ff5500 !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 6px rgba(255, 85, 0, 0.5);
+}
+
+/* Spotify retro green tint */
+.player-stream-spotify {
+    border-color: #1db954 !important;
+    color: #1db954 !important;
+}
+.player-stream-spotify:hover {
+    background: #1db954 !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 6px rgba(29, 185, 84, 0.5);
+}
+
+/* Windows 98 streaming strip */
+[data-theme="win98"] .player-streaming-strip {
+    background: #c0c0c0;
+    border-top: 2px groove #ffffff;
+}
+[data-theme="win98"] .player-stream-badge {
+    background: #000080;
+    border-radius: 0;
+}
+[data-theme="win98"] .player-stream-label {
+    color: #000000;
+}
+
+/* CRT Dark, Phosphor, Amber, Blood Noir streaming strip */
+[data-theme="dark"] .player-streaming-strip,
+[data-theme="green"] .player-streaming-strip,
+[data-theme="amber"] .player-streaming-strip,
+[data-theme="blood"] .player-streaming-strip,
+[data-theme="backrooms"] .player-streaming-strip {
+    background: var(--bg-card-inner, #050608);
+    border-top: 1px dashed var(--border-color);
+}
+[data-theme="dark"] .player-stream-label,
+[data-theme="green"] .player-stream-label,
+[data-theme="amber"] .player-stream-label,
+[data-theme="blood"] .player-stream-label,
+[data-theme="backrooms"] .player-stream-label {
+    color: var(--text-dim);
+}
+[data-theme="dark"] .player-stream-badge,
+[data-theme="green"] .player-stream-badge,
+[data-theme="amber"] .player-stream-badge,
+[data-theme="blood"] .player-stream-badge,
+[data-theme="backrooms"] .player-stream-badge {
+    background: var(--accent);
+    color: #000000;
+}
+
 .player-btn-group {
     display: flex;
     align-items: center;
