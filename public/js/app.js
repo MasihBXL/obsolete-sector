@@ -663,15 +663,15 @@ document.addEventListener('DOMContentLoaded', () => {
     ssoBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             const provider = btn.getAttribute('data-provider') || 'google';
-            authStatusMsg.textContent = `Opening secure authorization window for ${provider.toUpperCase()}...`;
+            authStatusMsg.textContent = `Opening genuine ${provider.toUpperCase()} OAuth 2.0 authorization...`;
             authStatusMsg.style.color = 'var(--link-color)';
 
-            // Open popup authorization dialog
-            const width = 480;
-            const height = 620;
+            // Open genuine OAuth window
+            const width = 560;
+            const height = 700;
             const left = Math.max(0, (window.screen.width - width) / 2);
             const top = Math.max(0, (window.screen.height - height) / 2);
-            const popupUrl = `/auth/oauth-dialog.html?provider=${encodeURIComponent(provider)}`;
+            const popupUrl = `/api/auth/${encodeURIComponent(provider)}`;
 
             const oauthWindow = window.open(
                 popupUrl,
@@ -680,67 +680,146 @@ document.addEventListener('DOMContentLoaded', () => {
             );
 
             if (!oauthWindow || oauthWindow.closed || typeof oauthWindow.closed === 'undefined') {
-                authStatusMsg.textContent = 'Popup window blocked by browser. Please allow popups or verify below.';
-                authStatusMsg.style.color = 'var(--accent)';
+                authStatusMsg.textContent = 'Popup window blocked by browser. Redirecting directly to ' + provider.toUpperCase() + '...';
+                window.location.href = popupUrl;
             }
         });
     });
 
-    // Listen for verified identity message from the OAuth Popup
-    window.addEventListener('message', async (e) => {
-        if (!e.data || e.data.type !== 'OAUTH_VERIFIED') return;
-
-        const { provider, email, name, providerId } = e.data;
-        authStatusMsg.textContent = `Verifying ${provider.toUpperCase()} profile with server...`;
-        authStatusMsg.style.color = 'var(--link-color)';
-
-        try {
-            // Check if user already exists
-            const res = await fetch('/api/auth/social-check', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ provider, email, name, providerId })
-            });
-            const data = await res.json();
-
-            if (data.exists && data.token) {
-                // Existing account! Log in immediately
-                authToken = data.token;
-                currentUser = data.user;
-                localStorage.setItem('auth_token', authToken);
-                authStatusMsg.textContent = `Identity Verified: Welcome back, ${currentUser.username}!`;
-                authStatusMsg.style.color = '#2e7d32';
-
-                setTimeout(() => {
-                    closeAuthModal();
-                    updateUserUI();
-                    loadReactions();
-                    if (currentSelectedGame) loadGameFeedback(currentSelectedGame.id);
-                }, 500);
-            } else {
-                // NEW USER: Ask user what they want their call-sign / username to be!
-                pendingSocialAuth = {
-                    provider: data.provider,
-                    email: data.email,
-                    providerId: data.providerId,
-                    avatar: null
-                };
-
-                // Switch view to Ask Username
+    // Check if user returned from direct OAuth redirect
+    try {
+        const initialUrlParams = new URLSearchParams(window.location.search);
+        if (initialUrlParams.get('choose_callsign') === '1') {
+            const rawPending = sessionStorage.getItem('pending_social');
+            if (rawPending) {
+                const p = JSON.parse(rawPending);
+                sessionStorage.removeItem('pending_social');
+                pendingSocialAuth = p;
+                openAuthModal();
                 if (authPaneLogin) authPaneLogin.style.display = 'none';
                 if (authPaneRegister) authPaneRegister.style.display = 'none';
                 if (authPaneAdmin) authPaneAdmin.style.display = 'none';
-                authPaneUsernamePrompt.style.display = 'block';
-                ssoVerifiedNotice.textContent = `IDENTITY VERIFIED VIA ${provider.toUpperCase()}!`;
-                ssoVerifiedEmail.textContent = email || 'Verified Social Profile';
-                ssoUsernameInput.value = data.suggestedUsername || '';
-                ssoUsernameInput.focus();
+                if (authPaneUsernamePrompt) authPaneUsernamePrompt.style.display = 'block';
+                if (ssoVerifiedNotice) ssoVerifiedNotice.textContent = `IDENTITY VERIFIED VIA ${p.provider.toUpperCase()}!`;
+                if (ssoVerifiedEmail) ssoVerifiedEmail.textContent = p.email || 'Verified Profile';
+                if (ssoUsernameInput) {
+                    ssoUsernameInput.value = p.suggestedName || '';
+                    ssoUsernameInput.focus();
+                }
                 authStatusMsg.textContent = 'Account verified. Please choose your call-sign:';
                 authStatusMsg.style.color = 'var(--link-color)';
             }
-        } catch (err) {
-            authStatusMsg.textContent = 'Authentication error during verification.';
-            authStatusMsg.style.color = 'var(--accent)';
+        }
+    } catch (e) {}
+
+    // Listen for verified identity message from the OAuth Callback Window
+    window.addEventListener('message', async (e) => {
+        if (!e.data) return;
+
+        // 1. Handle Real OAuth 2.0 Callback
+        if (e.data.type === 'OAUTH_CALLBACK') {
+            const { status, token, username, provider, email, suggestedName, providerId, avatar, error } = e.data;
+
+            if (status === 'error' || error) {
+                authStatusMsg.textContent = `OAuth Error: ${error || 'Authentication aborted'}`;
+                authStatusMsg.style.color = 'var(--accent)';
+                return;
+            }
+
+            if (status === 'success' && token) {
+                authToken = token;
+                localStorage.setItem('auth_token', authToken);
+                authStatusMsg.textContent = `Identity Verified: Welcome back, ${username}!`;
+                authStatusMsg.style.color = '#2e7d32';
+
+                await checkAuthStatus();
+                setTimeout(() => {
+                    closeAuthModal();
+                    loadReactions();
+                    if (currentSelectedGame) loadGameFeedback(currentSelectedGame.id);
+                }, 600);
+                return;
+            }
+
+            if (status === 'new_user') {
+                pendingSocialAuth = {
+                    provider: provider || 'google',
+                    email: email || null,
+                    providerId: providerId || `${provider}_${Date.now()}`,
+                    avatar: avatar || null
+                };
+
+                // Switch to Call-Sign prompt pane
+                if (authPaneLogin) authPaneLogin.style.display = 'none';
+                if (authPaneRegister) authPaneRegister.style.display = 'none';
+                if (authPaneAdmin) authPaneAdmin.style.display = 'none';
+                if (authPaneUsernamePrompt) authPaneUsernamePrompt.style.display = 'block';
+
+                if (ssoVerifiedNotice) ssoVerifiedNotice.textContent = `IDENTITY VERIFIED VIA ${(provider || 'OAUTH').toUpperCase()}!`;
+                if (ssoVerifiedEmail) ssoVerifiedEmail.textContent = email || 'Verified Social Profile';
+                if (ssoUsernameInput) {
+                    ssoUsernameInput.value = suggestedName || '';
+                    ssoUsernameInput.focus();
+                }
+
+                authStatusMsg.textContent = `Account verified. Please choose your call-sign:`;
+                authStatusMsg.style.color = 'var(--link-color)';
+                return;
+            }
+        }
+
+        // 2. Backward compatibility for legacy popup
+        if (e.data.type === 'OAUTH_VERIFIED') {
+            const { provider, email, name, providerId } = e.data;
+            authStatusMsg.textContent = `Verifying ${provider.toUpperCase()} profile with server...`;
+            authStatusMsg.style.color = 'var(--link-color)';
+
+            try {
+                const res = await fetch('/api/auth/social-check', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ provider, email, name, providerId })
+                });
+                const data = await res.json();
+
+                if (data.exists && data.token) {
+                    authToken = data.token;
+                    currentUser = data.user;
+                    localStorage.setItem('auth_token', authToken);
+                    authStatusMsg.textContent = `Identity Verified: Welcome back, ${currentUser.username}!`;
+                    authStatusMsg.style.color = '#2e7d32';
+
+                    setTimeout(() => {
+                        closeAuthModal();
+                        updateUserUI();
+                        loadReactions();
+                        if (currentSelectedGame) loadGameFeedback(currentSelectedGame.id);
+                    }, 500);
+                } else {
+                    pendingSocialAuth = {
+                        provider: data.provider,
+                        email: data.email,
+                        providerId: data.providerId,
+                        avatar: null
+                    };
+
+                    if (authPaneLogin) authPaneLogin.style.display = 'none';
+                    if (authPaneRegister) authPaneRegister.style.display = 'none';
+                    if (authPaneAdmin) authPaneAdmin.style.display = 'none';
+                    if (authPaneUsernamePrompt) authPaneUsernamePrompt.style.display = 'block';
+                    if (ssoVerifiedNotice) ssoVerifiedNotice.textContent = `IDENTITY VERIFIED VIA ${provider.toUpperCase()}!`;
+                    if (ssoVerifiedEmail) ssoVerifiedEmail.textContent = email || 'Verified Social Profile';
+                    if (ssoUsernameInput) {
+                        ssoUsernameInput.value = data.suggestedUsername || '';
+                        ssoUsernameInput.focus();
+                    }
+                    authStatusMsg.textContent = 'Account verified. Please choose your call-sign:';
+                    authStatusMsg.style.color = 'var(--link-color)';
+                }
+            } catch (err) {
+                authStatusMsg.textContent = 'Authentication error during verification.';
+                authStatusMsg.style.color = 'var(--accent)';
+            }
         }
     });
 

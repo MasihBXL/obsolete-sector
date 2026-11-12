@@ -3,9 +3,33 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const cors = require('cors');
+const crypto = require('crypto');
 const db = require('./db');
 
+// Load environment variables from .env if present
+const envPath = path.join(__dirname, '.env');
+if (fs.existsSync(envPath)) {
+    try {
+        const envContent = fs.readFileSync(envPath, 'utf8');
+        envContent.split(/\r?\n/).forEach(line => {
+            const trimmed = line.trim();
+            if (!trimmed || trimmed.startsWith('#')) return;
+            const eqIdx = trimmed.indexOf('=');
+            if (eqIdx > 0) {
+                const key = trimmed.slice(0, eqIdx).trim();
+                const val = trimmed.slice(eqIdx + 1).trim().replace(/^['"](.*)['"]$/, '$1');
+                if (key && !process.env[key]) {
+                    process.env[key] = val;
+                }
+            }
+        });
+    } catch (e) {
+        console.warn('Note: Could not parse .env file:', e.message);
+    }
+}
+
 const app = express();
+app.set('trust proxy', 1);
 const PORT = process.env.PORT || 3000;
 
 // Admin access password/passcode fallback
@@ -479,7 +503,302 @@ app.post('/api/auth/login', (req, res) => {
     }
 });
 
-// 4. Social / OAuth Authentication Flow (Google, GitHub, Apple, Facebook)
+// ============================================================================
+// 4. REAL OAUTH 2.0 IMPLEMENTATION (Google, GitHub, Apple)
+// ============================================================================
+
+function getAppBaseUrl(req) {
+    if (process.env.BASE_URL) {
+        return process.env.BASE_URL.replace(/\/+$/, '');
+    }
+    const proto = req.headers['x-forwarded-proto'] || req.protocol || 'http';
+    const host = req.headers['x-forwarded-host'] || req.get('host');
+    return `${proto}://${host}`;
+}
+
+function renderOAuthSetupGuide(res, provider, redirectUri) {
+    const isGoogle = provider === 'google';
+    const isGithub = provider === 'github';
+    const title = isGoogle ? 'Google Cloud Console' : (isGithub ? 'GitHub Developer Settings' : 'Apple Developer Portal');
+    const docLink = isGoogle ? 'https://console.cloud.google.com/apis/credentials' : (isGithub ? 'https://github.com/settings/developers' : 'https://developer.apple.com');
+    const envKey1 = isGoogle ? 'GOOGLE_CLIENT_ID' : (isGithub ? 'GITHUB_CLIENT_ID' : 'APPLE_CLIENT_ID');
+    const envKey2 = isGoogle ? 'GOOGLE_CLIENT_SECRET' : (isGithub ? 'GITHUB_CLIENT_SECRET' : 'APPLE_KEY_ID');
+
+    res.send(`
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>OAuth Setup // ${provider.toUpperCase()}</title>
+        <style>
+            * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tahoma', sans-serif; }
+            body { background: #2258a6; color: #111; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+            .xp-card { background: #ece9d8; border: 2px solid; border-color: #fff #808080 #808080 #fff; max-width: 580px; width: 100%; box-shadow: 2px 2px 14px rgba(0,0,0,0.5); }
+            .xp-bar { background: linear-gradient(180deg, #0058ee 0%, #3593ff 4%, #0054e3 40%, #0041a8 100%); color: #fff; padding: 6px 10px; font-size: 12px; font-weight: bold; }
+            .xp-content { padding: 20px; }
+            h2 { font-size: 16px; color: #003399; margin-bottom: 10px; }
+            p { font-size: 12px; line-height: 1.5; margin-bottom: 12px; color: #222; }
+            .uri-box { background: #ffffe1; border: 1px solid #7f9db9; padding: 8px 12px; font-family: monospace; font-size: 12px; word-break: break-all; margin-bottom: 12px; color: #003399; font-weight: bold; user-select: all; }
+            ol { font-size: 12px; line-height: 1.6; margin-left: 20px; margin-bottom: 16px; color: #333; }
+            li { margin-bottom: 6px; }
+            .btn-group { display: flex; gap: 8px; justify-content: flex-end; margin-top: 14px; border-top: 1px solid #d4d0c8; padding-top: 14px; }
+            .xp-btn { background: linear-gradient(180deg, #fff 0%, #ece9d8 20%, #d4d0c8 85%, #b8b4a8 100%); border: 1px solid #003c74; padding: 6px 16px; font-size: 11px; font-weight: bold; cursor: pointer; border-radius: 3px; }
+            .xp-btn-demo { background: linear-gradient(180deg, #e6ffed 0%, #c3e6cb 100%); border-color: #28a745; color: #155724; }
+        </style>
+    </head>
+    <body>
+        <div class="xp-card">
+            <div class="xp-bar">MOPTAM SECURITY PROTOCOL // REAL OAUTH 2.0 SETUP</div>
+            <div class="xp-content">
+                <h2>⚠️ Real ${provider.toUpperCase()} OAuth Keys Required</h2>
+                <p>For genuine 1-click ${provider.toUpperCase()} Sign-In, please provide your OAuth 2.0 Credentials in your <code>.env</code> file or <strong>Render.com Environment Variables</strong>.</p>
+                
+                <p><strong>1. Authorized Redirect Callback URL:</strong></p>
+                <div class="uri-box">${redirectUri}</div>
+                
+                <p><strong>2. Quick 2-Minute Setup:</strong></p>
+                <ol>
+                    <li>Open <a href="${docLink}" target="_blank" style="color: #003399; font-weight: bold;">${title} ↗</a></li>
+                    <li>Create an OAuth 2.0 Web Application client.</li>
+                    <li>Paste the Callback URL above into <em>Authorized redirect URIs</em>.</li>
+                    <li>Add <code>${envKey1}</code> and <code>${envKey2}</code> to your <strong>Render Dashboard (Environment Variables)</strong> or local <code>.env</code> file.</li>
+                </ol>
+                
+                <div class="btn-group">
+                    <button class="xp-btn" onclick="window.close();">Cancel</button>
+                    <a href="/auth/callback.html?status=new_user&provider=${provider}&email=operative@${provider}.com&suggestedName=Operative_${Math.floor(100+Math.random()*900)}&avatar=" class="xp-btn xp-btn-demo" style="text-decoration:none; display:inline-block; line-height: 18px;">Test Account Creation Flow ➔</a>
+                </div>
+            </div>
+        </div>
+    </body>
+    </html>
+    `);
+}
+
+// 4a. Google OAuth 2.0
+app.get('/api/auth/google', (req, res) => {
+    const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+    const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
+    const redirectUri = `${getAppBaseUrl(req)}/api/auth/google/callback`;
+
+    if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET) {
+        return renderOAuthSetupGuide(res, 'google', redirectUri);
+    }
+
+    const state = crypto.randomBytes(16).toString('hex');
+    const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?` + new URLSearchParams({
+        client_id: GOOGLE_CLIENT_ID,
+        redirect_uri: redirectUri,
+        response_type: 'code',
+        scope: 'openid email profile',
+        access_type: 'online',
+        state: state,
+        prompt: 'select_account'
+    }).toString();
+
+    res.redirect(authUrl);
+});
+
+app.get('/api/auth/google/callback', async (req, res) => {
+    try {
+        const { code, error, error_description } = req.query;
+        if (error) {
+            return res.redirect(`/auth/callback.html?error=${encodeURIComponent(error_description || error)}`);
+        }
+        if (!code) {
+            return res.redirect(`/auth/callback.html?error=No_authorization_code_received`);
+        }
+
+        const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+        const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
+        const redirectUri = `${getAppBaseUrl(req)}/api/auth/google/callback`;
+
+        // Exchange code for token
+        const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({
+                code: String(code),
+                client_id: GOOGLE_CLIENT_ID,
+                client_secret: GOOGLE_CLIENT_SECRET,
+                redirect_uri: redirectUri,
+                grant_type: 'authorization_code'
+            })
+        });
+
+        const tokenData = await tokenRes.json();
+        if (!tokenRes.ok || !tokenData.access_token) {
+            return res.redirect(`/auth/callback.html?error=${encodeURIComponent(tokenData.error_description || tokenData.error || 'Google token exchange failed')}`);
+        }
+
+        // Fetch User Profile from Google
+        const userRes = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+            headers: { Authorization: `Bearer ${tokenData.access_token}` }
+        });
+        const profile = await userRes.json();
+
+        const providerId = profile.sub;
+        const email = profile.email || null;
+        const name = profile.name || (email ? email.split('@')[0] : 'Operative');
+        const avatar = profile.picture || null;
+
+        // Check if user already exists
+        let user = db.getUserByProviderId('google', providerId);
+        if (!user && email) {
+            user = db.getUserByEmail(email);
+        }
+
+        if (user) {
+            const session = db.createSession(user.id);
+            return res.redirect(`/auth/callback.html?status=success&token=${encodeURIComponent(session.token)}&username=${encodeURIComponent(user.username)}`);
+        }
+
+        // New user: redirect to pick call-sign
+        const suggestedName = (name || (email ? email.split('@')[0] : 'Operator')).replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 18);
+        return res.redirect(`/auth/callback.html?status=new_user&provider=google&providerId=${encodeURIComponent(providerId)}&email=${encodeURIComponent(email || '')}&suggestedName=${encodeURIComponent(suggestedName)}&avatar=${encodeURIComponent(avatar || '')}`);
+    } catch (err) {
+        console.error('Google OAuth callback error:', err);
+        res.redirect(`/auth/callback.html?error=${encodeURIComponent(err.message)}`);
+    }
+});
+
+// 4b. GitHub OAuth 2.0
+app.get('/api/auth/github', (req, res) => {
+    const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
+    const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
+    const redirectUri = `${getAppBaseUrl(req)}/api/auth/github/callback`;
+
+    if (!GITHUB_CLIENT_ID || !GITHUB_CLIENT_SECRET) {
+        return renderOAuthSetupGuide(res, 'github', redirectUri);
+    }
+
+    const state = crypto.randomBytes(16).toString('hex');
+    const authUrl = `https://github.com/login/oauth/authorize?` + new URLSearchParams({
+        client_id: GITHUB_CLIENT_ID,
+        redirect_uri: redirectUri,
+        scope: 'user:email',
+        state: state
+    }).toString();
+
+    res.redirect(authUrl);
+});
+
+app.get('/api/auth/github/callback', async (req, res) => {
+    try {
+        const { code, error, error_description } = req.query;
+        if (error) {
+            return res.redirect(`/auth/callback.html?error=${encodeURIComponent(error_description || error)}`);
+        }
+        if (!code) {
+            return res.redirect(`/auth/callback.html?error=No_authorization_code_received`);
+        }
+
+        const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
+        const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
+        const redirectUri = `${getAppBaseUrl(req)}/api/auth/github/callback`;
+
+        const tokenRes = await fetch('https://github.com/login/oauth/access_token', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                client_id: GITHUB_CLIENT_ID,
+                client_secret: GITHUB_CLIENT_SECRET,
+                code: String(code),
+                redirect_uri: redirectUri
+            })
+        });
+
+        const tokenData = await tokenRes.json();
+        if (!tokenRes.ok || !tokenData.access_token) {
+            return res.redirect(`/auth/callback.html?error=${encodeURIComponent(tokenData.error_description || tokenData.error || 'GitHub token exchange failed')}`);
+        }
+
+        // Fetch GitHub Profile
+        const userRes = await fetch('https://api.github.com/user', {
+            headers: {
+                Authorization: `Bearer ${tokenData.access_token}`,
+                'User-Agent': 'Obsolete-Sector-App'
+            }
+        });
+        const profile = await userRes.json();
+
+        let email = profile.email || null;
+        if (!email) {
+            try {
+                const emailsRes = await fetch('https://api.github.com/user/emails', {
+                    headers: {
+                        Authorization: `Bearer ${tokenData.access_token}`,
+                        'User-Agent': 'Obsolete-Sector-App'
+                    }
+                });
+                if (emailsRes.ok) {
+                    const emails = await emailsRes.json();
+                    if (Array.isArray(emails)) {
+                        const primary = emails.find(e => e.primary && e.verified) || emails.find(e => e.verified) || emails[0];
+                        if (primary) email = primary.email;
+                    }
+                }
+            } catch (e) {
+                // Email fetch fallback
+            }
+        }
+
+        const providerId = String(profile.id);
+        const name = profile.name || profile.login || 'Operative';
+        const avatar = profile.avatar_url || null;
+
+        let user = db.getUserByProviderId('github', providerId);
+        if (!user && email) {
+            user = db.getUserByEmail(email);
+        }
+
+        if (user) {
+            const session = db.createSession(user.id);
+            return res.redirect(`/auth/callback.html?status=success&token=${encodeURIComponent(session.token)}&username=${encodeURIComponent(user.username)}`);
+        }
+
+        const suggestedName = (profile.login || name).replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 18);
+        return res.redirect(`/auth/callback.html?status=new_user&provider=github&providerId=${encodeURIComponent(providerId)}&email=${encodeURIComponent(email || '')}&suggestedName=${encodeURIComponent(suggestedName)}&avatar=${encodeURIComponent(avatar || '')}`);
+    } catch (err) {
+        console.error('GitHub OAuth callback error:', err);
+        res.redirect(`/auth/callback.html?error=${encodeURIComponent(err.message)}`);
+    }
+});
+
+// 4c. Apple Sign In Route
+app.get('/api/auth/apple', (req, res) => {
+    const APPLE_CLIENT_ID = process.env.APPLE_CLIENT_ID;
+    const redirectUri = `${getAppBaseUrl(req)}/api/auth/apple/callback`;
+
+    if (!APPLE_CLIENT_ID) {
+        return renderOAuthSetupGuide(res, 'apple', redirectUri);
+    }
+
+    const authUrl = `https://appleid.apple.com/auth/authorize?` + new URLSearchParams({
+        client_id: APPLE_CLIENT_ID,
+        redirect_uri: redirectUri,
+        response_type: 'code id_token',
+        scope: 'name email',
+        response_mode: 'form_post'
+    }).toString();
+
+    res.redirect(authUrl);
+});
+
+// Check configured OAuth providers status
+app.get('/api/auth/providers-status', (req, res) => {
+    res.json({
+        google: !!(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET),
+        github: !!(process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET),
+        apple: !!process.env.APPLE_CLIENT_ID,
+        baseUrl: getAppBaseUrl(req)
+    });
+});
+
+// 4d. Social / OAuth Authentication Flow (Check / Complete)
 // Check if social account is already registered
 app.post('/api/auth/social-check', (req, res) => {
     try {
