@@ -2341,6 +2341,94 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    function extractYouTubeId(url) {
+        if (!url) return null;
+        const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/))([\w-]{11})/);
+        return match ? match[1] : null;
+    }
+
+    function renderDevlogMediaHtml(u) {
+        if (!u) return '';
+        let html = '';
+        const ytId = extractYouTubeId(u.youtubeUrl);
+
+        // 1. YouTube Video Embed (Responsive 16:9 Retro Bezel)
+        if (ytId) {
+            html += `
+                <div class="devlog-media-block devlog-yt-block">
+                    <div class="devlog-media-topbar">
+                        <span class="devlog-media-topbar-title">🔴 YOUTUBE TRANSMISSION STREAM</span>
+                        <a href="${escapeHtml(u.youtubeUrl)}" target="_blank" rel="noopener noreferrer" class="devlog-ext-link">OPEN IN YOUTUBE ➔</a>
+                    </div>
+                    <div class="devlog-video-responsive">
+                        <iframe src="https://www.youtube-nocookie.com/embed/${ytId}" title="${escapeHtml(u.title)}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 2. Attached HTML5 Video (MP4 / WebM)
+        if (u.mediaUrl && u.mediaType === 'video') {
+            html += `
+                <div class="devlog-media-block devlog-video-block">
+                    <div class="devlog-media-topbar">
+                        <span class="devlog-media-topbar-title">📼 ANALOG VIDEO DISPATCH</span>
+                        <a href="${escapeHtml(u.mediaUrl)}" target="_blank" class="devlog-ext-link">DIRECT FEED ➔</a>
+                    </div>
+                    <div class="devlog-video-container">
+                        <video src="${escapeHtml(u.mediaUrl)}" controls preload="metadata" class="devlog-html5-video"></video>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 3. Attached Image or Animated GIF (Clickable for full resolution lightbox)
+        if (u.mediaUrl && u.mediaType !== 'video') {
+            html += `
+                <div class="devlog-media-block devlog-img-block">
+                    <div class="devlog-media-topbar">
+                        <span class="devlog-media-topbar-title">📸 ATTACHED TELEMETRY [IMAGE / GIF]</span>
+                        <span class="devlog-media-hint">CLICK TO ENLARGE [FULL RES]</span>
+                    </div>
+                    <div class="devlog-img-container">
+                        <img src="${escapeHtml(u.mediaUrl)}" alt="${escapeHtml(u.title)}" class="devlog-attached-img" data-img-src="${escapeHtml(u.mediaUrl)}" data-img-title="${escapeHtml(u.title)}" loading="lazy">
+                    </div>
+                </div>
+            `;
+        }
+
+        // 4. Communication & Social Channels Strip
+        const channels = [];
+        if (u.youtubeUrl && !ytId) {
+            channels.push(`<a href="${escapeHtml(u.youtubeUrl)}" target="_blank" rel="noopener noreferrer" class="devlog-channel-pill devlog-pill-yt"><span>🔴</span> YouTube</a>`);
+        }
+        if (u.discordUrl) {
+            channels.push(`<a href="${escapeHtml(u.discordUrl)}" target="_blank" rel="noopener noreferrer" class="devlog-channel-pill devlog-pill-discord"><span>💬</span> Discord</a>`);
+        }
+        if (u.twitterUrl) {
+            channels.push(`<a href="${escapeHtml(u.twitterUrl)}" target="_blank" rel="noopener noreferrer" class="devlog-channel-pill devlog-pill-x"><span>🐦</span> X / Twitter</a>`);
+        }
+        if (u.steamUrl) {
+            channels.push(`<a href="${escapeHtml(u.steamUrl)}" target="_blank" rel="noopener noreferrer" class="devlog-channel-pill devlog-pill-steam"><span>🎮</span> Steam</a>`);
+        }
+        if (u.customUrl) {
+            channels.push(`<a href="${escapeHtml(u.customUrl)}" target="_blank" rel="noopener noreferrer" class="devlog-channel-pill devlog-pill-custom"><span>🌐</span> ${escapeHtml(u.customLabel || 'EXTERNAL')}</a>`);
+        }
+
+        if (channels.length > 0) {
+            html += `
+                <div class="devlog-channels-bar">
+                    <span class="devlog-channels-label">COMMUNICATION CHANNELS:</span>
+                    <div class="devlog-channels-list">
+                        ${channels.join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        return html;
+    }
+
     async function loadUpdates() {
         try {
             await loadDevlogCommentsSummary();
@@ -2375,6 +2463,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
                             <div style="font-size: 12.5px; line-height: 1.6; color: var(--text-primary); white-space: pre-wrap;">${escapeHtml(u.body)}</div>
 
+                            <!-- Attached Media & Social Channels -->
+                            ${renderDevlogMediaHtml(u)}
+
                             <!-- Devlog Actions Bar (Reactions + Comments Toggle) -->
                             <div class="devlog-actions-bar">
                                 ${renderDevlogReactionsBarHtml(u.id)}
@@ -2397,6 +2488,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (homeLatestUpdateDate) homeLatestUpdateDate.textContent = latest.date;
                 if (homeLatestUpdateTitle) homeLatestUpdateTitle.textContent = latest.title;
                 if (homeLatestUpdateBody) homeLatestUpdateBody.textContent = latest.body;
+
+                const homeMediaArea = document.getElementById('homeLatestMediaArea');
+                if (homeMediaArea) {
+                    homeMediaArea.innerHTML = renderDevlogMediaHtml(latest);
+                }
 
                 const homeSpotlight = document.getElementById('homeLatestSpotlightBox');
                 if (homeSpotlight) {
@@ -2432,6 +2528,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 btn.addEventListener('click', () => {
                     const target = btn.getAttribute('data-target');
                     toggleDevlogCommentsDrawer(target);
+                });
+            });
+
+            // 4. Attach Click-to-Enlarge Lightbox for Devlog Images & GIFs
+            document.querySelectorAll('.devlog-attached-img').forEach(img => {
+                img.style.cursor = 'zoom-in';
+                img.addEventListener('click', () => {
+                    const src = img.getAttribute('data-img-src') || img.src;
+                    const title = img.getAttribute('data-img-title') || 'DEVLOG TELEMETRY RECORD';
+                    openLightbox([src], 0, title);
                 });
             });
 

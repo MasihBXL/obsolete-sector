@@ -154,6 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (tab === 'devlog') {
             tabDevlog.classList.add('active');
             sectionDevlog.style.display = 'block';
+            loadAdminDevlogs();
         } else if (tab === 'users') {
             tabUsers.classList.add('active');
             sectionUsers.style.display = 'block';
@@ -363,38 +364,206 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 7. Post Devlogs
-    devlogForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const title = document.getElementById('devlogTitle').value.trim();
-        const body = document.getElementById('devlogBody').value.trim();
-        const date = document.getElementById('devlogDate').value || new Date().toISOString().split('T')[0];
-        const statusEl = document.getElementById('devlogStatus');
+    // 7. Post Devlogs with Multimedia & Social Channels
+    if (devlogForm) {
+        devlogForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const title = document.getElementById('devlogTitle').value.trim();
+            const body = document.getElementById('devlogBody').value.trim();
+            const date = document.getElementById('devlogDate').value || new Date().toISOString().split('T')[0];
+            const mediaFileInput = document.getElementById('devlogMediaFile');
+            const mediaUrlInput = document.getElementById('devlogMediaUrl');
+            const mediaTypeInput = document.getElementById('devlogMediaType');
+            const youtubeUrlInput = document.getElementById('devlogYoutubeUrl');
+            const discordUrlInput = document.getElementById('devlogDiscordUrl');
+            const twitterUrlInput = document.getElementById('devlogTwitterUrl');
+            const steamUrlInput = document.getElementById('devlogSteamUrl');
+            const customUrlInput = document.getElementById('devlogCustomUrl');
+            const customLabelInput = document.getElementById('devlogCustomLabel');
+            const statusEl = document.getElementById('devlogStatus');
+            const submitBtn = document.getElementById('btnSubmitDevlog');
+
+            if (!title || !body) {
+                if (statusEl) {
+                    statusEl.textContent = 'TITLE AND BODY ARE REQUIRED';
+                    statusEl.style.color = '#ff4444';
+                }
+                return;
+            }
+
+            try {
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'TRANSMITTING DISPATCH...';
+                }
+                if (statusEl) {
+                    statusEl.textContent = 'UPLOADING AND BROADCASTING...';
+                    statusEl.style.color = '#60a5fa';
+                }
+
+                const formData = new FormData();
+                formData.append('title', title);
+                formData.append('body', body);
+                formData.append('date', date);
+
+                if (mediaFileInput && mediaFileInput.files && mediaFileInput.files[0]) {
+                    formData.append('devlogMedia', mediaFileInput.files[0]);
+                }
+                if (mediaUrlInput && mediaUrlInput.value.trim()) {
+                    formData.append('mediaUrl', mediaUrlInput.value.trim());
+                }
+                if (mediaTypeInput && mediaTypeInput.value) {
+                    formData.append('mediaType', mediaTypeInput.value);
+                }
+                if (youtubeUrlInput && youtubeUrlInput.value.trim()) {
+                    formData.append('youtubeUrl', youtubeUrlInput.value.trim());
+                }
+                if (discordUrlInput && discordUrlInput.value.trim()) {
+                    formData.append('discordUrl', discordUrlInput.value.trim());
+                }
+                if (twitterUrlInput && twitterUrlInput.value.trim()) {
+                    formData.append('twitterUrl', twitterUrlInput.value.trim());
+                }
+                if (steamUrlInput && steamUrlInput.value.trim()) {
+                    formData.append('steamUrl', steamUrlInput.value.trim());
+                }
+                if (customUrlInput && customUrlInput.value.trim()) {
+                    formData.append('customUrl', customUrlInput.value.trim());
+                    formData.append('customLabel', customLabelInput ? (customLabelInput.value.trim() || 'LINK') : 'LINK');
+                }
+
+                const res = await fetch('/api/updates', {
+                    method: 'POST',
+                    headers: {
+                        'x-admin-token': adminToken,
+                        'Authorization': `Bearer ${adminToken}`
+                    },
+                    body: formData
+                });
+
+                const data = await res.json();
+                if (res.ok) {
+                    if (statusEl) {
+                        statusEl.textContent = 'SUCCESS: DEVLOG DISPATCH LOGGED TO SYSTEM';
+                        statusEl.style.color = '#4ade80';
+                    }
+                    devlogForm.reset();
+                    loadAdminDevlogs();
+                } else {
+                    if (statusEl) {
+                        statusEl.textContent = 'ERROR: ' + (data.error || 'FAILED TO POST DISPATCH');
+                        statusEl.style.color = '#ff4444';
+                    }
+                }
+            } catch (err) {
+                if (statusEl) {
+                    statusEl.textContent = 'COMMUNICATION ERROR: ' + err.message;
+                    statusEl.style.color = '#ff4444';
+                }
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = '+ TRANSMIT DEVLOG DISPATCH';
+                }
+            }
+        });
+    }
+
+    // 7.1 Load & Manage Admin Devlogs List
+    async function loadAdminDevlogs() {
+        const container = document.getElementById('adminDevlogsList');
+        const countBadge = document.getElementById('adminDevlogCount');
+        if (!container) return;
 
         try {
-            const res = await fetch('/api/updates', {
-                method: 'POST',
+            const res = await fetch('/api/updates');
+            const devlogs = await res.json();
+
+            if (countBadge) countBadge.textContent = `${devlogs.length} DISPATCHES`;
+
+            if (devlogs.length === 0) {
+                container.innerHTML = '<div style="font-size: 12px; color: #94a3b8; padding: 12px;">No devlog dispatches recorded.</div>';
+                return;
+            }
+
+            container.innerHTML = '';
+            devlogs.forEach(u => {
+                const item = document.createElement('div');
+                item.style.background = 'rgba(255, 255, 255, 0.02)';
+                item.style.border = '1px solid #334155';
+                item.style.padding = '12px 16px';
+                item.style.borderRadius = '4px';
+                item.style.display = 'flex';
+                item.style.justifyContent = 'space-between';
+                item.style.alignItems = 'center';
+                item.style.gap = '14px';
+
+                // Media indicators
+                const badges = [];
+                if (u.youtubeUrl) badges.push('<span style="background: #991b1b; color: #fecaca; font-size: 10px; padding: 2px 6px; border-radius: 2px; font-weight: bold;">🔴 YOUTUBE</span>');
+                if (u.mediaUrl) {
+                    if (u.mediaType === 'video') {
+                        badges.push('<span style="background: #1e3a8a; color: #bfdbfe; font-size: 10px; padding: 2px 6px; border-radius: 2px; font-weight: bold;">📼 VIDEO</span>');
+                    } else {
+                        badges.push('<span style="background: #065f46; color: #a7f3d0; font-size: 10px; padding: 2px 6px; border-radius: 2px; font-weight: bold;">📸 IMG/GIF</span>');
+                    }
+                }
+                if (u.discordUrl || u.twitterUrl || u.steamUrl || u.customUrl) {
+                    badges.push('<span style="background: #581c87; color: #e9d5ff; font-size: 10px; padding: 2px 6px; border-radius: 2px; font-weight: bold;">🌐 SOCIAL</span>');
+                }
+
+                item.innerHTML = `
+                    <div style="flex: 1; min-width: 0;">
+                        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 4px;">
+                            <span style="font-size: 11px; color: #94a3b8; font-weight: bold;">${u.date}</span>
+                            <span style="font-weight: bold; color: #e2e8f0; font-size: 13.5px;">${escapeHtml(u.title)}</span>
+                            ${badges.join(' ')}
+                        </div>
+                        <div style="font-size: 11.5px; color: #64748b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 600px;">
+                            ${escapeHtml(u.body)}
+                        </div>
+                    </div>
+                    <div>
+                        <button type="button" class="btn-danger btn-delete-devlog" data-id="${u.id}" style="padding: 5px 12px; font-size: 11px;">
+                            DELETE
+                        </button>
+                    </div>
+                `;
+
+                const delBtn = item.querySelector('.btn-delete-devlog');
+                delBtn.addEventListener('click', () => deleteAdminDevlog(u.id, u.title));
+
+                container.appendChild(item);
+            });
+        } catch (e) {
+            container.innerHTML = '<div style="color: #ff4444; font-size: 12px;">Failed to load devlogs list.</div>';
+        }
+    }
+
+    // 7.2 Delete Devlog Dispatch
+    async function deleteAdminDevlog(id, title) {
+        if (!confirm(`Confirm deletion of devlog dispatch:\n"${title}"?\nAll associated comments will also be permanently removed.`)) {
+            return;
+        }
+
+        try {
+            const res = await fetch(`/api/updates/${id}`, {
+                method: 'DELETE',
                 headers: {
-                    'Content-Type': 'application/json',
                     'x-admin-token': adminToken,
                     'Authorization': `Bearer ${adminToken}`
-                },
-                body: JSON.stringify({ title, body, date })
+                }
             });
-
+            const data = await res.json();
             if (res.ok) {
-                statusEl.textContent = 'DEVLOG LOGGED TO DATABASE';
-                statusEl.style.color = '#4ade80';
-                devlogForm.reset();
+                loadAdminDevlogs();
             } else {
-                statusEl.textContent = 'ERROR POSTING UPDATE';
-                statusEl.style.color = '#ff4444';
+                alert('Deletion failed: ' + (data.error || 'Server error'));
             }
-        } catch (err) {
-            statusEl.textContent = 'COMMUNICATION ERROR';
-            statusEl.style.color = '#ff4444';
+        } catch (e) {
+            alert('Communication failure: ' + e.message);
         }
-    });
+    }
 
     // 8. Load Stats
     async function loadAdminStats() {

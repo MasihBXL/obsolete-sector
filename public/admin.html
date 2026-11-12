@@ -242,7 +242,7 @@
                 <div class="admin-card">
                     <div class="card-title">
                         <span>POST DISPATCH / PATCH LOG</span>
-                        <span style="font-size: 12px; color: #64748b;">ANALOG BULLETIN</span>
+                        <span style="font-size: 12px; color: #64748b;">MULTIMEDIA BROADCAST HUB</span>
                     </div>
 
                     <form id="postDevlogForm">
@@ -260,11 +260,96 @@
                             <label class="form-label" for="devlogBody">Dispatch Body / Patch Notes *</label>
                             <textarea id="devlogBody" class="form-textarea" style="min-height: 120px;" placeholder="Write details about fixes, new games, mechanics, or announcements..." required></textarea>
                         </div>
+
+                        <!-- 1. ATTACHED MEDIA (IMAGE / GIF / VIDEO) -->
+                        <div style="background: rgba(255, 255, 255, 0.02); border: 1px dashed var(--border-color, #334155); padding: 14px; margin-bottom: 16px; border-radius: 4px;">
+                            <div style="font-size: 12px; font-weight: bold; color: #60a5fa; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
+                                <span>📸</span>
+                                <span>ATTACHED MEDIA ASSET (IMAGE / ANIMATED GIF / VIDEO)</span>
+                            </div>
+                            <div class="form-row" style="margin-bottom: 10px;">
+                                <div class="form-group form-col">
+                                    <label class="form-label" for="devlogMediaFile">Upload File (Image / GIF / MP4 / WebM):</label>
+                                    <input type="file" id="devlogMediaFile" accept="image/*,video/mp4,video/webm,.gif" class="form-input" style="padding: 5px;">
+                                </div>
+                                <div class="form-group form-col">
+                                    <label class="form-label" for="devlogMediaType">Media Type:</label>
+                                    <select id="devlogMediaType" class="form-input">
+                                        <option value="auto">Auto-detect from file / URL</option>
+                                        <option value="image">Image or Animated GIF</option>
+                                        <option value="video">HTML5 Video Player (MP4 / WebM)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label class="form-label" for="devlogMediaUrl">OR Direct External Media URL (GIF, Imgur, CDN, etc.):</label>
+                                <input type="url" id="devlogMediaUrl" class="form-input" placeholder="https://media.giphy.com/media/.../source.gif or direct mp4/png URL">
+                            </div>
+                        </div>
+
+                        <!-- 2. YOUTUBE VIDEO EMBED -->
+                        <div style="background: rgba(239, 68, 68, 0.04); border: 1px dashed rgba(239, 68, 68, 0.4); padding: 14px; margin-bottom: 16px; border-radius: 4px;">
+                            <div style="font-size: 12px; font-weight: bold; color: #f87171; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
+                                <span>🔴</span>
+                                <span>YOUTUBE VIDEO BROADCAST</span>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label class="form-label" for="devlogYoutubeUrl">YouTube Video URL:</label>
+                                <input type="url" id="devlogYoutubeUrl" class="form-input" placeholder="https://www.youtube.com/watch?v=... or https://youtu.be/...">
+                                <span style="font-size: 11px; color: #94a3b8; margin-top: 4px; display: block;">
+                                    Paste any YouTube video or trailer link. It will automatically embed as a retro-styled responsive player in the devlog.
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- 3. SOCIAL MEDIA & TRANSMISSION CHANNELS -->
+                        <div style="background: rgba(168, 85, 247, 0.04); border: 1px dashed rgba(168, 85, 247, 0.4); padding: 14px; margin-bottom: 18px; border-radius: 4px;">
+                            <div style="font-size: 12px; font-weight: bold; color: #c084fc; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
+                                <span>🌐</span>
+                                <span>COMMUNICATION &amp; SOCIAL MEDIA CHANNELS</span>
+                            </div>
+                            <div class="form-row" style="margin-bottom: 10px;">
+                                <div class="form-group form-col">
+                                    <label class="form-label" for="devlogDiscordUrl">💬 Discord Community / Invite URL:</label>
+                                    <input type="url" id="devlogDiscordUrl" class="form-input" placeholder="https://discord.gg/...">
+                                </div>
+                                <div class="form-group form-col">
+                                    <label class="form-label" for="devlogTwitterUrl">🐦 X / Twitter Dispatch URL:</label>
+                                    <input type="url" id="devlogTwitterUrl" class="form-input" placeholder="https://x.com/...">
+                                </div>
+                            </div>
+                            <div class="form-row" style="margin-bottom: 10px;">
+                                <div class="form-group form-col">
+                                    <label class="form-label" for="devlogSteamUrl">🎮 Steam Store / Community Hub URL:</label>
+                                    <input type="url" id="devlogSteamUrl" class="form-input" placeholder="https://store.steampowered.com/app/...">
+                                </div>
+                                <div class="form-group form-col">
+                                    <label class="form-label" for="devlogCustomUrl">🌐 Other Social / External URL:</label>
+                                    <input type="url" id="devlogCustomUrl" class="form-input" placeholder="https://itch.io, twitch.tv, patreon...">
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label class="form-label" for="devlogCustomLabel">Label for Other Link (Optional):</label>
+                                <input type="text" id="devlogCustomLabel" class="form-input" placeholder="e.g. ITCH.IO DEVLOG, PATREON, TWITCH">
+                            </div>
+                        </div>
+
                         <div id="devlogStatus" style="font-size: 12px; margin-bottom: 12px; font-weight: bold;"></div>
-                        <button type="submit" class="btn-primary" style="padding: 9px 20px;">
-                            POST DISPATCH
+                        <button type="submit" class="btn-primary" id="btnSubmitDevlog" style="padding: 10px 24px; font-weight: bold;">
+                            + TRANSMIT DEVLOG DISPATCH
                         </button>
                     </form>
+                </div>
+
+                <!-- Existing Devlogs Management List -->
+                <div class="admin-card" style="margin-top: 24px;">
+                    <div class="card-title">
+                        <span>EXISTING DEVLOG DISPATCHES</span>
+                        <span style="font-size: 12px; color: #64748b;" id="adminDevlogCount">0 DISPATCHES</span>
+                    </div>
+                    <div id="adminDevlogsList" style="display: flex; flex-direction: column; gap: 12px;">
+                        <div style="font-size: 12px; color: #94a3b8;">Loading dispatches...</div>
+                    </div>
                 </div>
             </div>
 

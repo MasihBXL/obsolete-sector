@@ -41,8 +41,9 @@ const UPLOADS_DIR = path.join(__dirname, 'uploads');
 const GAMES_FILE_DIR = path.join(UPLOADS_DIR, 'games');
 const IMAGES_DIR = path.join(UPLOADS_DIR, 'images');
 const AVATARS_DIR = path.join(UPLOADS_DIR, 'avatars');
+const DEVLOGS_DIR = path.join(UPLOADS_DIR, 'devlogs');
 
-[DATA_DIR, UPLOADS_DIR, GAMES_FILE_DIR, IMAGES_DIR, AVATARS_DIR].forEach(dir => {
+[DATA_DIR, UPLOADS_DIR, GAMES_FILE_DIR, IMAGES_DIR, AVATARS_DIR, DEVLOGS_DIR].forEach(dir => {
     if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true });
     }
@@ -301,6 +302,8 @@ const storage = multer.diskStorage({
             cb(null, AVATARS_DIR);
         } else if (file.fieldname === 'gameFile') {
             cb(null, GAMES_FILE_DIR);
+        } else if (file.fieldname === 'devlogMedia') {
+            cb(null, DEVLOGS_DIR);
         } else {
             cb(null, IMAGES_DIR);
         }
@@ -1362,22 +1365,101 @@ app.delete('/api/admin/feedback/:id', requireAdmin, (req, res) => {
     res.json({ success: true, message: 'Feedback entry deleted.' });
 });
 
-app.post('/api/updates', requireAdmin, (req, res) => {
-    const { title, body, date } = req.body;
-    if (!title || !body) {
-        return res.status(400).json({ error: 'Title and body are required' });
-    }
+app.post('/api/updates', requireAdmin, upload.single('devlogMedia'), (req, res) => {
+    try {
+        const {
+            title,
+            body,
+            date,
+            mediaUrl: bodyMediaUrl,
+            mediaType: bodyMediaType,
+            youtubeUrl,
+            discordUrl,
+            twitterUrl,
+            steamUrl,
+            customUrl,
+            customLabel
+        } = req.body;
 
-    const updates = getUpdates();
-    const newUpdate = {
-        id: `upd-${Date.now()}`,
-        date: date || new Date().toISOString().split('T')[0],
-        title,
-        body
-    };
-    updates.unshift(newUpdate);
-    saveUpdates(updates);
-    res.status(201).json(newUpdate);
+        if (!title || !body) {
+            return res.status(400).json({ error: 'Title and body are required' });
+        }
+
+        let mediaUrl = null;
+        if (req.file) {
+            mediaUrl = `/uploads/devlogs/${req.file.filename}`;
+        } else if (bodyMediaUrl && bodyMediaUrl.trim()) {
+            mediaUrl = bodyMediaUrl.trim();
+        }
+
+        let mediaType = bodyMediaType && bodyMediaType !== 'auto' ? bodyMediaType : null;
+        if (!mediaType && mediaUrl) {
+            if (mediaUrl.match(/\.(mp4|webm|ogg|mov)$/i)) {
+                mediaType = 'video';
+            } else {
+                mediaType = 'image';
+            }
+        }
+
+        const updates = getUpdates();
+        const newUpdate = {
+            id: `upd-${Date.now()}`,
+            date: date || new Date().toISOString().split('T')[0],
+            title: title.trim(),
+            body: body.trim(),
+            mediaUrl: mediaUrl || null,
+            mediaType: mediaType || null,
+            youtubeUrl: (youtubeUrl && youtubeUrl.trim()) ? youtubeUrl.trim() : null,
+            discordUrl: (discordUrl && discordUrl.trim()) ? discordUrl.trim() : null,
+            twitterUrl: (twitterUrl && twitterUrl.trim()) ? twitterUrl.trim() : null,
+            steamUrl: (steamUrl && steamUrl.trim()) ? steamUrl.trim() : null,
+            customUrl: (customUrl && customUrl.trim()) ? customUrl.trim() : null,
+            customLabel: (customLabel && customLabel.trim()) ? customLabel.trim() : 'EXTERNAL'
+        };
+
+        updates.unshift(newUpdate);
+        saveUpdates(updates);
+        res.status(201).json({ success: true, update: newUpdate });
+    } catch (err) {
+        console.error('Failed to post devlog update:', err);
+        res.status(500).json({ error: 'Failed to save devlog dispatch: ' + err.message });
+    }
+});
+
+// Admin Delete Devlog Dispatch
+app.delete('/api/updates/:id', requireAdmin, (req, res) => {
+    try {
+        const id = req.params.id;
+        const updates = getUpdates();
+        const target = updates.find(u => u.id === id);
+        if (!target) {
+            return res.status(404).json({ error: 'Devlog entry not found.' });
+        }
+
+        // Clean up attached uploaded media if local
+        if (target.mediaUrl && target.mediaUrl.startsWith('/uploads/devlogs/')) {
+            const filename = path.basename(target.mediaUrl);
+            const fullPath = path.join(DEVLOGS_DIR, filename);
+            if (fs.existsSync(fullPath)) {
+                try { fs.unlinkSync(fullPath); } catch (e) { /* ignore unlink err */ }
+            }
+        }
+
+        // Delete associated devlog comments
+        try {
+            db.db.prepare('DELETE FROM devlog_comments WHERE devlog_id = ?').run(id);
+        } catch (e) {
+            console.warn('Could not cascade delete devlog comments:', e.message);
+        }
+
+        const filtered = updates.filter(u => u.id !== id);
+        saveUpdates(filtered);
+
+        res.json({ success: true, message: 'Devlog dispatch removed successfully.' });
+    } catch (err) {
+        console.error('Failed to delete devlog update:', err);
+        res.status(500).json({ error: 'Failed to delete devlog dispatch: ' + err.message });
+    }
 });
 
 // ============================================================================
