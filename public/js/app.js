@@ -170,11 +170,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Auth Modal Elements (Windows XP Luna Authentication & Tabs)
     const authModal = document.getElementById('authModal');
     const authModalClose = document.getElementById('authModalClose');
-    const authTabSocial = document.getElementById('authTabSocial');
     const authTabLogin = document.getElementById('authTabLogin');
     const authTabRegister = document.getElementById('authTabRegister');
     const authTabAdmin = document.getElementById('authTabAdmin');
-    const authPaneSocial = document.getElementById('authPaneSocial');
     const authPaneLogin = document.getElementById('authPaneLogin');
     const authPaneRegister = document.getElementById('authPaneRegister');
     const authPaneAdmin = document.getElementById('authPaneAdmin');
@@ -481,7 +479,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (window.soundEngine) window.soundEngine.playSelect();
     }
 
-    function openAuthModal(noticeText = '', defaultTab = 'social') {
+    function openAuthModal(noticeText = '', defaultTab = 'login') {
         if (authStatusMsg) {
             authStatusMsg.textContent = noticeText;
             authStatusMsg.style.color = 'var(--accent)';
@@ -503,19 +501,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function switchAuthTab(tab) {
-        [authTabSocial, authTabLogin, authTabRegister, authTabAdmin].forEach(t => {
+        [authTabLogin, authTabRegister, authTabAdmin].forEach(t => {
             if (t) t.classList.remove('active-auth-tab');
         });
-        if (authPaneSocial) authPaneSocial.style.display = 'none';
         if (authPaneLogin) authPaneLogin.style.display = 'none';
         if (authPaneRegister) authPaneRegister.style.display = 'none';
         if (authPaneAdmin) authPaneAdmin.style.display = 'none';
         if (authPaneUsernamePrompt) authPaneUsernamePrompt.style.display = 'none';
 
-        if (tab === 'social') {
-            if (authTabSocial) authTabSocial.classList.add('active-auth-tab');
-            if (authPaneSocial) authPaneSocial.style.display = 'block';
-        } else if (tab === 'login') {
+        if (tab === 'login') {
             if (authTabLogin) authTabLogin.classList.add('active-auth-tab');
             if (authPaneLogin) authPaneLogin.style.display = 'block';
             if (loginIdentifier) loginIdentifier.focus();
@@ -530,7 +524,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    if (authTabSocial) authTabSocial.addEventListener('click', () => switchAuthTab('social'));
     if (authTabLogin) authTabLogin.addEventListener('click', () => switchAuthTab('login'));
     if (authTabRegister) authTabRegister.addEventListener('click', () => switchAuthTab('register'));
     if (authTabAdmin) authTabAdmin.addEventListener('click', () => switchAuthTab('admin'));
@@ -722,7 +715,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
 
                 // Switch view to Ask Username
-                if (authPaneSocial) authPaneSocial.style.display = 'none';
                 if (authPaneLogin) authPaneLogin.style.display = 'none';
                 if (authPaneRegister) authPaneRegister.style.display = 'none';
                 if (authPaneAdmin) authPaneAdmin.style.display = 'none';
@@ -809,7 +801,7 @@ document.addEventListener('DOMContentLoaded', () => {
         btnCancelSocial.addEventListener('click', () => {
             pendingSocialAuth = null;
             authPaneUsernamePrompt.style.display = 'none';
-            switchAuthTab('social');
+            switchAuthTab('login');
             authStatusMsg.textContent = '';
         });
     }
