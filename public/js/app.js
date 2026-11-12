@@ -93,6 +93,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const artModalMedium = document.getElementById('artModalMedium');
     const artModalDesc = document.getElementById('artModalDesc');
 
+    // Full Resolution Image Lightbox Viewer
+    const imageLightboxModal = document.getElementById('imageLightboxModal');
+    const lightboxModalTitle = document.getElementById('lightboxModalTitle');
+    const lightboxModalClose = document.getElementById('lightboxModalClose');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const btnLightboxPrev = document.getElementById('btnLightboxPrev');
+    const btnLightboxNext = document.getElementById('btnLightboxNext');
+    const lightboxCounter = document.getElementById('lightboxCounter');
+
+    let currentLightboxScreens = [];
+    let currentLightboxIndex = 0;
+
     // Built-In Music Player Elements
     const playerCurrentCover = document.getElementById('playerCurrentCover');
     const playerCurrentTitle = document.getElementById('playerCurrentTitle');
@@ -935,17 +947,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Screenshots Gallery
         if (gameDetailScreenshots) {
-            const screens = game.screenshots && game.screenshots.length > 0 ? game.screenshots : [game.coverImage];
-            gameDetailScreenshots.innerHTML = screens.map(s => `
-                <img src="${s}" class="modal-thumb" style="aspect-ratio: 16/9; object-fit: cover; cursor: pointer;" alt="screenshot">
+            const screens = game.screenshots && game.screenshots.length > 0 ? game.screenshots : [game.coverImage || '/assets/images/cover_chamber.svg'];
+            gameDetailScreenshots.className = 'game-screenshots-grid';
+            gameDetailScreenshots.innerHTML = screens.map((s, idx) => `
+                <div class="game-shot-card" data-idx="${idx}" title="Click to enlarge full resolution">
+                    <div class="game-shot-frame">
+                        <img src="${s}" class="game-shot-img" alt="${escapeHtml(game.title)} telemetry ${idx + 1}">
+                        <div class="game-shot-overlay">
+                            <span class="game-shot-zoom-pill">🔍 ENLARGE</span>
+                        </div>
+                    </div>
+                    <div class="game-shot-caption">TELEMETRY_LOG_0${idx + 1}.RAW</div>
+                </div>
             `).join('');
 
-            gameDetailScreenshots.querySelectorAll('.modal-thumb').forEach(thumb => {
-                thumb.addEventListener('click', () => {
-                    if (gameDetailHeroImg) gameDetailHeroImg.src = thumb.src;
-                    if (window.soundEngine) window.soundEngine.playSelect();
+            gameDetailScreenshots.querySelectorAll('.game-shot-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const idx = parseInt(card.getAttribute('data-idx') || '0', 10);
+                    if (gameDetailHeroImg) gameDetailHeroImg.src = screens[idx];
+                    openLightbox(screens, idx, game.title);
                 });
             });
+
+            // Also make gameDetailHeroImg clickable to enlarge
+            if (gameDetailHeroImg) {
+                gameDetailHeroImg.style.cursor = 'zoom-in';
+                gameDetailHeroImg.title = 'Click to enlarge full resolution';
+                gameDetailHeroImg.onclick = () => {
+                    openLightbox(screens, 0, game.title);
+                };
+            }
         }
 
         // Price, Download & Steam buttons
@@ -1363,6 +1394,62 @@ document.addEventListener('DOMContentLoaded', () => {
             if (e.target === artModal) artModal.classList.remove('open');
         });
     }
+
+    // Full Resolution Image Lightbox Functions
+    function openLightbox(screens, index = 0, title = 'ARCHIVE TELEMETRY') {
+        if (!screens || screens.length === 0) return;
+        currentLightboxScreens = screens;
+        currentLightboxIndex = Math.max(0, Math.min(index, screens.length - 1));
+        updateLightboxView();
+        if (lightboxModalTitle) lightboxModalTitle.textContent = `${title} // FULL RESOLUTION`;
+        if (imageLightboxModal) imageLightboxModal.classList.add('open');
+        if (window.soundEngine) window.soundEngine.playSelect();
+    }
+
+    function updateLightboxView() {
+        if (!currentLightboxScreens || currentLightboxScreens.length === 0) return;
+        const currentSrc = currentLightboxScreens[currentLightboxIndex];
+        if (lightboxImg) lightboxImg.src = currentSrc;
+        if (lightboxCounter) {
+            lightboxCounter.textContent = `TELEMETRY RECORD ${currentLightboxIndex + 1} OF ${currentLightboxScreens.length}`;
+        }
+    }
+
+    function closeLightbox() {
+        if (imageLightboxModal) imageLightboxModal.classList.remove('open');
+    }
+
+    if (lightboxModalClose) lightboxModalClose.addEventListener('click', closeLightbox);
+    if (imageLightboxModal) {
+        imageLightboxModal.addEventListener('click', (e) => {
+            if (e.target === imageLightboxModal) closeLightbox();
+        });
+    }
+
+    if (btnLightboxPrev) {
+        btnLightboxPrev.addEventListener('click', () => {
+            if (currentLightboxScreens.length <= 1) return;
+            currentLightboxIndex = (currentLightboxIndex - 1 + currentLightboxScreens.length) % currentLightboxScreens.length;
+            updateLightboxView();
+            if (window.soundEngine) window.soundEngine.playSelect();
+        });
+    }
+
+    if (btnLightboxNext) {
+        btnLightboxNext.addEventListener('click', () => {
+            if (currentLightboxScreens.length <= 1) return;
+            currentLightboxIndex = (currentLightboxIndex + 1) % currentLightboxScreens.length;
+            updateLightboxView();
+            if (window.soundEngine) window.soundEngine.playSelect();
+        });
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (!imageLightboxModal || !imageLightboxModal.classList.contains('open')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft' && btnLightboxPrev) btnLightboxPrev.click();
+        if (e.key === 'ArrowRight' && btnLightboxNext) btnLightboxNext.click();
+    });
 
     artFilterBtns.forEach(btn => {
         btn.addEventListener('click', () => {

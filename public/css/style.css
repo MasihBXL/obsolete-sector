@@ -103,8 +103,8 @@
     --active-row-bg: #000080;
     --active-row-text: #ffffff;
 
-    /* WIN98 DEDICATED FONT STACK */
-    --font-title: 'Press Start 2P', monospace;
+    /* WIN98 DEDICATED FONT STACK (Clean single-line headings) */
+    --font-title: 'VT323', monospace;
     --font-mono: 'Share Tech Mono', monospace;
     --doc-radius: 0;
 }
@@ -112,16 +112,25 @@
 /* Windows 98 Specific Overrides */
 [data-theme="win98"] .doc {
     border-radius: 0 !important;
-    border: 2px solid;
+    border: 2px solid !important;
     border-color: #ffffff #808080 #808080 #ffffff !important;
+    background: #c0c0c0 !important;
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.4) !important;
+}
+
+[data-theme="win98"] .doccontents {
+    background: #c0c0c0 !important;
+    border-color: #808080 !important;
 }
 
 [data-theme="win98"] .xp-titlebar {
     border-radius: 0 !important;
     padding: 3px 6px;
+    background: linear-gradient(90deg, #000080 0%, #1084d0 100%) !important;
+    color: #ffffff !important;
     font-family: var(--font-title);
-    font-size: 9px;
-    letter-spacing: -0.2px;
+    font-size: 15px;
+    letter-spacing: 0;
     text-shadow: none;
     white-space: nowrap;
     overflow: hidden;
@@ -137,7 +146,13 @@
     box-shadow: none !important;
     width: 17px;
     height: 15px;
-    font-size: 9px;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+[data-theme="win98"] .xp-btn-close {
+    background: #d4d0c8 !important;
+    color: #000000 !important;
 }
 
 [data-theme="win98"] .xp-ctrl-btn:active {
@@ -146,14 +161,27 @@
 
 [data-theme="win98"] .headertext {
     font-family: var(--font-title);
-    font-size: 24px;
+    font-size: 22px;
     color: #000080;
+    letter-spacing: 0;
+    white-space: nowrap;
+}
+
+[data-theme="win98"] .page-main-title {
+    font-family: var(--font-title);
+    font-size: 22px;
+    letter-spacing: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 [data-theme="win98"] .lr h2 {
     font-family: var(--font-title);
-    font-size: 16px;
+    font-size: 20px;
     color: #000080;
+    letter-spacing: 0;
+    white-space: nowrap;
 }
 
 [data-theme="win98"] .cat-title,
@@ -161,6 +189,30 @@
     font-family: var(--font-title);
     font-size: 18px;
     color: #000080;
+    letter-spacing: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+[data-theme="win98"] .hero-moptam-name {
+    font-size: 24px;
+    letter-spacing: 0;
+    white-space: nowrap;
+}
+
+[data-theme="win98"] .latest-update-title {
+    font-size: 15px;
+    letter-spacing: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+[data-theme="win98"] .xp-task-card-title {
+    font-size: 15px;
+    letter-spacing: 0;
+    white-space: nowrap;
 }
 
 [data-theme="win98"] .btn-pixel {
@@ -3240,5 +3292,424 @@ html[data-theme="dark"] body {
     display: flex;
     align-items: center;
     gap: 6px;
+}
+
+/* ==========================================================================
+   OUTER WINDOW & CONTROLS THEME SYNCHRONIZATION
+   Ensures the main "Hello, I am MOPTAM" window and controls match the active theme
+   ========================================================================== */
+
+/* Dark CRT Outer Window & Controls */
+[data-theme="dark"] .doc {
+    background: #0e1013 !important;
+    border: 2px solid #333a42 !important;
+    border-radius: 4px !important;
+    box-shadow: 0 0 24px rgba(0, 0, 0, 0.85) !important;
+}
+[data-theme="dark"] .doccontents {
+    background: #0e1013 !important;
+    border-color: #242930 !important;
+}
+[data-theme="dark"] .xp-titlebar {
+    background: linear-gradient(90deg, #1b2129 0%, #10141a 100%) !important;
+    color: #d6dde6 !important;
+    border-bottom: 1px solid #333a42 !important;
+    border-radius: 3px 3px 0 0 !important;
+    text-shadow: 0 0 6px var(--glow) !important;
+}
+[data-theme="dark"] .xp-ctrl-btn {
+    background: #191c21 !important;
+    border: 1px solid #384352 !important;
+    color: #d6dde6 !important;
+    border-radius: 2px !important;
+    box-shadow: none !important;
+    width: 19px !important;
+    height: 19px !important;
+    font-size: 10px !important;
+}
+[data-theme="dark"] .xp-ctrl-btn:hover {
+    background: #28303b !important;
+    border-color: #63b3ed !important;
+    color: #ffffff !important;
+}
+[data-theme="dark"] .xp-btn-close {
+    background: #2b0d0d !important;
+    border: 1px solid #7a1818 !important;
+    color: #ff5555 !important;
+}
+[data-theme="dark"] .xp-btn-close:hover {
+    background: #501212 !important;
+    border-color: #ff4747 !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 6px rgba(255, 71, 71, 0.6) !important;
+}
+
+/* Phosphor Green CRT Window & Controls */
+[data-theme="green"] .doc {
+    background: #050a05 !important;
+    border: 2px solid #00ff41 !important;
+    border-radius: 0 !important;
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.25) !important;
+}
+[data-theme="green"] .doccontents {
+    background: #050a05 !important;
+    border-color: #00ff41 !important;
+}
+[data-theme="green"] .xp-titlebar {
+    background: #021a07 !important;
+    color: #00ff41 !important;
+    border-bottom: 1px solid #00ff41 !important;
+    border-radius: 0 !important;
+    text-shadow: 0 0 8px #00ff41 !important;
+}
+[data-theme="green"] .xp-ctrl-btn {
+    background: #050a05 !important;
+    border: 1px solid #00ff41 !important;
+    color: #00ff41 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    width: 18px !important;
+    height: 18px !important;
+    font-size: 10px !important;
+}
+[data-theme="green"] .xp-ctrl-btn:hover {
+    background: #00ff41 !important;
+    color: #000000 !important;
+    box-shadow: 0 0 8px #00ff41 !important;
+}
+[data-theme="green"] .xp-btn-close {
+    background: #050a05 !important;
+    border-color: #00ff41 !important;
+    color: #00ff41 !important;
+}
+[data-theme="green"] .xp-btn-close:hover {
+    background: #00ff41 !important;
+    color: #000000 !important;
+}
+
+/* Amber CRT Window & Controls */
+[data-theme="amber"] .doc {
+    background: #0c0800 !important;
+    border: 2px solid #ffb000 !important;
+    border-radius: 0 !important;
+    box-shadow: 0 0 20px rgba(255, 176, 0, 0.25) !important;
+}
+[data-theme="amber"] .doccontents {
+    background: #0c0800 !important;
+    border-color: #ffb000 !important;
+}
+[data-theme="amber"] .xp-titlebar {
+    background: #1c1200 !important;
+    color: #ffb000 !important;
+    border-bottom: 1px solid #ffb000 !important;
+    border-radius: 0 !important;
+    text-shadow: 0 0 8px #ffb000 !important;
+}
+[data-theme="amber"] .xp-ctrl-btn {
+    background: #0c0800 !important;
+    border: 1px solid #ffb000 !important;
+    color: #ffb000 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    width: 18px !important;
+    height: 18px !important;
+    font-size: 10px !important;
+}
+[data-theme="amber"] .xp-ctrl-btn:hover {
+    background: #ffb000 !important;
+    color: #000000 !important;
+    box-shadow: 0 0 8px #ffb000 !important;
+}
+[data-theme="amber"] .xp-btn-close {
+    background: #0c0800 !important;
+    border-color: #ffb000 !important;
+    color: #ffb000 !important;
+}
+[data-theme="amber"] .xp-btn-close:hover {
+    background: #ffb000 !important;
+    color: #000000 !important;
+}
+
+/* Blood Noir Window & Controls */
+[data-theme="blood"] .doc {
+    background: #100202 !important;
+    border: 2px solid #ff2a2a !important;
+    border-radius: 0 !important;
+    box-shadow: 0 0 20px rgba(255, 42, 42, 0.25) !important;
+}
+[data-theme="blood"] .doccontents {
+    background: #100202 !important;
+    border-color: #ff2a2a !important;
+}
+[data-theme="blood"] .xp-titlebar {
+    background: #250303 !important;
+    color: #ff2a2a !important;
+    border-bottom: 1px solid #ff2a2a !important;
+    border-radius: 0 !important;
+    text-shadow: 0 0 8px #ff2a2a !important;
+}
+[data-theme="blood"] .xp-ctrl-btn {
+    background: #100202 !important;
+    border: 1px solid #ff2a2a !important;
+    color: #ff2a2a !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    width: 18px !important;
+    height: 18px !important;
+    font-size: 10px !important;
+}
+[data-theme="blood"] .xp-ctrl-btn:hover {
+    background: #ff2a2a !important;
+    color: #000000 !important;
+    box-shadow: 0 0 8px #ff2a2a !important;
+}
+[data-theme="blood"] .xp-btn-close {
+    background: #100202 !important;
+    border-color: #ff2a2a !important;
+    color: #ff2a2a !important;
+}
+[data-theme="blood"] .xp-btn-close:hover {
+    background: #ff2a2a !important;
+    color: #000000 !important;
+}
+
+/* Backrooms Window & Controls */
+[data-theme="backrooms"] .doc {
+    background: #ede3c0 !important;
+    border: 2px solid #8c8266 !important;
+    border-radius: 2px !important;
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2) !important;
+}
+[data-theme="backrooms"] .doccontents {
+    background: #ede3c0 !important;
+    border-color: #a89d7d !important;
+}
+[data-theme="backrooms"] .xp-titlebar {
+    background: #4a402d !important;
+    color: #f5eed3 !important;
+    border-bottom: 1px solid #332b1d !important;
+    border-radius: 0 !important;
+    text-shadow: none !important;
+}
+[data-theme="backrooms"] .xp-ctrl-btn {
+    background: #d4c8a5 !important;
+    border: 1px solid #6b5f44 !important;
+    color: #2e2617 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    width: 18px !important;
+    height: 18px !important;
+    font-size: 10px !important;
+}
+[data-theme="backrooms"] .xp-ctrl-btn:hover {
+    background: #f5eed3 !important;
+    border-color: #2e2617 !important;
+}
+[data-theme="backrooms"] .xp-btn-close {
+    background: #8f3434 !important;
+    border-color: #571e1e !important;
+    color: #ffffff !important;
+}
+[data-theme="backrooms"] .xp-btn-close:hover {
+    background: #b54545 !important;
+    color: #ffffff !important;
+}
+
+/* ==========================================================================
+   GAME PAGE SCREENSHOT GALLERY & LIGHTBOX FULL RESOLUTION VIEWER
+   ========================================================================== */
+.game-screenshots-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.game-shot-card {
+    background: var(--bg-card);
+    border: 2px solid #7f9db9;
+    padding: 6px;
+    border-radius: 4px;
+    box-shadow: inset 1px 1px 0 #ffffff, 1px 2px 4px rgba(0, 0, 0, 0.12);
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.game-shot-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 2px 4px 10px rgba(0, 50, 150, 0.25);
+}
+
+.game-shot-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000000;
+    overflow: hidden;
+    border: 1px solid #7f9db9;
+    border-radius: 2px;
+}
+
+.game-shot-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    image-rendering: pixelated;
+    transition: transform 0.25s ease;
+}
+
+.game-shot-card:hover .game-shot-img {
+    transform: scale(1.04);
+}
+
+.game-shot-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.18s ease;
+}
+
+.game-shot-card:hover .game-shot-overlay {
+    opacity: 1;
+}
+
+.game-shot-zoom-pill {
+    background: linear-gradient(180deg, #fff7e6 0%, #fec467 100%);
+    border: 1px solid #ff9900;
+    color: #000000;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 4px 10px;
+    border-radius: 3px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    letter-spacing: 0.5px;
+}
+
+.game-shot-caption {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    text-align: center;
+    padding: 6px 2px 2px 2px;
+    user-select: none;
+}
+
+/* Non-XP Theme adaptation for Screenshot Cards */
+[data-theme="win98"] .game-shot-card {
+    background: #c0c0c0 !important;
+    border: 2px outset #ffffff !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 5px !important;
+}
+[data-theme="win98"] .game-shot-card:hover {
+    transform: none !important;
+    box-shadow: none !important;
+}
+[data-theme="win98"] .game-shot-frame {
+    border: 2px inset #ffffff !important;
+    border-radius: 0 !important;
+}
+[data-theme="win98"] .game-shot-zoom-pill {
+    background: #c0c0c0 !important;
+    border: 2px outset #ffffff !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    font-family: var(--font-pixel) !important;
+    font-size: 9px !important;
+}
+
+[data-theme="dark"] .game-shot-card,
+[data-theme="green"] .game-shot-card,
+[data-theme="amber"] .game-shot-card,
+[data-theme="blood"] .game-shot-card,
+[data-theme="backrooms"] .game-shot-card {
+    background: var(--bg-card-inner, #111317) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+[data-theme="dark"] .game-shot-card:hover,
+[data-theme="green"] .game-shot-card:hover,
+[data-theme="amber"] .game-shot-card:hover,
+[data-theme="blood"] .game-shot-card:hover,
+[data-theme="backrooms"] .game-shot-card:hover {
+    transform: none !important;
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 10px var(--glow) !important;
+}
+[data-theme="dark"] .game-shot-frame,
+[data-theme="green"] .game-shot-frame,
+[data-theme="amber"] .game-shot-frame,
+[data-theme="blood"] .game-shot-frame,
+[data-theme="backrooms"] .game-shot-frame {
+    border: 1px solid var(--border-color) !important;
+    border-radius: 0 !important;
+}
+[data-theme="dark"] .game-shot-zoom-pill,
+[data-theme="green"] .game-shot-zoom-pill,
+[data-theme="amber"] .game-shot-zoom-pill,
+[data-theme="blood"] .game-shot-zoom-pill,
+[data-theme="backrooms"] .game-shot-zoom-pill {
+    background: var(--accent) !important;
+    color: var(--bg-primary, #000) !important;
+    border: 1px solid var(--accent) !important;
+    border-radius: 0 !important;
+    box-shadow: 0 0 6px var(--glow) !important;
+}
+
+/* Lightbox Modal Styling */
+.lightbox-modal-box {
+    width: 960px;
+    max-width: 95vw;
+    background: var(--bg-doc);
+    border: 3px solid var(--border-dark);
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.85);
+}
+
+.lightbox-modal-body {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--bg-surface);
+}
+
+.lightbox-img-wrapper {
+    position: relative;
+    width: 100%;
+    max-height: 75vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #000000;
+    border: 2px solid var(--border-color);
+    overflow: hidden;
+}
+
+.lightbox-img-wrapper img {
+    max-width: 100%;
+    max-height: 72vh;
+    object-fit: contain;
+    display: block;
+    image-rendering: pixelated;
+}
+
+.lightbox-footer-bar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-muted);
 }
 

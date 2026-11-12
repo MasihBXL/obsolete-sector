@@ -843,6 +843,30 @@
         </div>
     </div>
 
+    <!-- FULL RESOLUTION ARCHIVE IMAGE LIGHTBOX MODAL -->
+    <div id="imageLightboxModal" class="modal-overlay">
+        <div class="modal-box lightbox-modal-box">
+            <div class="xp-titlebar">
+                <div class="xp-titlebar-left">
+                    <span>🖼️</span>
+                    <span id="lightboxModalTitle">ARCHIVE TELEMETRY VIEWER // FULL RESOLUTION</span>
+                </div>
+                <button id="lightboxModalClose" class="xp-ctrl-btn xp-btn-close" title="Close (ESC)">&times;</button>
+            </div>
+            <div class="modal-body lightbox-modal-body">
+                <div class="lightbox-img-wrapper">
+                    <img id="lightboxImg" src="" alt="Enlarged Archive Screenshot">
+                    <div class="screen-scanline-fx" style="pointer-events: none;"></div>
+                </div>
+                <div class="lightbox-footer-bar">
+                    <button type="button" id="btnLightboxPrev" class="btn-pixel">◀ PREV</button>
+                    <span id="lightboxCounter" class="lightbox-counter-text">1 / 1</span>
+                    <button type="button" id="btnLightboxNext" class="btn-pixel">NEXT ▶</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- AUTHENTICATION / CLEARANCE MODAL (WINDOWS XP LUNA DIALOG) -->
     <div id="authModal" class="modal-overlay">
         <div class="modal-box" style="width: 480px; max-width: 95vw;">
