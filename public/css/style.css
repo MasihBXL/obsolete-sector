@@ -2747,6 +2747,22 @@ html[data-theme="dark"] body {
     font-weight: bold;
 }
 
+.player-deck-title {
+    font-family: var(--font-title);
+    font-size: 18px;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+    text-shadow: 1px 1px 1px #001f5c;
+}
+
+.player-status-badge {
+    font-size: 11px;
+    color: #1b7a2b;
+    font-family: var(--font-mono);
+    font-weight: bold;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
 .player-main-strip {
     display: grid;
     grid-template-columns: 92px 1fr;
@@ -3000,6 +3016,21 @@ html[data-theme="dark"] body {
     background: #c8c4b8;
 }
 
+.player-btn-play {
+    background: linear-gradient(180deg, #e6f0fa 0%, #b8d4f6 100%);
+    border-color: #0055ea;
+}
+
+.player-btn-play:hover {
+    background: linear-gradient(180deg, #fff7e6 0%, #fedc9c 15%, #fec467 85%, #fca731 100%);
+    border-color: #ff9900;
+}
+
+.player-btn-download {
+    color: #003399;
+    font-weight: bold;
+}
+
 .player-volume-group {
     display: flex;
     align-items: center;
@@ -3039,6 +3070,15 @@ html[data-theme="dark"] body {
 [data-theme="win98"] .player-header-bar {
     background: linear-gradient(90deg, #000080 0%, #1084d0 100%);
     border-bottom: 2px solid #808080;
+    color: #ffffff;
+}
+[data-theme="win98"] .player-deck-title {
+    color: #ffffff;
+    text-shadow: none;
+}
+[data-theme="win98"] .player-status-badge {
+    color: #00ff00;
+    text-shadow: 1px 1px 1px #000000;
 }
 [data-theme="win98"] .player-main-strip,
 [data-theme="win98"] .player-controls-row {
@@ -3059,14 +3099,129 @@ html[data-theme="dark"] body {
     box-shadow: none;
     font-family: var(--font-pixel);
     font-size: 10px;
+    color: #000000;
 }
 [data-theme="win98"] .player-btn:hover {
     background: #d4d0c8;
     border-color: #ffffff;
     box-shadow: none;
 }
+[data-theme="win98"] .player-btn-play {
+    background: #c0c0c0;
+    border: 2px outset #ffffff;
+    color: #000000;
+}
+[data-theme="win98"] .player-btn-download {
+    color: #000080;
+    font-weight: bold;
+}
 
-[data-theme="dark"] .win-music-player,
+/* Dedicated Dark CRT Theme Overrides for Audio Deck */
+[data-theme="dark"] .win-music-player {
+    background: #0f1318;
+    border: 1px solid #2d3642;
+    border-radius: 0;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.7);
+}
+[data-theme="dark"] .player-header-bar {
+    background: linear-gradient(90deg, #1b2129 0%, #28303b 100%);
+    border-bottom: 1px solid #333a42;
+    color: #ffffff;
+}
+[data-theme="dark"] .player-deck-title {
+    color: #ffffff;
+    text-shadow: 0 0 6px rgba(255, 255, 255, 0.35);
+}
+[data-theme="dark"] .player-status-badge {
+    color: #39ff14;
+    text-shadow: 0 0 6px rgba(57, 255, 20, 0.6);
+}
+[data-theme="dark"] .player-main-strip {
+    background: #0f1318;
+}
+[data-theme="dark"] .player-cover-square {
+    background: #07090c;
+    border: 1px solid #333a42;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.85);
+    border-radius: 0;
+}
+[data-theme="dark"] .player-screen {
+    background: #07090c;
+    border: 1px solid #2d3642;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.95);
+    border-radius: 0;
+}
+[data-theme="dark"] .player-track-title {
+    color: #63b3ed;
+    text-shadow: 0 0 6px rgba(99, 179, 237, 0.45);
+}
+[data-theme="dark"] .player-track-artist {
+    color: #8b949e;
+}
+[data-theme="dark"] .player-scrubber-row {
+    color: #d6dde6;
+}
+[data-theme="dark"] .player-seek-slider,
+[data-theme="dark"] .player-vol-slider {
+    background: #1a2029;
+    border-color: #333a42;
+}
+[data-theme="dark"] .player-seek-slider::-webkit-slider-thumb,
+[data-theme="dark"] .player-vol-slider::-webkit-slider-thumb {
+    background: #63b3ed;
+    border: 1px solid #ffffff;
+    box-shadow: 0 0 6px rgba(99, 179, 237, 0.6);
+}
+[data-theme="dark"] .player-controls-row {
+    background: #0c0f13;
+    border-top: 1px solid #242b35;
+}
+[data-theme="dark"] .player-btn {
+    background: linear-gradient(180deg, #1f2630 0%, #13171e 100%);
+    border: 1px solid #384352;
+    color: #d6dde6;
+    border-radius: 0;
+    box-shadow: none;
+    font-family: var(--font-mono);
+}
+[data-theme="dark"] .player-btn:hover {
+    background: #252e3b;
+    border-color: #63b3ed;
+    color: #ffffff;
+    box-shadow: 0 0 6px rgba(99, 179, 237, 0.35);
+}
+[data-theme="dark"] .player-btn-play {
+    background: linear-gradient(180deg, #1d334e 0%, #132235 100%);
+    border-color: #3182ce;
+    color: #63b3ed;
+}
+[data-theme="dark"] .player-btn-play:hover {
+    background: #3182ce;
+    color: #ffffff;
+    border-color: #63b3ed;
+    box-shadow: 0 0 8px rgba(99, 179, 237, 0.5);
+}
+[data-theme="dark"] .player-btn-download {
+    color: #63b3ed;
+}
+[data-theme="dark"] .player-volume-group {
+    color: #d6dde6;
+}
+[data-theme="dark"] .player-streaming-strip {
+    background: #080a0d;
+    border-top: 1px dashed #242b35;
+}
+[data-theme="dark"] .player-stream-badge {
+    background: #181d26;
+    color: #63b3ed;
+    border: 1px solid #333a42;
+    border-radius: 0;
+}
+[data-theme="dark"] .player-stream-label {
+    color: #8b949e;
+}
+
+/* Phosphor Green, Amber, Blood Noir, Backrooms Theme Overrides */
 [data-theme="green"] .win-music-player,
 [data-theme="amber"] .win-music-player,
 [data-theme="blood"] .win-music-player,
@@ -3076,7 +3231,6 @@ html[data-theme="dark"] body {
     border-radius: 0;
     box-shadow: none;
 }
-[data-theme="dark"] .player-header-bar,
 [data-theme="green"] .player-header-bar,
 [data-theme="amber"] .player-header-bar,
 [data-theme="blood"] .player-header-bar,
@@ -3085,12 +3239,24 @@ html[data-theme="dark"] body {
     border-bottom: 1px solid var(--border-color);
     color: var(--accent);
 }
-[data-theme="dark"] .player-main-strip,
+[data-theme="green"] .player-deck-title,
+[data-theme="amber"] .player-deck-title,
+[data-theme="blood"] .player-deck-title,
+[data-theme="backrooms"] .player-deck-title {
+    color: var(--accent);
+    text-shadow: 0 0 6px var(--glow);
+}
+[data-theme="green"] .player-status-badge,
+[data-theme="amber"] .player-status-badge,
+[data-theme="blood"] .player-status-badge,
+[data-theme="backrooms"] .player-status-badge {
+    color: var(--accent);
+    text-shadow: 0 0 6px var(--glow);
+}
 [data-theme="green"] .player-main-strip,
 [data-theme="amber"] .player-main-strip,
 [data-theme="blood"] .player-main-strip,
 [data-theme="backrooms"] .player-main-strip,
-[data-theme="dark"] .player-controls-row,
 [data-theme="green"] .player-controls-row,
 [data-theme="amber"] .player-controls-row,
 [data-theme="blood"] .player-controls-row,
@@ -3098,7 +3264,14 @@ html[data-theme="dark"] body {
     background: var(--bg-card);
     border-color: var(--border-color);
 }
-[data-theme="dark"] .player-screen,
+[data-theme="green"] .player-cover-square,
+[data-theme="amber"] .player-cover-square,
+[data-theme="blood"] .player-cover-square,
+[data-theme="backrooms"] .player-cover-square {
+    background: var(--bg-card-inner, #000000);
+    border: 1px solid var(--border-color);
+    border-radius: 0;
+}
 [data-theme="green"] .player-screen,
 [data-theme="amber"] .player-screen,
 [data-theme="blood"] .player-screen,
@@ -3107,7 +3280,6 @@ html[data-theme="dark"] body {
     border: 1px solid var(--border-color);
     border-radius: 0;
 }
-[data-theme="dark"] .player-track-title,
 [data-theme="green"] .player-track-title,
 [data-theme="amber"] .player-track-title,
 [data-theme="blood"] .player-track-title,
@@ -3115,21 +3287,18 @@ html[data-theme="dark"] body {
     color: var(--accent);
     text-shadow: 0 0 6px var(--glow);
 }
-[data-theme="dark"] .player-track-artist,
 [data-theme="green"] .player-track-artist,
 [data-theme="amber"] .player-track-artist,
 [data-theme="blood"] .player-track-artist,
 [data-theme="backrooms"] .player-track-artist {
     color: var(--text-dim);
 }
-[data-theme="dark"] .player-scrubber-row,
 [data-theme="green"] .player-scrubber-row,
 [data-theme="amber"] .player-scrubber-row,
 [data-theme="blood"] .player-scrubber-row,
 [data-theme="backrooms"] .player-scrubber-row {
     color: var(--accent);
 }
-[data-theme="dark"] .player-btn,
 [data-theme="green"] .player-btn,
 [data-theme="amber"] .player-btn,
 [data-theme="blood"] .player-btn,
@@ -3141,7 +3310,6 @@ html[data-theme="dark"] body {
     box-shadow: none;
     font-family: var(--font-mono);
 }
-[data-theme="dark"] .player-btn:hover,
 [data-theme="green"] .player-btn:hover,
 [data-theme="amber"] .player-btn:hover,
 [data-theme="blood"] .player-btn:hover,
@@ -3151,12 +3319,38 @@ html[data-theme="dark"] body {
     border-color: var(--accent);
     box-shadow: 0 0 6px var(--glow);
 }
-[data-theme="dark"] .player-volume-group,
+[data-theme="green"] .player-btn-play,
+[data-theme="amber"] .player-btn-play,
+[data-theme="blood"] .player-btn-play,
+[data-theme="backrooms"] .player-btn-play {
+    background: var(--btn-accent-bg, var(--btn-bg));
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: 0 0 6px var(--glow);
+}
+[data-theme="green"] .player-btn-download,
+[data-theme="amber"] .player-btn-download,
+[data-theme="blood"] .player-btn-download,
+[data-theme="backrooms"] .player-btn-download {
+    color: var(--accent);
+}
 [data-theme="green"] .player-volume-group,
 [data-theme="amber"] .player-volume-group,
 [data-theme="blood"] .player-volume-group,
 [data-theme="backrooms"] .player-volume-group {
     color: var(--accent);
+}
+[data-theme="green"] .player-seek-slider::-webkit-slider-thumb,
+[data-theme="green"] .player-vol-slider::-webkit-slider-thumb,
+[data-theme="amber"] .player-seek-slider::-webkit-slider-thumb,
+[data-theme="amber"] .player-vol-slider::-webkit-slider-thumb,
+[data-theme="blood"] .player-seek-slider::-webkit-slider-thumb,
+[data-theme="blood"] .player-vol-slider::-webkit-slider-thumb,
+[data-theme="backrooms"] .player-seek-slider::-webkit-slider-thumb,
+[data-theme="backrooms"] .player-vol-slider::-webkit-slider-thumb {
+    background: var(--accent);
+    border: 1px solid #000000;
+    box-shadow: 0 0 6px var(--glow);
 }
 
 /* ==========================================================================

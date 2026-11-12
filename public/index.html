@@ -500,9 +500,9 @@
                             <div class="player-header-bar">
                                 <div style="display: flex; align-items: center; gap: 8px;">
                                     <span style="font-size: 16px;">📻</span>
-                                    <span style="font-family: var(--font-title); font-size: 18px; color: #003399; letter-spacing: 0.5px;">MOPTAM AUDIO DECK v2.0 - Windows XP Media Player</span>
+                                    <span class="player-deck-title">MOPTAM AUDIO DECK v2.0 - Windows Media Player</span>
                                 </div>
-                                <span id="playerStatusIndicator" style="font-size: 11px; color: #2e7d32; font-family: var(--font-mono); font-weight: bold;">● READY</span>
+                                <span id="playerStatusIndicator" class="player-status-badge">● READY</span>
                             </div>
 
                             <!-- Screen & Cover Display -->
@@ -532,7 +532,7 @@
                                     <button type="button" id="btnPlayerRewind" class="player-btn" title="Rewind 5s">
                                         <span>⏪</span> -5s
                                     </button>
-                                    <button type="button" id="btnPlayerPlay" class="player-btn" style="background: linear-gradient(180deg, #e6f0fa 0%, #b8d4f6 100%); border-color: #0055ea;" title="Play / Pause">
+                                    <button type="button" id="btnPlayerPlay" class="player-btn player-btn-play" title="Play / Pause">
                                         <span id="playerPlayIcon">▶</span> <span id="playerPlayText">PLAY</span>
                                     </button>
                                     <button type="button" id="btnPlayerForward" class="player-btn" title="Forward 5s">
@@ -554,7 +554,7 @@
                                     </div>
 
                                     <!-- Download Track Button -->
-                                    <button type="button" id="btnPlayerDownloadTrack" class="player-btn" style="color: #003399; font-weight: bold;">
+                                    <button type="button" id="btnPlayerDownloadTrack" class="player-btn player-btn-download" title="Download Track">
                                         <span>💾</span> DOWNLOAD TRACK
                                     </button>
                                 </div>
