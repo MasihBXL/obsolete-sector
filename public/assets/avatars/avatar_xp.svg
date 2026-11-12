@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <radialGradient id="xpSky" cx="50%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#80b4f8"/>
+      <stop offset="60%" stop-color="#3b78d8"/>
+      <stop offset="100%" stop-color="#19479e"/>
+    </radialGradient>
+    <linearGradient id="xpFrame" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f5b842"/>
+      <stop offset="50%" stop-color="#d97d18"/>
+      <stop offset="100%" stop-color="#8c4705"/>
+    </linearGradient>
+    <filter id="xpShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- XP Frame outer border -->
+  <rect x="4" y="4" width="120" height="120" rx="8" fill="url(#xpFrame)" filter="url(#xpShadow)"/>
+  <!-- XP White inner rim -->
+  <rect x="7" y="7" width="114" height="114" rx="6" fill="#ffffff"/>
+  <!-- XP Sky Background -->
+  <rect x="9" y="9" width="110" height="110" rx="5" fill="url(#xpSky)"/>
+
+  <!-- Classic Windows XP Chess Knight / User Silhouette -->
+  <!-- Subtle highlight ground -->
+  <ellipse cx="64" cy="106" rx="42" ry="10" fill="#133575" opacity="0.6"/>
+
+  <!-- Knight Chess Piece Body -->
+  <path d="M 64,24 
+           C 54,24 46,30 44,38 
+           C 42,44 43,49 46,53 
+           C 41,56 36,63 36,70 
+           C 36,74 38,77 41,79 
+           C 39,84 39,90 41,96 
+           L 87,96 
+           C 89,90 89,84 87,79 
+           C 90,77 92,74 92,70 
+           C 92,63 87,56 82,53 
+           C 85,49 86,44 84,38 
+           C 82,30 74,24 64,24 Z" 
+        fill="#f4f5f8" stroke="#0e285e" stroke-width="2"/>
+
+  <!-- Knight Details / Shadow -->
+  <!-- Mane details -->
+  <path d="M 47,38 Q 50,48 45,55 Q 56,58 52,72" fill="none" stroke="#254e99" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Muzzle / Ear -->
+  <path d="M 52,28 L 56,36 L 48,35 Z" fill="#ffffff" stroke="#0e285e" stroke-width="1.5"/>
+  <circle cx="53" cy="42" r="2.5" fill="#1c3e80"/>
+  <!-- Chess Base Rim -->
+  <rect x="36" y="94" width="56" height="8" rx="2" fill="#d2d8e6" stroke="#0e285e" stroke-width="2"/>
+  <rect x="40" y="100" width="48" height="6" rx="1.5" fill="#aab7cc" stroke="#0e285e" stroke-width="1.5"/>
+</svg>

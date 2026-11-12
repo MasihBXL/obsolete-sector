@@ -181,8 +181,13 @@ function getUserByEmail(email) {
 }
 
 function getUserById(id) {
-    const user = db.prepare('SELECT id, username, email, role, provider, created_at FROM users WHERE id = ?').get(id);
+    const user = db.prepare('SELECT id, username, email, role, provider, avatar, created_at FROM users WHERE id = ?').get(id);
     return user || null;
+}
+
+function updateUserAvatar(id, avatarUrl) {
+    db.prepare('UPDATE users SET avatar = ? WHERE id = ?').run(avatarUrl || null, id);
+    return getUserById(id);
 }
 
 function getUserByUsernameOrEmail(identifier) {
@@ -220,7 +225,7 @@ function createSession(userId) {
 function getSessionUser(token) {
     if (!token) return null;
     const row = db.prepare(`
-        SELECT s.token, s.expires_at, u.id, u.username, u.email, u.role, u.provider, u.created_at
+        SELECT s.token, s.expires_at, u.id, u.username, u.email, u.role, u.provider, u.avatar, u.created_at
         FROM sessions s
         JOIN users u ON s.user_id = u.id
         WHERE s.token = ?
@@ -239,6 +244,7 @@ function getSessionUser(token) {
         email: row.email,
         role: row.role,
         provider: row.provider,
+        avatar: row.avatar || null,
         createdAt: row.created_at
     };
 }
@@ -376,6 +382,7 @@ module.exports = {
     verifyPassword,
     createUser,
     getUserById,
+    updateUserAvatar,
     getUserByUsernameOrEmail,
     getUserByProviderId,
     getUserByEmail,

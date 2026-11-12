@@ -45,6 +45,14 @@
                                 <button id="themeToggleBtn" class="btn-pixel">THEME: WINDOWS XP</button>
                                 <button id="crtToggleBtn" class="btn-pixel">CRT: ON</button>
                                 <button id="audioToggleBtn" class="btn-pixel">AUDIO: OFF</button>
+                                
+                                <!-- User Logged-in Header Badge (Click to open profile) -->
+                                <button id="userProfileBtn" class="btn-pixel user-profile-header-btn" style="display: none;" title="Open Profile & Avatar Settings">
+                                    <img id="headerUserAvatar" class="header-avatar-thumb" src="/assets/avatars/avatar_xp.svg" alt="Avatar">
+                                    <span id="headerUserName">OPERATIVE</span>
+                                </button>
+                                <button id="headerLogoutBtn" class="btn-pixel" style="display: none;" title="Log Out">LOGOUT</button>
+
                                 <button id="authBtn" class="btn-pixel">LOGIN / REGISTER</button>
                                 <a href="/admin.html" id="adminUploadBtn" class="btn-pixel btn-pixel-accent" style="display: none;">+ UPLOAD / ADMIN</a>
                             </div>
@@ -1070,6 +1078,93 @@
 
                 <!-- Status Feedback -->
                 <div id="authStatusMsg" style="margin-top: 12px; font-size: 12px; font-weight: bold; min-height: 18px; text-align: center;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- USER PROFILE & AVATAR MANAGER MODAL (WINDOWS XP USER DOSSIER) -->
+    <div id="userProfileModal" class="modal-overlay">
+        <div class="modal-box profile-modal-box">
+            <div class="xp-titlebar">
+                <div class="xp-titlebar-left">
+                    <span>👤</span>
+                    <span id="profileModalTitle">OPERATIVE PROFILE // DOSSIER &amp; AVATAR</span>
+                </div>
+                <button id="userProfileModalClose" class="xp-ctrl-btn xp-btn-close">&times;</button>
+            </div>
+            
+            <div class="modal-body profile-modal-body">
+                <!-- Top Section: Avatar & Call-Sign -->
+                <div class="profile-hero-section">
+                    <div class="profile-avatar-wrapper">
+                        <img id="profileAvatarImg" class="profile-avatar-large" src="/assets/avatars/avatar_xp.svg" alt="User Avatar">
+                        <div id="profileAvatarBadge" class="profile-avatar-badge">THEME DEFAULT</div>
+                    </div>
+                    
+                    <div class="profile-id-section">
+                        <h3 id="profileUsernameDisplay" class="profile-username-title">OPERATIVE</h3>
+                        <div class="profile-role-pill-row">
+                            <span id="profileRoleBadge" class="profile-role-badge">CLEARANCE: USER</span>
+                            <span id="profileProviderBadge" class="profile-provider-badge">LOCAL AUTH</span>
+                        </div>
+                        <div id="profileEmailDisplay" class="profile-email-text">user@sector.local</div>
+                    </div>
+                </div>
+
+                <!-- Avatar Upload & Management Actions -->
+                <div class="profile-avatar-actions-box">
+                    <div style="font-size: 11.5px; font-weight: bold; color: var(--link-color); margin-bottom: 6px;">
+                        🖼️ PROFILE PICTURE / AVATAR MANAGEMENT:
+                    </div>
+                    <div class="profile-avatar-btn-row">
+                        <!-- Hidden File Input -->
+                        <input type="file" id="avatarFileInput" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml" style="display: none;">
+                        <button type="button" id="btnTriggerAvatarUpload" class="btn-pixel btn-pixel-accent">
+                            📷 UPLOAD NEW PICTURE
+                        </button>
+                        <button type="button" id="btnRemoveCustomAvatar" class="btn-pixel" style="display: none; color: var(--accent);">
+                            ✕ RESET TO THEME DEFAULT
+                        </button>
+                    </div>
+                    <div id="avatarUploadFeedback" class="avatar-feedback-text"></div>
+                    <div style="font-size: 11px; color: var(--text-dim); margin-top: 6px; line-height: 1.45;">
+                        Formats: PNG, JPG, WEBP, GIF, SVG (Max 5MB). When using default, your avatar automatically switches to match each visual theme (WinXP, Win98, Dark CRT, Green Phosphor, Amber, Blood Noir, Backrooms).
+                    </div>
+                </div>
+
+                <!-- Profile Dossier Details Table -->
+                <div class="profile-dossier-table">
+                    <div class="dossier-row">
+                        <span class="dossier-label">SECTOR UID:</span>
+                        <span id="dossierUserId" class="dossier-val">usr-00000000</span>
+                    </div>
+                    <div class="dossier-row">
+                        <span class="dossier-label">JOINED SECTOR:</span>
+                        <span id="dossierJoinDate" class="dossier-val">2026-11-12</span>
+                    </div>
+                    <div class="dossier-row">
+                        <span class="dossier-label">GUESTBOOK TRANSMISSIONS:</span>
+                        <span id="dossierTransmissionsCount" class="dossier-val">0</span>
+                    </div>
+                    <div class="dossier-row">
+                        <span class="dossier-label">COMMUNITY BUG / FEEDBACK REPORTS:</span>
+                        <span id="dossierFeedbackCount" class="dossier-val">0</span>
+                    </div>
+                    <div class="dossier-row">
+                        <span class="dossier-label">ACTIVE THEME AVATAR:</span>
+                        <span id="dossierThemeAvatarName" class="dossier-val">Windows XP Luna Knight</span>
+                    </div>
+                </div>
+
+                <!-- Footer Buttons -->
+                <div class="profile-modal-footer">
+                    <button type="button" id="profileLogoutActionBtn" class="btn-pixel" style="color: var(--accent);">
+                        [LOGOUT FROM SESSION]
+                    </button>
+                    <button type="button" id="profileModalDoneBtn" class="btn-pixel">
+                        CLOSE DOSSIER
+                    </button>
+                </div>
             </div>
         </div>
     </div>

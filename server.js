@@ -40,8 +40,9 @@ const DATA_DIR = path.join(__dirname, 'data');
 const UPLOADS_DIR = path.join(__dirname, 'uploads');
 const GAMES_FILE_DIR = path.join(UPLOADS_DIR, 'games');
 const IMAGES_DIR = path.join(UPLOADS_DIR, 'images');
+const AVATARS_DIR = path.join(UPLOADS_DIR, 'avatars');
 
-[DATA_DIR, UPLOADS_DIR, GAMES_FILE_DIR, IMAGES_DIR].forEach(dir => {
+[DATA_DIR, UPLOADS_DIR, GAMES_FILE_DIR, IMAGES_DIR, AVATARS_DIR].forEach(dir => {
     if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true });
     }
@@ -296,7 +297,9 @@ function saveUpdates(updates) {
 // Multer Storage Configuration
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        if (file.fieldname === 'gameFile') {
+        if (file.fieldname === 'avatar') {
+            cb(null, AVATARS_DIR);
+        } else if (file.fieldname === 'gameFile') {
             cb(null, GAMES_FILE_DIR);
         } else {
             cb(null, IMAGES_DIR);
@@ -400,6 +403,67 @@ app.get('/api/auth/me', (req, res) => {
         res.json({ authenticated: true, user: req.user });
     } else {
         res.json({ authenticated: false, user: null });
+    }
+});
+
+// User Profile & Avatar Routes
+app.get('/api/user/profile', requireUser, (req, res) => {
+    try {
+        const user = db.getUserById(req.user.id);
+        if (!user) return res.status(404).json({ error: 'User profile not found.' });
+
+        const guestbookCount = db.db.prepare('SELECT COUNT(*) as cnt FROM guestbook WHERE author = ?').get(user.username)?.cnt || 0;
+        const feedbackCount = db.db.prepare('SELECT COUNT(*) as cnt FROM game_feedback WHERE author = ?').get(user.username)?.cnt || 0;
+
+        res.json({
+            user,
+            stats: {
+                transmissions: guestbookCount,
+                feedbackReports: feedbackCount
+            }
+        });
+    } catch (err) {
+        res.status(500).json({ error: err.message || 'Failed to load profile.' });
+    }
+});
+
+app.post('/api/user/avatar', requireUser, upload.single('avatar'), (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ error: 'No image file uploaded.' });
+        }
+
+        const ext = path.extname(req.file.originalname).toLowerCase();
+        const allowed = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg'];
+        if (!allowed.includes(ext)) {
+            try { fs.unlinkSync(req.file.path); } catch (e) {}
+            return res.status(400).json({ error: 'Only image files (PNG, JPG, WEBP, GIF, SVG) are accepted.' });
+        }
+
+        const avatarUrl = `/uploads/avatars/${req.file.filename}`;
+        const updatedUser = db.updateUserAvatar(req.user.id, avatarUrl);
+        res.json({
+            success: true,
+            avatar: avatarUrl,
+            user: updatedUser,
+            message: 'Profile picture updated successfully.'
+        });
+    } catch (err) {
+        res.status(500).json({ error: err.message || 'Avatar upload failed.' });
+    }
+});
+
+app.delete('/api/user/avatar', requireUser, (req, res) => {
+    try {
+        const updatedUser = db.updateUserAvatar(req.user.id, null);
+        res.json({
+            success: true,
+            avatar: null,
+            user: updatedUser,
+            message: 'Custom avatar removed. Using theme default.'
+        });
+    } catch (err) {
+        res.status(500).json({ error: err.message || 'Failed to remove avatar.' });
     }
 });
 

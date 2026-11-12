@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <filter id="greenGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3.5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Deep Black CRT Surface -->
+  <rect x="2" y="2" width="124" height="124" rx="8" fill="#020803" stroke="#00ff41" stroke-width="2"/>
+  <rect x="6" y="6" width="116" height="116" rx="6" fill="#000000"/>
+
+  <!-- High-Density Phosphor Scanlines -->
+  <g opacity="0.25" stroke="#00ff41" stroke-width="1">
+    <line x1="6" y1="12" x2="122" y2="12"/>
+    <line x1="6" y1="20" x2="122" y2="20"/>
+    <line x1="6" y1="28" x2="122" y2="28"/>
+    <line x1="6" y1="36" x2="122" y2="36"/>
+    <line x1="6" y1="44" x2="122" y2="44"/>
+    <line x1="6" y1="52" x2="122" y2="52"/>
+    <line x1="6" y1="60" x2="122" y2="60"/>
+    <line x1="6" y1="68" x2="122" y2="68"/>
+    <line x1="6" y1="76" x2="122" y2="76"/>
+    <line x1="6" y1="84" x2="122" y2="84"/>
+    <line x1="6" y1="92" x2="122" y2="92"/>
+    <line x1="6" y1="100" x2="122" y2="100"/>
+    <line x1="6" y1="108" x2="122" y2="108"/>
+    <line x1="6" y1="116" x2="122" y2="116"/>
+  </g>
+
+  <!-- Phosphor Terminal Vector Skull / Hacker Glyph -->
+  <g filter="url(#greenGlow)" stroke="#00ff41" stroke-width="2" fill="none">
+    <!-- Outer Radar Ring -->
+    <circle cx="64" cy="64" r="50" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.7"/>
+    <circle cx="64" cy="64" r="44" stroke-width="1" opacity="0.4"/>
+    
+    <!-- Vector Skull Cranium -->
+    <path d="M 44,48 
+             C 44,32 52,24 64,24 
+             C 76,24 84,32 84,48 
+             C 84,58 80,64 78,68 
+             L 76,78 L 52,78 L 50,68 
+             C 48,64 44,58 44,48 Z" 
+          fill="#002b0c" stroke-width="2.5"/>
+
+    <!-- Eye Sockets -->
+    <polygon points="50,48 58,52 52,60 48,56" fill="#00ff41"/>
+    <polygon points="78,48 70,52 76,60 80,56" fill="#00ff41"/>
+    
+    <!-- Nasal Aperture -->
+    <polygon points="64,62 61,68 67,68" fill="#00ff41"/>
+
+    <!-- Teeth / Grate -->
+    <line x1="56" y1="78" x2="56" y2="86"/>
+    <line x1="61" y1="78" x2="61" y2="86"/>
+    <line x1="67" y1="78" x2="67" y2="86"/>
+    <line x1="72" y1="78" x2="72" y2="86"/>
+    <line x1="52" y1="86" x2="76" y2="86" stroke-width="2"/>
+
+    <!-- Terminal Prompt in Corner -->
+    <text x="12" y="22" font-family="monospace" font-size="10" fill="#00ff41" font-weight="bold" stroke="none">&gt;_SYS</text>
+  </g>
+</svg>

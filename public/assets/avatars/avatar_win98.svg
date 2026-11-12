@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" shape-rendering="crispEdges">
+  <!-- Win98 3D Bevel Frame -->
+  <!-- Top/Left light bevel -->
+  <rect x="0" y="0" width="128" height="128" fill="#c0c0c0"/>
+  <rect x="0" y="0" width="128" height="4" fill="#ffffff"/>
+  <rect x="0" y="0" width="4" height="128" fill="#ffffff"/>
+  <!-- Inner light bevel -->
+  <rect x="4" y="4" width="120" height="2" fill="#dfdfdf"/>
+  <rect x="4" y="4" width="2" height="120" fill="#dfdfdf"/>
+  <!-- Bottom/Right dark bevel -->
+  <rect x="0" y="124" width="128" height="4" fill="#000000"/>
+  <rect x="124" y="0" width="4" height="128" fill="#000000"/>
+  <rect x="4" y="122" width="120" height="2" fill="#808080"/>
+  <rect x="122" y="4" width="2" height="120" fill="#808080"/>
+
+  <!-- Win98 Desktop Teal Background -->
+  <rect x="6" y="6" width="116" height="116" fill="#008080"/>
+
+  <!-- Classic Win98 Computer / User Pixel Art Graphic -->
+  <!-- Monitor body -->
+  <rect x="28" y="24" width="72" height="56" fill="#ffffff"/>
+  <rect x="30" y="26" width="68" height="52" fill="#c0c0c0"/>
+  <rect x="34" y="30" width="60" height="44" fill="#000000"/>
+  <!-- CRT Screen (Navy Blue with scanlines) -->
+  <rect x="36" y="32" width="56" height="40" fill="#000080"/>
+
+  <!-- Pixel User on CRT Screen -->
+  <!-- User Head -->
+  <rect x="58" y="38" width="12" height="12" fill="#ffffff"/>
+  <rect x="60" y="40" width="8" height="8" fill="#ffff00"/>
+  <!-- User Body -->
+  <rect x="50" y="52" width="28" height="14" fill="#ffffff"/>
+  <rect x="52" y="54" width="24" height="10" fill="#00ffff"/>
+
+  <!-- Monitor Glare -->
+  <rect x="38" y="34" width="10" height="2" fill="#ffffff" opacity="0.6"/>
+  <rect x="38" y="36" width="4" height="2" fill="#ffffff" opacity="0.6"/>
+
+  <!-- Monitor Power LED & Buttons -->
+  <rect x="80" y="74" width="4" height="2" fill="#00ff00"/>
+  <rect x="72" y="74" width="4" height="2" fill="#808080"/>
+
+  <!-- Stand & Base -->
+  <rect x="56" y="80" width="16" height="8" fill="#808080"/>
+  <rect x="42" y="88" width="44" height="6" fill="#ffffff"/>
+  <rect x="44" y="90" width="42" height="4" fill="#c0c0c0"/>
+  <rect x="44" y="94" width="42" height="2" fill="#808080"/>
+  <rect x="42" y="96" width="46" height="2" fill="#000000"/>
+</svg>

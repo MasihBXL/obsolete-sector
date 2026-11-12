@@ -206,6 +206,31 @@ document.addEventListener('DOMContentLoaded', () => {
     const ssoBtns = document.querySelectorAll('.sso-btn');
     const authStatusMsg = document.getElementById('authStatusMsg');
 
+    // User Profile & Avatar Modal Elements
+    const userProfileBtn = document.getElementById('userProfileBtn');
+    const headerUserAvatar = document.getElementById('headerUserAvatar');
+    const headerUserName = document.getElementById('headerUserName');
+    const headerLogoutBtn = document.getElementById('headerLogoutBtn');
+    const userProfileModal = document.getElementById('userProfileModal');
+    const userProfileModalClose = document.getElementById('userProfileModalClose');
+    const profileAvatarImg = document.getElementById('profileAvatarImg');
+    const profileAvatarBadge = document.getElementById('profileAvatarBadge');
+    const profileUsernameDisplay = document.getElementById('profileUsernameDisplay');
+    const profileRoleBadge = document.getElementById('profileRoleBadge');
+    const profileProviderBadge = document.getElementById('profileProviderBadge');
+    const profileEmailDisplay = document.getElementById('profileEmailDisplay');
+    const avatarFileInput = document.getElementById('avatarFileInput');
+    const btnTriggerAvatarUpload = document.getElementById('btnTriggerAvatarUpload');
+    const btnRemoveCustomAvatar = document.getElementById('btnRemoveCustomAvatar');
+    const avatarUploadFeedback = document.getElementById('avatarUploadFeedback');
+    const dossierUserId = document.getElementById('dossierUserId');
+    const dossierJoinDate = document.getElementById('dossierJoinDate');
+    const dossierTransmissionsCount = document.getElementById('dossierTransmissionsCount');
+    const dossierFeedbackCount = document.getElementById('dossierFeedbackCount');
+    const dossierThemeAvatarName = document.getElementById('dossierThemeAvatarName');
+    const profileLogoutActionBtn = document.getElementById('profileLogoutActionBtn');
+    const profileModalDoneBtn = document.getElementById('profileModalDoneBtn');
+
     let pendingSocialAuth = null;
 
     // ========================================================================
@@ -316,6 +341,41 @@ document.addEventListener('DOMContentLoaded', () => {
             };
             themeBtn.textContent = labels[theme] || 'THEME: ' + theme.toUpperCase();
         }
+        refreshAvatars();
+    }
+
+    function getThemeDefaultAvatarInfo() {
+        const theme = document.documentElement.getAttribute('data-theme') || localStorage.getItem('crt_theme') || 'xp';
+        const map = {
+            'xp': { url: '/assets/avatars/avatar_xp.svg', name: 'Windows XP Luna Knight' },
+            'xp-luna': { url: '/assets/avatars/avatar_xp.svg', name: 'Windows XP Luna Knight' },
+            'win98': { url: '/assets/avatars/avatar_win98.svg', name: 'Windows 98 Pixel Monitor' },
+            'dark': { url: '/assets/avatars/avatar_dark.svg', name: 'Dark CRT Cyber Visor' },
+            'green': { url: '/assets/avatars/avatar_green.svg', name: 'Phosphor Green Terminal Skull' },
+            'amber': { url: '/assets/avatars/avatar_amber.svg', name: 'Amber 60Hz Vector Radiation' },
+            'blood': { url: '/assets/avatars/avatar_blood.svg', name: 'Blood Noir Surveillance Lens' },
+            'backrooms': { url: '/assets/avatars/avatar_backrooms.svg', name: 'Liminal Wallpaper Entity' }
+        };
+        return map[theme] || map['xp'];
+    }
+
+    function getUserAvatarUrl(user) {
+        if (user && user.avatar) {
+            return user.avatar;
+        }
+        return getThemeDefaultAvatarInfo().url;
+    }
+
+    function refreshAvatars() {
+        if (headerUserAvatar) {
+            headerUserAvatar.src = getUserAvatarUrl(currentUser);
+        }
+        if (profileAvatarImg && userProfileModal && userProfileModal.classList.contains('open')) {
+            profileAvatarImg.src = getUserAvatarUrl(currentUser);
+            if (dossierThemeAvatarName) {
+                dossierThemeAvatarName.textContent = getThemeDefaultAvatarInfo().name;
+            }
+        }
     }
 
     function setCRT(enabled) {
@@ -419,12 +479,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateUserUI() {
         if (currentUser) {
+            if (authBtn) authBtn.style.display = 'none';
+            if (userProfileBtn) {
+                userProfileBtn.style.display = 'inline-flex';
+                if (headerUserName) headerUserName.textContent = currentUser.username.toUpperCase();
+                if (headerUserAvatar) headerUserAvatar.src = getUserAvatarUrl(currentUser);
+            }
+            if (headerLogoutBtn) headerLogoutBtn.style.display = 'inline-flex';
+
             if (currentUser.role === 'admin') {
-                authBtn.textContent = `[ADMIN: ${currentUser.username}] LOGOUT`;
                 if (adminUploadBtn) adminUploadBtn.style.display = 'inline-flex';
                 if (adminNewDispatchBtn) adminNewDispatchBtn.style.display = 'inline-flex';
             } else {
-                authBtn.textContent = `[USER: ${currentUser.username}] LOGOUT`;
                 if (adminUploadBtn) adminUploadBtn.style.display = 'none';
                 if (adminNewDispatchBtn) adminNewDispatchBtn.style.display = 'none';
             }
@@ -437,7 +503,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (fbAuthPrompt) fbAuthPrompt.style.display = 'none';
             if (gameFeedbackForm) gameFeedbackForm.style.display = 'block';
         } else {
-            authBtn.textContent = 'LOGIN / REGISTER';
+            if (authBtn) {
+                authBtn.style.display = 'inline-block';
+                authBtn.textContent = 'LOGIN / REGISTER';
+            }
+            if (userProfileBtn) userProfileBtn.style.display = 'none';
+            if (headerLogoutBtn) headerLogoutBtn.style.display = 'none';
             if (adminUploadBtn) adminUploadBtn.style.display = 'none';
             if (adminNewDispatchBtn) adminNewDispatchBtn.style.display = 'none';
 
@@ -454,12 +525,210 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (authBtn) {
         authBtn.addEventListener('click', () => {
-            if (currentUser) {
-                if (confirm(`Terminate current session for [${currentUser.username}]?`)) {
-                    logout();
+            openAuthModal('OPERATOR AUTHENTICATION', 'login');
+        });
+    }
+
+    if (userProfileBtn) {
+        userProfileBtn.addEventListener('click', () => {
+            openUserProfileModal();
+        });
+    }
+
+    if (headerLogoutBtn) {
+        headerLogoutBtn.addEventListener('click', () => {
+            if (confirm(`Terminate current session for [${currentUser.username}]?`)) {
+                logout();
+            }
+        });
+    }
+
+    // ========================================================================
+    // USER PROFILE MODAL & AVATAR UPLOAD LOGIC
+    // ========================================================================
+
+    async function openUserProfileModal() {
+        if (!currentUser) {
+            openAuthModal('Please sign in to view your operative dossier.', 'login');
+            return;
+        }
+
+        if (profileAvatarImg) profileAvatarImg.src = getUserAvatarUrl(currentUser);
+        if (profileUsernameDisplay) profileUsernameDisplay.textContent = currentUser.username;
+        if (profileRoleBadge) profileRoleBadge.textContent = `CLEARANCE: ${(currentUser.role || 'USER').toUpperCase()}`;
+        if (profileProviderBadge) profileProviderBadge.textContent = `${(currentUser.provider || 'LOCAL').toUpperCase()} AUTH`;
+        if (profileEmailDisplay) profileEmailDisplay.textContent = currentUser.email || 'No email registered';
+        if (dossierUserId) dossierUserId.textContent = currentUser.id || 'N/A';
+        const joinDate = currentUser.created_at || currentUser.createdAt;
+        if (dossierJoinDate) dossierJoinDate.textContent = joinDate ? joinDate.slice(0, 10) : '2026-11-12';
+        if (dossierThemeAvatarName) dossierThemeAvatarName.textContent = getThemeDefaultAvatarInfo().name;
+
+        if (currentUser.avatar) {
+            if (profileAvatarBadge) {
+                profileAvatarBadge.textContent = 'CUSTOM AVATAR';
+                profileAvatarBadge.style.background = '#2e7d32';
+            }
+            if (btnRemoveCustomAvatar) btnRemoveCustomAvatar.style.display = 'inline-block';
+        } else {
+            if (profileAvatarBadge) {
+                profileAvatarBadge.textContent = 'THEME DEFAULT';
+                profileAvatarBadge.style.background = 'var(--link-color, #0055ea)';
+            }
+            if (btnRemoveCustomAvatar) btnRemoveCustomAvatar.style.display = 'none';
+        }
+
+        if (avatarUploadFeedback) avatarUploadFeedback.textContent = '';
+
+        if (userProfileModal) userProfileModal.classList.add('open');
+        if (window.soundEngine) window.soundEngine.playSelect();
+
+        // Fetch detailed profile stats from server
+        try {
+            const res = await fetch('/api/user/profile', {
+                headers: { 'Authorization': `Bearer ${authToken}` }
+            });
+            if (res.ok) {
+                const data = await res.json();
+                if (data.stats) {
+                    if (dossierTransmissionsCount) dossierTransmissionsCount.textContent = data.stats.transmissions;
+                    if (dossierFeedbackCount) dossierFeedbackCount.textContent = data.stats.feedbackReports;
                 }
-            } else {
-                openAuthModal('OPERATOR AUTHENTICATION', 'login');
+                if (data.user) {
+                    currentUser = { ...currentUser, ...data.user };
+                    if (headerUserAvatar) headerUserAvatar.src = getUserAvatarUrl(currentUser);
+                    if (profileAvatarImg) profileAvatarImg.src = getUserAvatarUrl(currentUser);
+                }
+            }
+        } catch (e) {}
+    }
+
+    function closeUserProfileModal() {
+        if (userProfileModal) userProfileModal.classList.remove('open');
+        if (avatarUploadFeedback) avatarUploadFeedback.textContent = '';
+    }
+
+    if (userProfileModalClose) userProfileModalClose.addEventListener('click', closeUserProfileModal);
+    if (profileModalDoneBtn) profileModalDoneBtn.addEventListener('click', closeUserProfileModal);
+    if (userProfileModal) {
+        userProfileModal.addEventListener('click', (e) => {
+            if (e.target === userProfileModal) closeUserProfileModal();
+        });
+    }
+
+    if (profileLogoutActionBtn) {
+        profileLogoutActionBtn.addEventListener('click', () => {
+            if (confirm(`Terminate current session for [${currentUser.username}]?`)) {
+                closeUserProfileModal();
+                logout();
+            }
+        });
+    }
+
+    // Avatar Upload Handler
+    if (btnTriggerAvatarUpload && avatarFileInput) {
+        btnTriggerAvatarUpload.addEventListener('click', () => {
+            avatarFileInput.click();
+        });
+
+        avatarFileInput.addEventListener('change', async () => {
+            const file = avatarFileInput.files[0];
+            if (!file) return;
+
+            if (file.size > 5 * 1024 * 1024) {
+                if (avatarUploadFeedback) {
+                    avatarUploadFeedback.textContent = 'File too large! Max image size is 5MB.';
+                    avatarUploadFeedback.style.color = 'var(--accent)';
+                }
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('avatar', file);
+
+            if (avatarUploadFeedback) {
+                avatarUploadFeedback.textContent = 'Transmitting avatar to sector mainframe...';
+                avatarUploadFeedback.style.color = 'var(--link-color)';
+            }
+
+            try {
+                const res = await fetch('/api/user/avatar', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${authToken}` },
+                    body: formData
+                });
+                const data = await res.json();
+
+                if (res.ok && data.success) {
+                    currentUser.avatar = data.avatar;
+                    if (headerUserAvatar) headerUserAvatar.src = data.avatar;
+                    if (profileAvatarImg) profileAvatarImg.src = data.avatar;
+                    if (profileAvatarBadge) {
+                        profileAvatarBadge.textContent = 'CUSTOM AVATAR';
+                        profileAvatarBadge.style.background = '#2e7d32';
+                    }
+                    if (btnRemoveCustomAvatar) btnRemoveCustomAvatar.style.display = 'inline-block';
+                    if (avatarUploadFeedback) {
+                        avatarUploadFeedback.textContent = '✓ Profile avatar updated successfully!';
+                        avatarUploadFeedback.style.color = '#2e7d32';
+                    }
+                    if (window.soundEngine) window.soundEngine.playSelect();
+                } else {
+                    if (avatarUploadFeedback) {
+                        avatarUploadFeedback.textContent = data.error || 'Failed to update avatar.';
+                        avatarUploadFeedback.style.color = 'var(--accent)';
+                    }
+                }
+            } catch (err) {
+                if (avatarUploadFeedback) {
+                    avatarUploadFeedback.textContent = 'Connection error during avatar upload.';
+                    avatarUploadFeedback.style.color = 'var(--accent)';
+                }
+            } finally {
+                avatarFileInput.value = '';
+            }
+        });
+    }
+
+    // Reset Custom Avatar to Theme Default
+    if (btnRemoveCustomAvatar) {
+        btnRemoveCustomAvatar.addEventListener('click', async () => {
+            if (!confirm('Reset to theme default avatar? Your avatar will synchronize with each active visual theme.')) {
+                return;
+            }
+
+            if (avatarUploadFeedback) {
+                avatarUploadFeedback.textContent = 'Resetting to theme default...';
+                avatarUploadFeedback.style.color = 'var(--link-color)';
+            }
+
+            try {
+                const res = await fetch('/api/user/avatar', {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                const data = await res.json();
+
+                if (res.ok && data.success) {
+                    currentUser.avatar = null;
+                    const def = getThemeDefaultAvatarInfo();
+                    if (headerUserAvatar) headerUserAvatar.src = def.url;
+                    if (profileAvatarImg) profileAvatarImg.src = def.url;
+                    if (profileAvatarBadge) {
+                        profileAvatarBadge.textContent = 'THEME DEFAULT';
+                        profileAvatarBadge.style.background = 'var(--link-color, #0055ea)';
+                    }
+                    if (btnRemoveCustomAvatar) btnRemoveCustomAvatar.style.display = 'none';
+                    if (avatarUploadFeedback) {
+                        avatarUploadFeedback.textContent = `✓ Reset to ${def.name}!`;
+                        avatarUploadFeedback.style.color = '#2e7d32';
+                    }
+                    if (window.soundEngine) window.soundEngine.playSelect();
+                }
+            } catch (err) {
+                if (avatarUploadFeedback) {
+                    avatarUploadFeedback.textContent = 'Failed to reset avatar.';
+                    avatarUploadFeedback.style.color = 'var(--accent)';
+                }
             }
         });
     }
