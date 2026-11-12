@@ -1706,16 +1706,25 @@ document.addEventListener('DOMContentLoaded', () => {
         filtered.forEach(art => {
             const card = document.createElement('div');
             card.className = 'art-card';
+            const hasAsset = art.assetSale && art.assetSale.url;
             card.innerHTML = `
                 <div class="art-card-img-holder">
                     <img src="${art.image}" class="art-card-img" alt="${escapeHtml(art.title)}">
                     <div class="art-card-badge">${art.categoryLabel || art.category.toUpperCase()}</div>
+                    ${hasAsset ? `<div class="art-card-asset-tag"><span>🛒</span> ASSET AVAILABLE</div>` : ''}
                 </div>
                 <h4 class="art-card-title">${escapeHtml(art.title)}</h4>
                 <div class="art-card-medium">${escapeHtml(art.medium)} &bull; ${art.date}</div>
                 <div class="art-card-desc">${escapeHtml(art.description)}</div>
-                <div style="margin-top: 10px; font-size: 11px; font-weight: bold; color: var(--link-color);">
-                    [+] CLICK TO INSPECT IN VIEWFINDER
+                ${hasAsset ? `
+                    <div class="art-card-asset-bar">
+                        <span class="art-asset-name">${escapeHtml(art.assetSale.name || 'Commercial Asset')}</span>
+                        <span class="art-asset-price">${escapeHtml(art.assetSale.price || '')}</span>
+                    </div>
+                ` : ''}
+                <div style="margin-top: 10px; font-size: 11px; font-weight: bold; color: var(--link-color); display: flex; justify-content: space-between; align-items: center;">
+                    <span>[+] INSPECT / GET ASSET</span>
+                    <span style="opacity: 0.8;">➔</span>
                 </div>
             `;
 
@@ -1735,6 +1744,41 @@ document.addEventListener('DOMContentLoaded', () => {
         artModalCategory.textContent = art.categoryLabel || art.category.toUpperCase();
         artModalMedium.textContent = `MEDIUM: ${art.medium} // DATE: ${art.date}`;
         artModalDesc.textContent = art.description;
+
+        const assetBox = document.getElementById('artModalAssetBox');
+        const assetName = document.getElementById('artModalAssetName');
+        const assetPrice = document.getElementById('artModalAssetPrice');
+        const assetFormats = document.getElementById('artModalAssetFormats');
+        const assetBtn = document.getElementById('artModalAssetBtn');
+        const assetPlatform = document.getElementById('artModalAssetPlatform');
+
+        if (assetBox) {
+            if (art.assetSale && art.assetSale.url) {
+                assetBox.style.display = 'block';
+                if (assetName) assetName.textContent = art.assetSale.name || 'Commercial Asset Pack';
+                if (assetPrice) {
+                    if (art.assetSale.price) {
+                        assetPrice.style.display = 'inline-block';
+                        assetPrice.textContent = art.assetSale.price;
+                    } else {
+                        assetPrice.style.display = 'none';
+                    }
+                }
+                if (assetFormats) {
+                    assetFormats.textContent = art.assetSale.formats ? `FORMATS: ${art.assetSale.formats}` : 'Format: Direct Asset Package';
+                }
+                if (assetBtn) {
+                    assetBtn.href = art.assetSale.url;
+                }
+                if (assetPlatform) {
+                    const plat = (art.assetSale.platform || 'STORE').toUpperCase();
+                    assetPlatform.textContent = `BUY / DOWNLOAD ASSET ON ${plat} ➔`;
+                }
+            } else {
+                assetBox.style.display = 'none';
+            }
+        }
+
         artModal.classList.add('open');
         if (window.soundEngine) window.soundEngine.playSelect();
     }

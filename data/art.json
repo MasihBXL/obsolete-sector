@@ -7,7 +7,14 @@
     "medium": "Blender / Low-Poly Vertex Shading / CRT Dithering",
     "date": "2026-10",
     "image": "/assets/images/cover_chamber.svg",
-    "description": "Tactile shotgun model featuring weathered steel textures, procedural scratch maps, and vintage bakelite foregrip. Optimized for PSX-era real-time rendering."
+    "description": "Tactile shotgun model featuring weathered steel textures, procedural scratch maps, and vintage bakelite foregrip. Optimized for PSX-era real-time rendering.",
+    "assetSale": {
+      "name": "Asset 3D Retro Low-Poly Weapons Rig",
+      "price": "$12.00",
+      "platform": "itch.io",
+      "url": "https://itch.io",
+      "formats": "FBX, OBJ, BLEND, 256x256 PSX Textures"
+    }
   },
   {
     "id": "art-2",
@@ -17,7 +24,14 @@
     "medium": "Blender 3D / Vintage Cathode Material / Volumetric Dust",
     "date": "2026-08",
     "image": "/assets/images/cover_signal.svg",
-    "description": "Concrete bunker communications array with dual vacuum tubes, analogue tuning dials, and frequency cathode ray tube oscilloscope display."
+    "description": "Concrete bunker communications array with dual vacuum tubes, analogue tuning dials, and frequency cathode ray tube oscilloscope display.",
+    "assetSale": {
+      "name": "Asset Dark Fantasy Retro PSX Hardware & Bunkers",
+      "price": "$18.00",
+      "platform": "itch.io",
+      "url": "https://itch.io",
+      "formats": "FBX, GLTF, PBR Dithered Albedo"
+    }
   },
   {
     "id": "art-3",
@@ -27,7 +41,14 @@
     "medium": "Substance Painter / Low-Poly Topology / Industrial Rust",
     "date": "2026-05",
     "image": "/assets/images/cover_sub.svg",
-    "description": "Welded miniature submarine pod exterior with pneumatic hatch clamps and emergency sodium vapor floodlights submerged in iron brine."
+    "description": "Welded miniature submarine pod exterior with pneumatic hatch clamps and emergency sodium vapor floodlights submerged in iron brine.",
+    "assetSale": {
+      "name": "Asset 3D Retro Low-Poly Submersible Props",
+      "price": "$15.00",
+      "platform": "Gumroad",
+      "url": "https://gumroad.com",
+      "formats": "FBX, OBJ, PSX Vertex Painted"
+    }
   },
   {
     "id": "art-4",
@@ -37,7 +58,14 @@
     "medium": "Blender / Mechanical Rig / Procedural Iron Grime",
     "date": "2026-02",
     "image": "/assets/images/cover_machine.svg",
-    "description": "Heavy industrial bio-mechanical press with exposed copper hydraulics, steam safety release valves, and manual punchcard slot."
+    "description": "Heavy industrial bio-mechanical press with exposed copper hydraulics, steam safety release valves, and manual punchcard slot.",
+    "assetSale": {
+      "name": "Asset Dark Fantasy Retro PSX Industrial Machinery",
+      "price": "$20.00",
+      "platform": "itch.io",
+      "url": "https://itch.io",
+      "formats": "Rigged FBX, Animations, 128x128 Textures"
+    }
   },
   {
     "id": "art-5",
@@ -47,7 +75,14 @@
     "medium": "Aseprite / 1-Bit Monochrome Phosphor Green / 128x128",
     "date": "2026-09",
     "image": "/assets/images/screen_terminal.svg",
-    "description": "Authentic 1980s computer terminal monitor interface with scanline rasterization, telemetry readout widgets, and system diagnostic diagrams."
+    "description": "Authentic 1980s computer terminal monitor interface with scanline rasterization, telemetry readout widgets, and system diagnostic diagrams.",
+    "assetSale": {
+      "name": "Asset Pixel Art Retro CRT HUD & Terminal GUI",
+      "price": "$8.00",
+      "platform": "itch.io",
+      "url": "https://itch.io",
+      "formats": "PNG Sprite Sheets, Aseprite Source, TTF Font"
+    }
   },
   {
     "id": "art-6",
@@ -57,7 +92,14 @@
     "medium": "Pixel Grid / 64-Color Retro Palette / Hand-dithered",
     "date": "2026-07",
     "image": "/assets/images/screen_machinery.svg",
-    "description": "Hand-crafted pixel art illustration of automated pipeline valves, analog pressure gauges, and cold war ventilation ducts."
+    "description": "Hand-crafted pixel art illustration of automated pipeline valves, analog pressure gauges, and cold war ventilation ducts.",
+    "assetSale": {
+      "name": "Asset Pixel Art Cold-War Industrial Tileset",
+      "price": "$10.00",
+      "platform": "Unity Asset Store",
+      "url": "https://assetstore.unity.com",
+      "formats": "16x16 Tileset, Animated Sprites, Palettes"
+    }
   },
   {
     "id": "art-7",
@@ -67,7 +109,14 @@
     "medium": "Technical Blueprint / Architectural Grid / Sepia Ink",
     "date": "2026-06",
     "image": "/assets/images/cover_chamber.svg",
-    "description": "Mechanical concept sketch and internal layout breakdown of the cold war dealer android, highlighting servo joints and ocular sensor wiring."
+    "description": "Mechanical concept sketch and internal layout breakdown of the cold war dealer android, highlighting servo joints and ocular sensor wiring.",
+    "assetSale": {
+      "name": "Asset Dark Fantasy Retro PSX Concept Schematics",
+      "price": "$6.00",
+      "platform": "itch.io",
+      "url": "https://itch.io",
+      "formats": "High-Res 4K Blueprints, Layered PSD"
+    }
   },
   {
     "id": "art-8",
@@ -77,6 +126,13 @@
     "medium": "Fountain Pen & Charcoal on Aged Paper / Isometric Cross-Section",
     "date": "2026-03",
     "image": "/assets/images/cover_signal.svg",
-    "description": "Detailed cross-section schematic drawing of a multi-level nuclear bunker system, ventilation shafts, and subterranean fluid reservoirs."
+    "description": "Detailed cross-section schematic drawing of a multi-level nuclear bunker system, ventilation shafts, and subterranean fluid reservoirs.",
+    "assetSale": {
+      "name": "Asset 3D Retro Low-Poly Bunker Level Layouts",
+      "price": "$14.00",
+      "platform": "itch.io",
+      "url": "https://itch.io",
+      "formats": "Isometric Maps, Modular Low-Poly Kit"
+    }
   }
 ]

@@ -25,11 +25,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const tabUpload = document.getElementById('tabUpload');
     const tabManage = document.getElementById('tabManage');
     const tabDevlog = document.getElementById('tabDevlog');
+    const tabArt = document.getElementById('tabArt');
     const tabSocials = document.getElementById('tabSocials');
     const tabUsers = document.getElementById('tabUsers');
     const sectionUpload = document.getElementById('sectionUpload');
     const sectionManage = document.getElementById('sectionManage');
     const sectionDevlog = document.getElementById('sectionDevlog');
+    const sectionArt = document.getElementById('sectionArt');
     const sectionSocials = document.getElementById('sectionSocials');
     const sectionUsers = document.getElementById('sectionUsers');
 
@@ -140,12 +142,13 @@ document.addEventListener('DOMContentLoaded', () => {
     tabUpload.addEventListener('click', () => switchTab('upload'));
     tabManage.addEventListener('click', () => switchTab('manage'));
     tabDevlog.addEventListener('click', () => switchTab('devlog'));
+    if (tabArt) tabArt.addEventListener('click', () => switchTab('art'));
     if (tabSocials) tabSocials.addEventListener('click', () => switchTab('socials'));
     if (tabUsers) tabUsers.addEventListener('click', () => switchTab('users'));
 
     function switchTab(tab) {
-        [tabUpload, tabManage, tabDevlog, tabSocials, tabUsers].forEach(t => { if (t) t.classList.remove('active'); });
-        [sectionUpload, sectionManage, sectionDevlog, sectionSocials, sectionUsers].forEach(s => { if (s) s.style.display = 'none'; });
+        [tabUpload, tabManage, tabDevlog, tabArt, tabSocials, tabUsers].forEach(t => { if (t) t.classList.remove('active'); });
+        [sectionUpload, sectionManage, sectionDevlog, sectionArt, sectionSocials, sectionUsers].forEach(s => { if (s) s.style.display = 'none'; });
 
         if (tab === 'upload') {
             tabUpload.classList.add('active');
@@ -158,6 +161,10 @@ document.addEventListener('DOMContentLoaded', () => {
             tabDevlog.classList.add('active');
             sectionDevlog.style.display = 'block';
             loadAdminDevlogs();
+        } else if (tab === 'art') {
+            tabArt.classList.add('active');
+            sectionArt.style.display = 'block';
+            loadAdminArt();
         } else if (tab === 'socials') {
             tabSocials.classList.add('active');
             sectionSocials.style.display = 'block';
@@ -866,7 +873,275 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 9. Load Stats
+    // ========================================================================
+    // 9. ARTWORK & ASSET SALES ADMIN LOGIC
+    // ========================================================================
+    const addArtForm = document.getElementById('addArtForm');
+
+    async function loadAdminArt() {
+        const artListContainer = document.getElementById('adminArtList');
+        const artCountBadge = document.getElementById('adminArtCount');
+        if (!artListContainer) return;
+
+        try {
+            const res = await fetch('/api/art');
+            if (!res.ok) return;
+            const artworks = await res.json();
+
+            if (artCountBadge) artCountBadge.textContent = `${artworks.length} ARTWORKS`;
+
+            if (artworks.length === 0) {
+                artListContainer.innerHTML = '<div style="font-size: 12px; color: #94a3b8; padding: 12px;">No artworks registered yet.</div>';
+                return;
+            }
+
+            artListContainer.innerHTML = '';
+            artworks.forEach(art => {
+                const item = document.createElement('div');
+                item.style.background = 'rgba(255, 255, 255, 0.02)';
+                item.style.border = '1px solid #334155';
+                item.style.padding = '12px 16px';
+                item.style.borderRadius = '4px';
+                item.style.display = 'flex';
+                item.style.flexDirection = 'column';
+                item.style.gap = '10px';
+
+                const asset = art.assetSale;
+                const hasAsset = asset && asset.url;
+
+                item.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <img src="${art.image}" style="width: 44px; height: 44px; object-fit: cover; border: 1px solid #475569; border-radius: 2px;" alt="thumb">
+                            <div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="font-weight: bold; color: #e2e8f0; font-size: 13.5px;">${escapeHtml(art.title)}</span>
+                                    <span style="font-size: 10px; background: #1e293b; color: #94a3b8; padding: 2px 6px; border-radius: 2px;">${art.categoryLabel || art.category}</span>
+                                    ${hasAsset ? `<span style="background: #065f46; color: #6ee7b7; font-size: 10px; padding: 2px 6px; border-radius: 2px; font-weight: bold;">🛒 ASSET LINKED (${escapeHtml(asset.price || 'FOR SALE')})</span>` : '<span style="background: #334155; color: #94a3b8; font-size: 10px; padding: 2px 6px; border-radius: 2px;">NO ASSET LINK</span>'}
+                                </div>
+                                <div style="font-size: 11px; color: #64748b; margin-top: 2px;">
+                                    ${escapeHtml(art.medium)} &bull; ${art.date}
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button type="button" class="btn-primary btn-edit-asset" style="padding: 4px 10px; font-size: 11px;">
+                                ${hasAsset ? 'EDIT ASSET LINK' : '+ LINK ASSET PACK'}
+                            </button>
+                            <button type="button" class="btn-danger btn-del-art" style="padding: 4px 10px; font-size: 11px;">
+                                DELETE
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Inline Quick Asset Link Editor Form (Toggled) -->
+                    <div class="asset-edit-box" style="display: none; background: #0b1120; border: 1px dashed #3b82f6; padding: 12px; border-radius: 3px; margin-top: 4px;">
+                        <div style="font-size: 11.5px; font-weight: bold; color: #60a5fa; margin-bottom: 8px;">
+                            COMMERCIAL STOREFRONT LINK FOR: "${escapeHtml(art.title)}"
+                        </div>
+                        <div class="form-row" style="margin-bottom: 8px;">
+                            <div class="form-group form-col">
+                                <label class="form-label">Asset Pack Title:</label>
+                                <input type="text" class="form-input edit-asset-name" value="${escapeHtml(asset ? (asset.name || '') : art.title + ' Asset Pack')}">
+                            </div>
+                            <div class="form-group form-col">
+                                <label class="form-label">Price Tag (e.g. $15.00):</label>
+                                <input type="text" class="form-input edit-asset-price" value="${escapeHtml(asset ? (asset.price || '') : '')}">
+                            </div>
+                        </div>
+                        <div class="form-row" style="margin-bottom: 8px;">
+                            <div class="form-group form-col">
+                                <label class="form-label">Store Platform:</label>
+                                <select class="form-input edit-asset-platform">
+                                    <option value="itch.io" ${asset && asset.platform === 'itch.io' ? 'selected' : ''}>itch.io</option>
+                                    <option value="Gumroad" ${asset && asset.platform === 'Gumroad' ? 'selected' : ''}>Gumroad</option>
+                                    <option value="Unity Asset Store" ${asset && asset.platform === 'Unity Asset Store' ? 'selected' : ''}>Unity Asset Store</option>
+                                    <option value="Unreal Fab / Marketplace" ${asset && asset.platform === 'Unreal Fab / Marketplace' ? 'selected' : ''}>Unreal Fab / Marketplace</option>
+                                    <option value="Ko-fi" ${asset && asset.platform === 'Ko-fi' ? 'selected' : ''}>Ko-fi</option>
+                                    <option value="Direct Store" ${asset && asset.platform === 'Direct Store' ? 'selected' : ''}>Direct Store</option>
+                                </select>
+                            </div>
+                            <div class="form-group form-col">
+                                <label class="form-label">Storefront Page URL *:</label>
+                                <input type="url" class="form-input edit-asset-url" value="${escapeHtml(asset ? (asset.url || '') : '')}" placeholder="https://itch.io/...">
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 8px;">
+                            <label class="form-label">Included Formats &amp; Specs:</label>
+                            <input type="text" class="form-input edit-asset-formats" value="${escapeHtml(asset ? (asset.formats || '') : '')}" placeholder="FBX, OBJ, PSX Textures, Aseprite, etc.">
+                        </div>
+                        <div style="display: flex; justify-content: flex-end; gap: 8px;">
+                            <button type="button" class="btn-primary btn-save-asset-link" style="padding: 5px 14px; font-size: 11px;">
+                                SAVE ASSET LINK
+                            </button>
+                            <button type="button" class="btn-cancel-asset-edit" style="background: none; border: 1px solid #475569; color: #94a3b8; padding: 5px 12px; font-size: 11px; cursor: pointer;">
+                                CANCEL
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                // Toggle quick editor
+                const editBtn = item.querySelector('.btn-edit-asset');
+                const editBox = item.querySelector('.asset-edit-box');
+                const cancelBtn = item.querySelector('.btn-cancel-asset-edit');
+                const saveBtn = item.querySelector('.btn-save-asset-link');
+
+                editBtn.addEventListener('click', () => {
+                    editBox.style.display = editBox.style.display === 'none' ? 'block' : 'none';
+                });
+                cancelBtn.addEventListener('click', () => {
+                    editBox.style.display = 'none';
+                });
+
+                // Save updated asset link
+                saveBtn.addEventListener('click', async () => {
+                    const name = item.querySelector('.edit-asset-name').value;
+                    const price = item.querySelector('.edit-asset-price').value;
+                    const platform = item.querySelector('.edit-asset-platform').value;
+                    const url = item.querySelector('.edit-asset-url').value;
+                    const formats = item.querySelector('.edit-asset-formats').value;
+
+                    try {
+                        saveBtn.disabled = true;
+                        saveBtn.textContent = 'SAVING...';
+                        const updRes = await fetch(`/api/art/${art.id}/asset`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'x-admin-token': adminToken,
+                                'Authorization': `Bearer ${adminToken}`
+                            },
+                            body: JSON.stringify({ name, price, platform, url, formats })
+                        });
+                        if (updRes.ok) {
+                            loadAdminArt();
+                        } else {
+                            alert('Failed to update asset link');
+                        }
+                    } catch (e) {
+                        alert('Error: ' + e.message);
+                    } finally {
+                        saveBtn.disabled = false;
+                        saveBtn.textContent = 'SAVE ASSET LINK';
+                    }
+                });
+
+                // Delete artwork
+                item.querySelector('.btn-del-art').addEventListener('click', async () => {
+                    if (!confirm(`Are you sure you want to delete artwork "${art.title}"?`)) return;
+                    try {
+                        const delRes = await fetch(`/api/art/${art.id}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'x-admin-token': adminToken,
+                                'Authorization': `Bearer ${adminToken}`
+                            }
+                        });
+                        if (delRes.ok) loadAdminArt();
+                    } catch (e) {
+                        alert('Delete error: ' + e.message);
+                    }
+                });
+
+                artListContainer.appendChild(item);
+            });
+        } catch (e) {
+            console.error('Failed to load admin art list:', e);
+        }
+    }
+
+    // Submit New Artwork Form
+    if (addArtForm) {
+        addArtForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const title = document.getElementById('artTitle').value.trim();
+            const category = document.getElementById('artCategory').value;
+            const medium = document.getElementById('artMedium').value.trim();
+            const date = document.getElementById('artDate').value || new Date().toISOString().split('T')[0];
+            const fileInput = document.getElementById('artImageFile');
+            const imageUrlInput = document.getElementById('artImageUrl');
+            const desc = document.getElementById('artDescription').value.trim();
+
+            const assetName = document.getElementById('artAssetName').value.trim();
+            const assetPrice = document.getElementById('artAssetPrice').value.trim();
+            const assetPlatform = document.getElementById('artAssetPlatform').value;
+            const assetUrl = document.getElementById('artAssetUrl').value.trim();
+            const assetFormats = document.getElementById('artAssetFormats').value.trim();
+
+            const statusEl = document.getElementById('artStatus');
+            const submitBtn = document.getElementById('btnSubmitArt');
+
+            try {
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'REGISTERING ARTWORK...';
+                }
+                if (statusEl) {
+                    statusEl.textContent = 'UPLOADING AND PUBLISHING...';
+                    statusEl.style.color = '#60a5fa';
+                }
+
+                const formData = new FormData();
+                formData.append('title', title);
+                formData.append('category', category);
+                formData.append('medium', medium);
+                formData.append('date', date);
+                formData.append('description', desc);
+
+                if (fileInput && fileInput.files && fileInput.files[0]) {
+                    formData.append('artImage', fileInput.files[0]);
+                }
+                if (imageUrlInput && imageUrlInput.value.trim()) {
+                    formData.append('imageUrl', imageUrlInput.value.trim());
+                }
+
+                if (assetUrl) {
+                    formData.append('assetUrl', assetUrl);
+                    formData.append('assetName', assetName);
+                    formData.append('assetPrice', assetPrice);
+                    formData.append('assetPlatform', assetPlatform);
+                    formData.append('assetFormats', assetFormats);
+                }
+
+                const res = await fetch('/api/art', {
+                    method: 'POST',
+                    headers: {
+                        'x-admin-token': adminToken,
+                        'Authorization': `Bearer ${adminToken}`
+                    },
+                    body: formData
+                });
+
+                if (res.ok) {
+                    if (statusEl) {
+                        statusEl.textContent = 'SUCCESS: ARTWORK & ASSET LINK PUBLISHED';
+                        statusEl.style.color = '#4ade80';
+                    }
+                    addArtForm.reset();
+                    loadAdminArt();
+                } else {
+                    const data = await res.json();
+                    if (statusEl) {
+                        statusEl.textContent = 'ERROR: ' + (data.error || 'Failed to publish');
+                        statusEl.style.color = '#ff4444';
+                    }
+                }
+            } catch (err) {
+                if (statusEl) {
+                    statusEl.textContent = 'COMMUNICATION ERROR: ' + err.message;
+                    statusEl.style.color = '#ff4444';
+                }
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = '+ PUBLISH ARTWORK & LINK ASSET';
+                }
+            }
+        });
+    }
+
+    // 10. Load Stats
     async function loadAdminStats() {
         try {
             const res = await fetch('/api/admin/stats', {

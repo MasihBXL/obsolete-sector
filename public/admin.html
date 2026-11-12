@@ -79,6 +79,7 @@
                 <button id="tabUpload" class="tab-btn active">+ UPLOAD NEW GAME</button>
                 <button id="tabManage" class="tab-btn">MANAGE ARCHIVE</button>
                 <button id="tabDevlog" class="tab-btn">POST DEVLOG DISPATCH</button>
+                <button id="tabArt" class="tab-btn">ART &amp; ASSETS STORE</button>
                 <button id="tabSocials" class="tab-btn">MANAGE SOCIALS &amp; REELS</button>
                 <button id="tabUsers" class="tab-btn">USER ACCOUNTS</button>
             </div>
@@ -354,7 +355,120 @@
                 </div>
             </div>
 
-            <!-- TAB 4: SOCIALS & EMBEDDED MEDIA HUB -->
+            <!-- TAB 4: ARTWORK & ASSET SALES MANAGEMENT -->
+            <div id="sectionArt" style="display: none;">
+                <!-- Add New Artwork & Asset Pack -->
+                <div class="admin-card">
+                    <div class="card-title">
+                        <span>NEW ARTWORK &amp; ASSET PACK REGISTRATION</span>
+                        <span style="font-size: 12px; color: #64748b;">COMMERCIAL STORE LINKING</span>
+                    </div>
+
+                    <form id="addArtForm" enctype="multipart/form-data">
+                        <div class="form-row">
+                            <div class="form-group form-col">
+                                <label class="form-label" for="artTitle">Artwork / Model Title *</label>
+                                <input type="text" id="artTitle" class="form-input" placeholder="e.g. 12-GAUGE TACTICAL RIG & BREECH" required>
+                            </div>
+                            <div class="form-group form-col">
+                                <label class="form-label" for="artCategory">Category *</label>
+                                <select id="artCategory" class="form-input">
+                                    <option value="3d">3D Renders &amp; Models</option>
+                                    <option value="pixel">Pixel Art</option>
+                                    <option value="drawing">Drawings &amp; Sketches</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group form-col">
+                                <label class="form-label" for="artMedium">Medium / Software / Technique</label>
+                                <input type="text" id="artMedium" class="form-input" placeholder="e.g. Blender / Low-Poly Vertex Shading / CRT Dithering">
+                            </div>
+                            <div class="form-group form-col">
+                                <label class="form-label" for="artDate">Creation Date</label>
+                                <input type="date" id="artDate" class="form-input">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group form-col">
+                                <label class="form-label" for="artImageFile">Upload Artwork Image:</label>
+                                <input type="file" id="artImageFile" accept="image/*" class="form-input" style="padding: 5px;">
+                            </div>
+                            <div class="form-group form-col">
+                                <label class="form-label" for="artImageUrl">OR Image URL:</label>
+                                <input type="url" id="artImageUrl" class="form-input" placeholder="/assets/images/... or external URL">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="artDescription">Artwork Description / Lore</label>
+                            <textarea id="artDescription" class="form-textarea" style="min-height: 70px;" placeholder="Description of materials, topology, or artistic background..."></textarea>
+                        </div>
+
+                        <!-- COMMERCIAL ASSET STOREFRONT SECTION -->
+                        <div style="background: rgba(59, 130, 246, 0.04); border: 1px dashed rgba(59, 130, 246, 0.4); padding: 14px; margin-bottom: 16px; border-radius: 4px;">
+                            <div style="font-size: 12px; font-weight: bold; color: #60a5fa; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
+                                <span>🛒</span>
+                                <span>COMMERCIAL ASSET STOREFRONT LINK &amp; PRICING (Optional)</span>
+                            </div>
+                            
+                            <div class="form-row" style="margin-bottom: 10px;">
+                                <div class="form-group form-col">
+                                    <label class="form-label" for="artAssetName">Commercial Asset Name:</label>
+                                    <input type="text" id="artAssetName" class="form-input" placeholder="e.g. Asset 3D Retro Low-Poly Weapons Pack">
+                                </div>
+                                <div class="form-group form-col">
+                                    <label class="form-label" for="artAssetPrice">Price Tag:</label>
+                                    <input type="text" id="artAssetPrice" class="form-input" placeholder="e.g. $12.00 or $18.00">
+                                </div>
+                            </div>
+
+                            <div class="form-row" style="margin-bottom: 10px;">
+                                <div class="form-group form-col">
+                                    <label class="form-label" for="artAssetPlatform">Store Platform:</label>
+                                    <select id="artAssetPlatform" class="form-input">
+                                        <option value="itch.io">itch.io</option>
+                                        <option value="Gumroad">Gumroad</option>
+                                        <option value="Unity Asset Store">Unity Asset Store</option>
+                                        <option value="Unreal Fab / Marketplace">Unreal Fab / Marketplace</option>
+                                        <option value="Ko-fi">Ko-fi</option>
+                                        <option value="Direct Store">Direct Store / Other</option>
+                                    </select>
+                                </div>
+                                <div class="form-group form-col">
+                                    <label class="form-label" for="artAssetUrl">Commercial Store URL *:</label>
+                                    <input type="url" id="artAssetUrl" class="form-input" placeholder="https://itch.io/s/... or your gumroad/store page">
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label class="form-label" for="artAssetFormats">Included Formats &amp; Specifications:</label>
+                                <input type="text" id="artAssetFormats" class="form-input" placeholder="e.g. FBX, OBJ, BLEND, 256x256 PSX Textures">
+                            </div>
+                        </div>
+
+                        <div id="artStatus" style="font-size: 12px; margin-bottom: 12px; font-weight: bold;"></div>
+                        <button type="submit" class="btn-primary" id="btnSubmitArt" style="padding: 10px 22px; font-weight: bold;">
+                            + PUBLISH ARTWORK &amp; LINK ASSET
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Existing Artworks & Quick Asset Link Editor -->
+                <div class="admin-card" style="margin-top: 24px;">
+                    <div class="card-title">
+                        <span>EXISTING ARTWORK &amp; ASSET LINK STATUS</span>
+                        <span style="font-size: 12px; color: #64748b;" id="adminArtCount">0 ARTWORKS</span>
+                    </div>
+                    <div id="adminArtList" style="display: flex; flex-direction: column; gap: 12px;">
+                        <div style="font-size: 12px; color: #94a3b8;">Loading artworks...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 5: SOCIALS & EMBEDDED MEDIA HUB -->
             <div id="sectionSocials" style="display: none;">
                 <!-- Profile URLs Settings -->
                 <div class="admin-card">

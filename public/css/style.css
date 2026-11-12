@@ -2332,6 +2332,49 @@ html[data-theme="dark"] body {
     line-height: 1.45;
 }
 
+.art-card-asset-tag {
+    position: absolute;
+    bottom: 6px;
+    right: 6px;
+    background: #0055ea;
+    color: #ffffff;
+    font-size: 9.5px;
+    padding: 2px 7px;
+    border-radius: 2px;
+    font-family: var(--font-mono);
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.art-card-asset-bar {
+    margin-top: 8px;
+    padding: 4px 8px;
+    background: rgba(59, 130, 246, 0.08);
+    border: 1px dashed var(--accent, #3b82f6);
+    border-radius: 2px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 10.5px;
+}
+
+.art-asset-name {
+    font-weight: bold;
+    color: var(--link-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 170px;
+}
+
+.art-asset-price {
+    font-weight: bold;
+    color: var(--accent);
+}
+
 /* ==========================================================================
    AUDIO LAB & SOUND VAULT (OST & SOUND EFFECTS)
    ========================================================================== */

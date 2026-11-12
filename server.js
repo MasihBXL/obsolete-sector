@@ -135,6 +135,10 @@ function getArt() {
     }
 }
 
+function saveArt(art) {
+    fs.writeFileSync(ART_DATA_PATH, JSON.stringify(art, null, 2));
+}
+
 function getSfx() {
     if (!fs.existsSync(SFX_DATA_PATH)) return [];
     try {
@@ -1351,6 +1355,101 @@ app.delete('/api/guestbook/:id', requireAdmin, (req, res) => {
 
 app.get('/api/art', (req, res) => {
     res.json(getArt());
+});
+
+// Admin Add or Update Artwork Asset Sale Info
+app.post('/api/art', requireAdmin, upload.single('artImage'), (req, res) => {
+    try {
+        const {
+            title,
+            category,
+            categoryLabel,
+            medium,
+            date,
+            description,
+            imageUrl,
+            assetName,
+            assetPrice,
+            assetPlatform,
+            assetUrl,
+            assetFormats
+        } = req.body;
+
+        if (!title) {
+            return res.status(400).json({ error: 'Artwork title is required' });
+        }
+
+        let image = imageUrl ? imageUrl.trim() : '/assets/images/cover_chamber.svg';
+        if (req.file) {
+            image = `/uploads/images/${req.file.filename}`;
+        }
+
+        const artList = getArt();
+        const newArt = {
+            id: 'art-' + Date.now(),
+            title: title.trim(),
+            category: category || '3d',
+            categoryLabel: categoryLabel || (category === '3d' ? '3D RENDER' : category === 'pixel' ? 'PIXEL ART' : 'DRAWINGS & SKETCHES'),
+            medium: medium ? medium.trim() : 'Digital',
+            date: date || new Date().toISOString().split('T')[0],
+            image,
+            description: description ? description.trim() : '',
+            assetSale: (assetUrl && assetUrl.trim()) ? {
+                name: assetName ? assetName.trim() : title.trim() + ' Asset Pack',
+                price: assetPrice ? assetPrice.trim() : '',
+                platform: assetPlatform ? assetPlatform.trim() : 'itch.io',
+                url: assetUrl.trim(),
+                formats: assetFormats ? assetFormats.trim() : ''
+            } : null
+        };
+
+        artList.unshift(newArt);
+        saveArt(artList);
+        res.status(201).json({ success: true, artwork: newArt });
+    } catch (e) {
+        res.status(500).json({ error: 'Failed to create artwork: ' + e.message });
+    }
+});
+
+// Admin Update Artwork Asset Sale Link for existing art
+app.put('/api/art/:id/asset', requireAdmin, (req, res) => {
+    try {
+        const { name, price, platform, url, formats } = req.body;
+        const artList = getArt();
+        const item = artList.find(a => a.id === req.params.id);
+        if (!item) {
+            return res.status(404).json({ error: 'Artwork not found' });
+        }
+
+        if (url && url.trim()) {
+            item.assetSale = {
+                name: name ? name.trim() : item.title + ' Asset Pack',
+                price: price ? price.trim() : '',
+                platform: platform ? platform.trim() : 'itch.io',
+                url: url.trim(),
+                formats: formats ? formats.trim() : ''
+            };
+        } else {
+            item.assetSale = null;
+        }
+
+        saveArt(artList);
+        res.json({ success: true, artwork: item });
+    } catch (e) {
+        res.status(500).json({ error: 'Failed to update asset link: ' + e.message });
+    }
+});
+
+// Admin Delete Artwork
+app.delete('/api/art/:id', requireAdmin, (req, res) => {
+    try {
+        let artList = getArt();
+        artList = artList.filter(a => a.id !== req.params.id);
+        saveArt(artList);
+        res.json({ success: true, message: 'Artwork deleted.' });
+    } catch (e) {
+        res.status(500).json({ error: 'Failed to delete artwork: ' + e.message });
+    }
 });
 
 app.get('/api/sfx', (req, res) => {
