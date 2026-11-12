@@ -1,0 +1,52 @@
+{
+  "profiles": {
+    "youtube": "https://youtube.com/@moptam",
+    "tiktok": "https://tiktok.com/@moptam",
+    "instagram": "https://instagram.com/moptam",
+    "discord": "https://discord.gg/obsolete-sector",
+    "twitter": "https://x.com/moptam_dev",
+    "steam": "https://store.steampowered.com/developer/moptam"
+  },
+  "longVideos": [
+    {
+      "id": "long-1",
+      "title": "[Documentary] Designing Tactile Horror & PSX Aesthetic in 2026",
+      "desc": "A full deep-dive into how mechanical switches, cold-war audio equipment, and software CRT dithering are built.",
+      "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "date": "2026-11-01"
+    },
+    {
+      "id": "long-2",
+      "title": "[Null Signal: 1986] Full Dev Gameplay & Audio Foley Recording",
+      "desc": "Behind the scenes walkthrough recording reel-to-reel magnetic tape and implementing real-time signal degradation.",
+      "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "date": "2026-10-15"
+    }
+  ],
+  "shortReels": [
+    {
+      "id": "reel-1",
+      "title": "Shotgun Shell Cocking Foley & Low-Poly Reload Animation",
+      "desc": "Crafting sound latency down to 2ms for instant tactile feedback.",
+      "date": "2026-11-10",
+      "previewEmbedUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "links": {
+        "youtube": "https://youtube.com/shorts/dQw4w9WgXcQ",
+        "tiktok": "https://www.tiktok.com",
+        "instagram": "https://www.instagram.com/reels"
+      }
+    },
+    {
+      "id": "reel-2",
+      "title": "CRT Phosphor Scanline Glow on Authentic Tube Monitor",
+      "desc": "Testing software CRT shader against actual 1989 Sony Trinitron.",
+      "date": "2026-11-05",
+      "previewEmbedUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "links": {
+        "youtube": "https://youtube.com/shorts/dQw4w9WgXcQ",
+        "tiktok": "https://www.tiktok.com",
+        "instagram": "https://www.instagram.com/reels"
+      }
+    }
+  ]
+}

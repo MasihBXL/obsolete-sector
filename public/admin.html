@@ -79,6 +79,7 @@
                 <button id="tabUpload" class="tab-btn active">+ UPLOAD NEW GAME</button>
                 <button id="tabManage" class="tab-btn">MANAGE ARCHIVE</button>
                 <button id="tabDevlog" class="tab-btn">POST DEVLOG DISPATCH</button>
+                <button id="tabSocials" class="tab-btn">MANAGE SOCIALS &amp; REELS</button>
                 <button id="tabUsers" class="tab-btn">USER ACCOUNTS</button>
             </div>
 
@@ -353,7 +354,152 @@
                 </div>
             </div>
 
-            <!-- TAB 4: USER ACCOUNTS & RBAC MANAGEMENT -->
+            <!-- TAB 4: SOCIALS & EMBEDDED MEDIA HUB -->
+            <div id="sectionSocials" style="display: none;">
+                <!-- Profile URLs Settings -->
+                <div class="admin-card">
+                    <div class="card-title">
+                        <span>OFFICIAL SOCIAL MEDIA CHANNELS</span>
+                        <span style="font-size: 12px; color: #64748b;">GLOBAL PROFILE URLS</span>
+                    </div>
+                    <form id="socialProfilesForm">
+                        <div class="form-row">
+                            <div class="form-group form-col">
+                                <label class="form-label" for="profYoutube">🔴 YouTube Channel URL:</label>
+                                <input type="url" id="profYoutube" class="form-input" placeholder="https://youtube.com/@moptam">
+                            </div>
+                            <div class="form-group form-col">
+                                <label class="form-label" for="profTiktok">🎵 TikTok Profile URL:</label>
+                                <input type="url" id="profTiktok" class="form-input" placeholder="https://tiktok.com/@moptam">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group form-col">
+                                <label class="form-label" for="profInstagram">📸 Instagram Profile URL:</label>
+                                <input type="url" id="profInstagram" class="form-input" placeholder="https://instagram.com/moptam">
+                            </div>
+                            <div class="form-group form-col">
+                                <label class="form-label" for="profDiscord">💬 Discord Community URL:</label>
+                                <input type="url" id="profDiscord" class="form-input" placeholder="https://discord.gg/...">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group form-col">
+                                <label class="form-label" for="profTwitter">🐦 X / Twitter Profile URL:</label>
+                                <input type="url" id="profTwitter" class="form-input" placeholder="https://x.com/moptam_dev">
+                            </div>
+                            <div class="form-group form-col">
+                                <label class="form-label" for="profSteam">🎮 Steam Developer / Store Hub:</label>
+                                <input type="url" id="profSteam" class="form-input" placeholder="https://store.steampowered.com/developer/...">
+                            </div>
+                        </div>
+                        <div id="profStatus" style="font-size: 12px; margin-bottom: 10px; font-weight: bold;"></div>
+                        <button type="submit" class="btn-primary" style="padding: 8px 18px;">
+                            SAVE SOCIAL PROFILES
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Long-Form YouTube Videos -->
+                <div class="admin-card" style="margin-top: 24px;">
+                    <div class="card-title">
+                        <span>POST LONG-FORM YOUTUBE DOCUMENTARY / DEVLOG</span>
+                        <span style="font-size: 12px; color: #64748b;">DEDICATED FULL EMBED SECTION</span>
+                    </div>
+                    <form id="addLongVideoForm">
+                        <div class="form-group">
+                            <label class="form-label" for="longVideoTitle">Video Title *</label>
+                            <input type="text" id="longVideoTitle" class="form-input" placeholder="e.g. [Documentary] Designing Analog Cold-War Tech in Indie Games" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group form-col">
+                                <label class="form-label" for="longVideoYoutubeUrl">YouTube Video Link (Standard or youtu.be) *</label>
+                                <input type="url" id="longVideoYoutubeUrl" class="form-input" placeholder="https://www.youtube.com/watch?v=..." required>
+                            </div>
+                            <div class="form-group form-col">
+                                <label class="form-label" for="longVideoDate">Broadcast Date</label>
+                                <input type="date" id="longVideoDate" class="form-input">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="longVideoDesc">Video Description / Summary</label>
+                            <textarea id="longVideoDesc" class="form-textarea" style="min-height: 70px;" placeholder="Summary of what this documentary or long gameplay video covers..."></textarea>
+                        </div>
+                        <div id="longVideoStatus" style="font-size: 12px; margin-bottom: 10px; font-weight: bold;"></div>
+                        <button type="submit" class="btn-primary" style="padding: 8px 18px;">
+                            + EMBED LONG YOUTUBE VIDEO
+                        </button>
+                    </form>
+
+                    <!-- Existing Long Videos List -->
+                    <div style="margin-top: 20px;">
+                        <div style="font-size: 12px; font-weight: bold; color: #94a3b8; margin-bottom: 10px;">CURRENT LONG-FORM VIDEOS:</div>
+                        <div id="adminLongVideosList" style="display: flex; flex-direction: column; gap: 10px;"></div>
+                    </div>
+                </div>
+
+                <!-- Cross-Platform Short Reels -->
+                <div class="admin-card" style="margin-top: 24px;">
+                    <div class="card-title">
+                        <span>POST SHORT REEL (SHORTS / TIKTOK / INSTAGRAM)</span>
+                        <span style="font-size: 12px; color: #64748b;">MULTI-PLATFORM DISPATCH</span>
+                    </div>
+                    <form id="addShortReelForm">
+                        <div class="form-group">
+                            <label class="form-label" for="reelTitle">Short Reel Title *</label>
+                            <input type="text" id="reelTitle" class="form-input" placeholder="e.g. Tactile Shotgun Reload Animation & Foley" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group form-col">
+                                <label class="form-label" for="reelPreviewEmbedUrl">Preview Embed URL (YouTube Video/Shorts or Direct):</label>
+                                <input type="url" id="reelPreviewEmbedUrl" class="form-input" placeholder="https://youtube.com/shorts/... or youtube watch URL">
+                            </div>
+                            <div class="form-group form-col">
+                                <label class="form-label" for="reelDate">Broadcast Date</label>
+                                <input type="date" id="reelDate" class="form-input">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="reelDesc">Short Description</label>
+                            <input type="text" id="reelDesc" class="form-input" placeholder="Brief note on sound design, shader test, or mechanic">
+                        </div>
+
+                        <!-- Multi-Platform Destination Links -->
+                        <div style="background: rgba(255, 255, 255, 0.02); border: 1px dashed #475569; padding: 12px; margin-bottom: 14px; border-radius: 4px;">
+                            <div style="font-size: 11.5px; font-weight: bold; color: #38bdf8; margin-bottom: 8px;">
+                                CROSS-PLATFORM DESTINATION URLS (User will be prompted where to open):
+                            </div>
+                            <div class="form-row" style="margin-bottom: 8px;">
+                                <div class="form-group form-col">
+                                    <label class="form-label" for="reelYtShortUrl">🔴 YouTube Shorts URL:</label>
+                                    <input type="url" id="reelYtShortUrl" class="form-input" placeholder="https://youtube.com/shorts/...">
+                                </div>
+                                <div class="form-group form-col">
+                                    <label class="form-label" for="reelTiktokUrl">🎵 TikTok Reel URL:</label>
+                                    <input type="url" id="reelTiktokUrl" class="form-input" placeholder="https://www.tiktok.com/@moptam/video/...">
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label class="form-label" for="reelInstagramUrl">📸 Instagram Reel URL:</label>
+                                <input type="url" id="reelInstagramUrl" class="form-input" placeholder="https://www.instagram.com/reel/...">
+                            </div>
+                        </div>
+
+                        <div id="reelStatus" style="font-size: 12px; margin-bottom: 10px; font-weight: bold;"></div>
+                        <button type="submit" class="btn-primary" style="padding: 8px 18px;">
+                            + LOG SHORT REEL
+                        </button>
+                    </form>
+
+                    <!-- Existing Short Reels List -->
+                    <div style="margin-top: 20px;">
+                        <div style="font-size: 12px; font-weight: bold; color: #94a3b8; margin-bottom: 10px;">CURRENT SHORT REELS:</div>
+                        <div id="adminShortReelsList" style="display: flex; flex-direction: column; gap: 10px;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 5: USER ACCOUNTS & RBAC MANAGEMENT -->
             <div id="sectionUsers" style="display: none;">
                 <div class="admin-card">
                     <div class="card-title">

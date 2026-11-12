@@ -4517,3 +4517,167 @@ html[data-theme="dark"] body {
     box-shadow: 0 0 6px var(--glow);
 }
 
+/* ==========================================================================
+   OFFICIAL SOCIALS & EMBEDDED BROADCAST HUB
+   ========================================================================== */
+
+.socials-profile-bar {
+    background: var(--bg-card);
+    border: 1px dashed var(--border-color);
+    padding: 14px 18px;
+    margin-bottom: 24px;
+    border-radius: 2px;
+}
+
+.social-pills-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.social-hub-pill {
+    padding: 6px 14px !important;
+    font-size: 11.5px !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.devlog-pill-tiktok {
+    border-color: #25f4ee !important;
+    color: #25f4ee !important;
+}
+.devlog-pill-instagram {
+    border-color: #e1306c !important;
+    color: #e1306c !important;
+}
+
+.social-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 8px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.social-section-title {
+    font-family: var(--font-title);
+    font-size: 20px;
+    color: var(--link-color);
+    letter-spacing: 0.5px;
+}
+
+/* Long Videos Grid */
+.socials-long-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.social-long-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 2px;
+    overflow: hidden;
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.social-long-video-frame {
+    background: #000000;
+}
+
+.social-long-content {
+    padding: 16px 20px;
+}
+
+.social-long-title {
+    font-family: var(--font-title);
+    font-size: 22px;
+    color: var(--link-color);
+    margin: 0;
+}
+
+.social-long-desc {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+/* Short Reels Grid (Card format for vertical/short content) */
+.socials-shorts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.social-reel-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 2px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.12s ease;
+}
+
+.social-reel-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 2px 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+.social-reel-preview {
+    background: #000000;
+    overflow: hidden;
+    position: relative;
+}
+
+.social-reel-no-embed {
+    aspect-ratio: 9 / 16;
+    max-height: 380px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-dim);
+    background: #000000;
+}
+
+.social-reel-info {
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    justify-content: space-between;
+}
+
+.social-reel-title {
+    font-family: var(--font-title);
+    font-size: 17px;
+    color: var(--link-color);
+    margin: 0;
+}
+
+.social-reel-desc {
+    font-size: 11.5px;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin: 6px 0 14px 0;
+    flex: 1;
+}
+
+.platform-launch-btn {
+    transition: all 0.12s ease;
+}
+.platform-launch-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
+}
+

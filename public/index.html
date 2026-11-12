@@ -83,6 +83,8 @@
                                 <span class="sep">...</span>
                                 <a href="#updates" class="importantlink nav-link-item" data-view="updates">DEVLOGS</a>
                                 <span class="sep">...</span>
+                                <a href="#socials" class="importantlink nav-link-item" data-view="socials">SOCIALS</a>
+                                <span class="sep">...</span>
                                 <a href="#guestbook" class="importantlink nav-link-item" data-view="guestbook">GUESTBOOK</a>
                                 <span class="sep">...</span>
                                 <a href="#" class="open-terminal-btn">terminal [~]</a>
@@ -601,7 +603,52 @@
                     </div>
 
                     <!-- ==========================================================================
-                         PART 6: GUESTBOOK & CONTACT
+                         PART 6: SOCIAL MEDIA BROADCAST HUB & REELS
+                         ========================================================================== -->
+                    <div id="view-socials" class="site-view">
+                        <div class="page-header-box">
+                            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                                <h2 class="page-main-title" style="margin: 0;"><span>■</span> OFFICIAL SOCIALS &amp; BROADCAST CHANNELS</h2>
+                                <a href="/admin.html" id="adminManageSocialsBtn" class="btn-pixel btn-pixel-accent" style="display: none; text-decoration: none;">+ MANAGE SOCIALS</a>
+                            </div>
+                            <p class="page-subtitle" style="margin-top: 6px;">
+                                All official transmission channels: full-length documentary devlogs, YouTube videos, and cross-platform short reels (YouTube Shorts, TikTok, Instagram).
+                            </p>
+                        </div>
+
+                        <!-- Top Profile Quick-Bar -->
+                        <div class="socials-profile-bar" id="socialsProfilesContainer">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+
+                        <!-- SECTION 1: LONG-FORM YOUTUBE VIDEOS & DEVLOGS -->
+                        <div style="margin-top: 24px; margin-bottom: 28px;">
+                            <div class="social-section-header">
+                                <span class="social-section-title">📺 LONG-FORM YOUTUBE BROADCASTS &amp; DOCUMENTARIES</span>
+                                <span style="font-size: 11px; color: var(--text-dim);">DEDICATED FULL EMBED PLAYER</span>
+                            </div>
+                            <div id="socialsLongVideosGrid" class="socials-long-grid">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- SECTION 2: CROSS-PLATFORM SHORT REELS (SHORTS / TIKTOK / INSTAGRAM) -->
+                        <div style="margin-top: 24px; margin-bottom: 28px;">
+                            <div class="social-section-header">
+                                <span class="social-section-title">📱 CROSS-PLATFORM SHORT REELS (SHORTS // TIKTOK // INSTAGRAM)</span>
+                                <span style="font-size: 11px; color: var(--text-dim);">MULTI-PLATFORM DISPATCH DISPATCHER</span>
+                            </div>
+                            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">
+                                Short-form tactile showcases and sound loops. Watch the embedded preview or choose your preferred platform to open directly:
+                            </p>
+                            <div id="socialsShortsGrid" class="socials-shorts-grid">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ==========================================================================
+                         PART 7: GUESTBOOK & CONTACT
                          ========================================================================== -->
                     <div id="view-guestbook" class="site-view">
                         <div class="page-header-box">
@@ -850,6 +897,35 @@
                 <p id="artModalDesc" style="font-size: 13px; line-height: 1.6; color: var(--text-primary); margin-bottom: 16px;"></p>
                 <div style="display: flex; justify-content: flex-end;">
                     <button class="btn-pixel" id="artModalCloseBtn">CLOSE VIEWFINDER</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SOCIAL MEDIA PLATFORM SELECTOR MODAL (WHERE TO OPEN REEL) -->
+    <div id="platformPickerModal" class="modal-overlay">
+        <div class="modal-box" style="width: 440px; max-width: 95vw;">
+            <div class="xp-titlebar">
+                <div class="xp-titlebar-left">
+                    <span>📱</span>
+                    <span id="platformPickerTitle">SELECT BROADCAST PLATFORM</span>
+                </div>
+                <button id="platformPickerClose" class="xp-ctrl-btn xp-btn-close">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 20px;">
+                <div style="font-family: var(--font-title); font-size: 18px; color: var(--link-color); margin-bottom: 6px;" id="platformPickerReelTitle">
+                    Tactile Audio &amp; Gameplay Reel
+                </div>
+                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 18px;">
+                    This reel is synchronized across our official short channels. Where would you like to watch it?
+                </p>
+
+                <div style="display: flex; flex-direction: column; gap: 10px;" id="platformPickerButtons">
+                    <!-- Dynamic platform launch buttons -->
+                </div>
+
+                <div style="margin-top: 18px; display: flex; justify-content: flex-end;">
+                    <button type="button" class="btn-pixel" id="platformPickerCancelBtn">CANCEL</button>
                 </div>
             </div>
         </div>

@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
         art: document.getElementById('view-art'),
         audio: document.getElementById('view-audio'),
         updates: document.getElementById('view-updates'),
+        socials: document.getElementById('view-socials'),
         guestbook: document.getElementById('view-guestbook')
     };
     const navLinkItems = document.querySelectorAll('.nav-link-item');
@@ -265,6 +266,8 @@ document.addEventListener('DOMContentLoaded', () => {
             targetView = 'audio';
         } else if (rawHash === 'updates' || rawHash === 'devlogs') {
             targetView = 'updates';
+        } else if (rawHash === 'socials' || rawHash === 'social' || rawHash === 'broadcasts') {
+            targetView = 'socials';
         } else if (rawHash === 'guestbook' || rawHash === 'contact') {
             targetView = 'guestbook';
         } else {
@@ -303,6 +306,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 art: 'C:\\Documents and Settings\\MOPTAM\\My Pictures\\Art_Gallery.htm',
                 audio: 'C:\\Documents and Settings\\MOPTAM\\My Music\\Audio_Lab.htm',
                 updates: 'C:\\Documents and Settings\\MOPTAM\\Dispatches\\devlogs.htm',
+                socials: 'C:\\Internet Explorer\\Favorites\\MOPTAM_Socials.htm',
                 guestbook: 'C:\\Network Connections\\MOPTAM\\guestbook.htm'
             };
             xpAddressText.textContent = addresses[viewName] || `C:\\MOPTAM\\${viewName}.htm`;
@@ -2833,6 +2837,220 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ========================================================================
+    // SOCIALS BROADCAST HUB & REELS ENGINE
+    // ========================================================================
+    const platformPickerModal = document.getElementById('platformPickerModal');
+    const platformPickerTitle = document.getElementById('platformPickerTitle');
+    const platformPickerReelTitle = document.getElementById('platformPickerReelTitle');
+    const platformPickerButtons = document.getElementById('platformPickerButtons');
+    const platformPickerClose = document.getElementById('platformPickerClose');
+    const platformPickerCancelBtn = document.getElementById('platformPickerCancelBtn');
+
+    function closePlatformPicker() {
+        if (platformPickerModal) platformPickerModal.classList.remove('open');
+    }
+    if (platformPickerClose) platformPickerClose.addEventListener('click', closePlatformPicker);
+    if (platformPickerCancelBtn) platformPickerCancelBtn.addEventListener('click', closePlatformPicker);
+    if (platformPickerModal) {
+        platformPickerModal.addEventListener('click', (e) => {
+            if (e.target === platformPickerModal) closePlatformPicker();
+        });
+    }
+
+    function promptOpenReel(reel) {
+        if (!reel || !platformPickerModal) return;
+        if (platformPickerReelTitle) platformPickerReelTitle.textContent = reel.title;
+
+        const links = reel.links || {};
+        if (platformPickerButtons) {
+            platformPickerButtons.innerHTML = '';
+
+            const available = [];
+            if (links.youtube) {
+                available.push({
+                    platform: 'YouTube Shorts',
+                    icon: '🔴',
+                    url: links.youtube,
+                    btnClass: 'devlog-pill-yt',
+                    color: '#ef4444'
+                });
+            }
+            if (links.tiktok) {
+                available.push({
+                    platform: 'TikTok',
+                    icon: '🎵',
+                    url: links.tiktok,
+                    btnClass: 'devlog-pill-tiktok',
+                    color: '#25f4ee'
+                });
+            }
+            if (links.instagram) {
+                available.push({
+                    platform: 'Instagram Reels',
+                    icon: '📸',
+                    url: links.instagram,
+                    btnClass: 'devlog-pill-instagram',
+                    color: '#e1306c'
+                });
+            }
+
+            if (available.length === 0) {
+                platformPickerButtons.innerHTML = '<div style="font-size:12px; color:#888;">No platform URLs linked yet.</div>';
+            } else {
+                available.forEach(p => {
+                    const btn = document.createElement('a');
+                    btn.href = p.url;
+                    btn.target = '_blank';
+                    btn.rel = 'noopener noreferrer';
+                    btn.className = 'btn-pixel platform-launch-btn';
+                    btn.style.display = 'flex';
+                    btn.style.alignItems = 'center';
+                    btn.style.justifyContent = 'space-between';
+                    btn.style.padding = '10px 14px';
+                    btn.style.textDecoration = 'none';
+                    btn.innerHTML = `
+                        <span style="display: flex; align-items: center; gap: 8px; font-weight: bold;">
+                            <span style="font-size: 16px;">${p.icon}</span>
+                            <span>Open on ${p.platform}</span>
+                        </span>
+                        <span style="font-size: 11px; opacity: 0.8;">LAUNCH ➔</span>
+                    `;
+                    btn.addEventListener('click', () => {
+                        closePlatformPicker();
+                    });
+                    platformPickerButtons.appendChild(btn);
+                });
+            }
+        }
+
+        platformPickerModal.classList.add('open');
+        if (window.soundEngine) window.soundEngine.playSelect();
+    }
+
+    async function loadSocialsHub() {
+        const profilesContainer = document.getElementById('socialsProfilesContainer');
+        const longVideosGrid = document.getElementById('socialsLongVideosGrid');
+        const shortsGrid = document.getElementById('socialsShortsGrid');
+
+        try {
+            const res = await fetch('/api/socials');
+            if (!res.ok) return;
+            const data = await res.json();
+
+            // 1. Render Official Profiles Quick-Bar
+            if (profilesContainer && data.profiles) {
+                const p = data.profiles;
+                profilesContainer.innerHTML = `
+                    <div style="font-size: 12px; font-weight: bold; color: var(--link-color); margin-bottom: 8px;">
+                        OFFICIAL DIRECT TRANSMISSION FREQUENCIES:
+                    </div>
+                    <div class="social-pills-row">
+                        ${p.youtube ? `<a href="${escapeHtml(p.youtube)}" target="_blank" rel="noopener noreferrer" class="btn-pixel social-hub-pill devlog-pill-yt"><span>🔴</span> YouTube Channel</a>` : ''}
+                        ${p.tiktok ? `<a href="${escapeHtml(p.tiktok)}" target="_blank" rel="noopener noreferrer" class="btn-pixel social-hub-pill devlog-pill-tiktok"><span>🎵</span> TikTok</a>` : ''}
+                        ${p.instagram ? `<a href="${escapeHtml(p.instagram)}" target="_blank" rel="noopener noreferrer" class="btn-pixel social-hub-pill devlog-pill-instagram"><span>📸</span> Instagram</a>` : ''}
+                        ${p.discord ? `<a href="${escapeHtml(p.discord)}" target="_blank" rel="noopener noreferrer" class="btn-pixel social-hub-pill devlog-pill-discord"><span>💬</span> Discord Server</a>` : ''}
+                        ${p.twitter ? `<a href="${escapeHtml(p.twitter)}" target="_blank" rel="noopener noreferrer" class="btn-pixel social-hub-pill devlog-pill-x"><span>🐦</span> X / Twitter</a>` : ''}
+                        ${p.steam ? `<a href="${escapeHtml(p.steam)}" target="_blank" rel="noopener noreferrer" class="btn-pixel social-hub-pill devlog-pill-steam"><span>🎮</span> Steam Creator Hub</a>` : ''}
+                    </div>
+                `;
+            }
+
+            // 2. Render Long-Form YouTube Broadcasts (Dedicated Full Embed Player)
+            if (longVideosGrid) {
+                const longs = data.longVideos || [];
+                if (longs.length === 0) {
+                    longVideosGrid.innerHTML = '<div style="font-size: 12px; color: var(--text-dim); padding: 12px;">No long-form YouTube documentaries recorded yet.</div>';
+                } else {
+                    longVideosGrid.innerHTML = longs.map(v => {
+                        const ytId = extractYouTubeId(v.youtubeUrl);
+                        return `
+                            <div class="social-long-card">
+                                <div class="social-long-video-frame">
+                                    ${ytId ? `
+                                        <div class="devlog-video-responsive">
+                                            <iframe src="https://www.youtube-nocookie.com/embed/${ytId}" title="${escapeHtml(v.title)}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                                        </div>
+                                    ` : `
+                                        <div style="padding: 30px; text-align: center; color: var(--text-dim); font-size: 12px;">
+                                            Invalid or missing YouTube broadcast stream.
+                                        </div>
+                                    `}
+                                </div>
+                                <div class="social-long-content">
+                                    <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 6px;">
+                                        <h3 class="social-long-title">${escapeHtml(v.title)}</h3>
+                                        <span style="font-size: 11px; color: var(--text-dim); font-weight: bold; white-space: nowrap;">${v.date || ''}</span>
+                                    </div>
+                                    ${v.desc ? `<p class="social-long-desc">${escapeHtml(v.desc)}</p>` : ''}
+                                    <div style="margin-top: 10px; display: flex; justify-content: flex-end;">
+                                        <a href="${escapeHtml(v.youtubeUrl)}" target="_blank" rel="noopener noreferrer" class="btn-pixel" style="font-size: 11px;">
+                                            WATCH DIRECTLY ON YOUTUBE ➔
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            }
+
+            // 3. Render Cross-Platform Short Reels
+            if (shortsGrid) {
+                const reels = data.shortReels || [];
+                if (reels.length === 0) {
+                    shortsGrid.innerHTML = '<div style="font-size: 12px; color: var(--text-dim); padding: 12px;">No short reels logged yet.</div>';
+                } else {
+                    shortsGrid.innerHTML = '';
+                    reels.forEach(reel => {
+                        const card = document.createElement('div');
+                        card.className = 'social-reel-card';
+
+                        // YouTube Embed preview if available
+                        const ytId = extractYouTubeId(reel.previewEmbedUrl || (reel.links && reel.links.youtube));
+
+                        card.innerHTML = `
+                            <div class="social-reel-preview">
+                                ${ytId ? `
+                                    <div class="devlog-video-responsive" style="aspect-ratio: 9/16; max-height: 420px;">
+                                        <iframe src="https://www.youtube-nocookie.com/embed/${ytId}" title="${escapeHtml(reel.title)}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                                    </div>
+                                ` : `
+                                    <div class="social-reel-no-embed">
+                                        <span style="font-size: 32px; margin-bottom: 8px;">📱</span>
+                                        <span style="font-size: 12px; font-weight: bold;">TACTILE SHORT REEL</span>
+                                    </div>
+                                `}
+                            </div>
+                            <div class="social-reel-info">
+                                <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 4px;">
+                                    <h4 class="social-reel-title">${escapeHtml(reel.title)}</h4>
+                                    <span style="font-size: 10.5px; color: var(--text-dim);">${reel.date || ''}</span>
+                                </div>
+                                ${reel.desc ? `<p class="social-reel-desc">${escapeHtml(reel.desc)}</p>` : ''}
+                                
+                                <div class="social-reel-actions">
+                                    <button type="button" class="btn-pixel btn-pixel-accent btn-choose-platform" style="width: 100%; justify-content: center; font-size: 11px;">
+                                        CHOOSE PLATFORM TO OPEN ➔
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+
+                        const chooseBtn = card.querySelector('.btn-choose-platform');
+                        chooseBtn.addEventListener('click', () => {
+                            promptOpenReel(reel);
+                        });
+
+                        shortsGrid.appendChild(card);
+                    });
+                }
+            }
+        } catch (e) {
+            console.error('Failed to load socials hub:', e);
+        }
+    }
+
+    // ========================================================================
     // INITIALIZATION
     // ========================================================================
     checkAuth();
@@ -2842,5 +3060,6 @@ document.addEventListener('DOMContentLoaded', () => {
     loadMusic();
     loadSfx();
     loadUpdates();
+    loadSocialsHub();
     handleRoute();
 });

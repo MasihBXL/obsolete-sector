@@ -25,10 +25,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const tabUpload = document.getElementById('tabUpload');
     const tabManage = document.getElementById('tabManage');
     const tabDevlog = document.getElementById('tabDevlog');
+    const tabSocials = document.getElementById('tabSocials');
     const tabUsers = document.getElementById('tabUsers');
     const sectionUpload = document.getElementById('sectionUpload');
     const sectionManage = document.getElementById('sectionManage');
     const sectionDevlog = document.getElementById('sectionDevlog');
+    const sectionSocials = document.getElementById('sectionSocials');
     const sectionUsers = document.getElementById('sectionUsers');
 
     // Upload components
@@ -138,11 +140,12 @@ document.addEventListener('DOMContentLoaded', () => {
     tabUpload.addEventListener('click', () => switchTab('upload'));
     tabManage.addEventListener('click', () => switchTab('manage'));
     tabDevlog.addEventListener('click', () => switchTab('devlog'));
+    if (tabSocials) tabSocials.addEventListener('click', () => switchTab('socials'));
     if (tabUsers) tabUsers.addEventListener('click', () => switchTab('users'));
 
     function switchTab(tab) {
-        [tabUpload, tabManage, tabDevlog, tabUsers].forEach(t => { if (t) t.classList.remove('active'); });
-        [sectionUpload, sectionManage, sectionDevlog, sectionUsers].forEach(s => { if (s) s.style.display = 'none'; });
+        [tabUpload, tabManage, tabDevlog, tabSocials, tabUsers].forEach(t => { if (t) t.classList.remove('active'); });
+        [sectionUpload, sectionManage, sectionDevlog, sectionSocials, sectionUsers].forEach(s => { if (s) s.style.display = 'none'; });
 
         if (tab === 'upload') {
             tabUpload.classList.add('active');
@@ -155,6 +158,10 @@ document.addEventListener('DOMContentLoaded', () => {
             tabDevlog.classList.add('active');
             sectionDevlog.style.display = 'block';
             loadAdminDevlogs();
+        } else if (tab === 'socials') {
+            tabSocials.classList.add('active');
+            sectionSocials.style.display = 'block';
+            loadAdminSocials();
         } else if (tab === 'users') {
             tabUsers.classList.add('active');
             sectionUsers.style.display = 'block';
@@ -565,7 +572,301 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // 8. Load Stats
+    // ========================================================================
+    // 8. SOCIALS & EMBEDDED MEDIA ADMIN LOGIC
+    // ========================================================================
+    const socialProfilesForm = document.getElementById('socialProfilesForm');
+    const addLongVideoForm = document.getElementById('addLongVideoForm');
+    const addShortReelForm = document.getElementById('addShortReelForm');
+
+    async function loadAdminSocials() {
+        const profYoutube = document.getElementById('profYoutube');
+        const profTiktok = document.getElementById('profTiktok');
+        const profInstagram = document.getElementById('profInstagram');
+        const profDiscord = document.getElementById('profDiscord');
+        const profTwitter = document.getElementById('profTwitter');
+        const profSteam = document.getElementById('profSteam');
+
+        const longVideosList = document.getElementById('adminLongVideosList');
+        const shortReelsList = document.getElementById('adminShortReelsList');
+
+        try {
+            const res = await fetch('/api/socials');
+            if (!res.ok) return;
+            const data = await res.json();
+
+            // Populate profiles form
+            if (data.profiles) {
+                if (profYoutube) profYoutube.value = data.profiles.youtube || '';
+                if (profTiktok) profTiktok.value = data.profiles.tiktok || '';
+                if (profInstagram) profInstagram.value = data.profiles.instagram || '';
+                if (profDiscord) profDiscord.value = data.profiles.discord || '';
+                if (profTwitter) profTwitter.value = data.profiles.twitter || '';
+                if (profSteam) profSteam.value = data.profiles.steam || '';
+            }
+
+            // Populate long videos
+            if (longVideosList) {
+                const longs = data.longVideos || [];
+                if (longs.length === 0) {
+                    longVideosList.innerHTML = '<div style="font-size: 12px; color: #94a3b8;">No long videos logged yet.</div>';
+                } else {
+                    longVideosList.innerHTML = '';
+                    longs.forEach(v => {
+                        const row = document.createElement('div');
+                        row.style.background = 'rgba(255, 255, 255, 0.02)';
+                        row.style.border = '1px solid #334155';
+                        row.style.padding = '10px 14px';
+                        row.style.borderRadius = '4px';
+                        row.style.display = 'flex';
+                        row.style.justifyContent = 'space-between';
+                        row.style.alignItems = 'center';
+                        row.style.gap = '12px';
+
+                        row.innerHTML = `
+                            <div style="flex: 1; min-width: 0;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="font-size: 11px; color: #94a3b8; font-weight: bold;">${v.date || ''}</span>
+                                    <span style="font-weight: bold; color: #e2e8f0; font-size: 13px;">${escapeHtml(v.title)}</span>
+                                    <span style="background: #991b1b; color: #fecaca; font-size: 10px; padding: 2px 6px; border-radius: 2px; font-weight: bold;">🔴 YOUTUBE</span>
+                                </div>
+                                <div style="font-size: 11px; color: #64748b; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                    ${escapeHtml(v.youtubeUrl)}
+                                </div>
+                            </div>
+                            <button type="button" class="btn-danger btn-del-long" data-id="${v.id}" style="padding: 4px 10px; font-size: 11px;">
+                                DELETE
+                            </button>
+                        `;
+
+                        row.querySelector('.btn-del-long').addEventListener('click', async () => {
+                            if (!confirm(`Delete long video "${v.title}"?`)) return;
+                            const delRes = await fetch(`/api/socials/long-videos/${v.id}`, {
+                                method: 'DELETE',
+                                headers: {
+                                    'x-admin-token': adminToken,
+                                    'Authorization': `Bearer ${adminToken}`
+                                }
+                            });
+                            if (delRes.ok) loadAdminSocials();
+                        });
+
+                        longVideosList.appendChild(row);
+                    });
+                }
+            }
+
+            // Populate short reels
+            if (shortReelsList) {
+                const reels = data.shortReels || [];
+                if (reels.length === 0) {
+                    shortReelsList.innerHTML = '<div style="font-size: 12px; color: #94a3b8;">No short reels logged yet.</div>';
+                } else {
+                    shortReelsList.innerHTML = '';
+                    reels.forEach(r => {
+                        const row = document.createElement('div');
+                        row.style.background = 'rgba(255, 255, 255, 0.02)';
+                        row.style.border = '1px solid #334155';
+                        row.style.padding = '10px 14px';
+                        row.style.borderRadius = '4px';
+                        row.style.display = 'flex';
+                        row.style.justifyContent = 'space-between';
+                        row.style.alignItems = 'center';
+                        row.style.gap = '12px';
+
+                        const pBadges = [];
+                        if (r.links && r.links.youtube) pBadges.push('🔴 Shorts');
+                        if (r.links && r.links.tiktok) pBadges.push('🎵 TikTok');
+                        if (r.links && r.links.instagram) pBadges.push('📸 IG Reels');
+
+                        row.innerHTML = `
+                            <div style="flex: 1; min-width: 0;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="font-size: 11px; color: #94a3b8; font-weight: bold;">${r.date || ''}</span>
+                                    <span style="font-weight: bold; color: #e2e8f0; font-size: 13px;">${escapeHtml(r.title)}</span>
+                                    <span style="font-size: 10px; color: #38bdf8;">[${pBadges.join(' | ')}]</span>
+                                </div>
+                                <div style="font-size: 11px; color: #64748b; margin-top: 2px;">
+                                    ${escapeHtml(r.desc || 'No description')}
+                                </div>
+                            </div>
+                            <button type="button" class="btn-danger btn-del-reel" data-id="${r.id}" style="padding: 4px 10px; font-size: 11px;">
+                                DELETE
+                            </button>
+                        `;
+
+                        row.querySelector('.btn-del-reel').addEventListener('click', async () => {
+                            if (!confirm(`Delete short reel "${r.title}"?`)) return;
+                            const delRes = await fetch(`/api/socials/shorts/${r.id}`, {
+                                method: 'DELETE',
+                                headers: {
+                                    'x-admin-token': adminToken,
+                                    'Authorization': `Bearer ${adminToken}`
+                                }
+                            });
+                            if (delRes.ok) loadAdminSocials();
+                        });
+
+                        shortReelsList.appendChild(row);
+                    });
+                }
+            }
+        } catch (e) {
+            console.error('Failed to load admin socials:', e);
+        }
+    }
+
+    // Save Social Profiles
+    if (socialProfilesForm) {
+        socialProfilesForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const profStatus = document.getElementById('profStatus');
+            try {
+                if (profStatus) {
+                    profStatus.textContent = 'SAVING PROFILES...';
+                    profStatus.style.color = '#60a5fa';
+                }
+                const res = await fetch('/api/socials/profiles', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-admin-token': adminToken,
+                        'Authorization': `Bearer ${adminToken}`
+                    },
+                    body: JSON.stringify({
+                        youtube: document.getElementById('profYoutube').value,
+                        tiktok: document.getElementById('profTiktok').value,
+                        instagram: document.getElementById('profInstagram').value,
+                        discord: document.getElementById('profDiscord').value,
+                        twitter: document.getElementById('profTwitter').value,
+                        steam: document.getElementById('profSteam').value
+                    })
+                });
+                if (res.ok) {
+                    if (profStatus) {
+                        profStatus.textContent = 'PROFILES SAVED TO BROADCAST DATABASE';
+                        profStatus.style.color = '#4ade80';
+                    }
+                } else {
+                    if (profStatus) {
+                        profStatus.textContent = 'ERROR SAVING PROFILES';
+                        profStatus.style.color = '#ff4444';
+                    }
+                }
+            } catch (err) {
+                if (profStatus) {
+                    profStatus.textContent = 'COMMUNICATION ERROR: ' + err.message;
+                    profStatus.style.color = '#ff4444';
+                }
+            }
+        });
+    }
+
+    // Add Long Video
+    if (addLongVideoForm) {
+        addLongVideoForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const title = document.getElementById('longVideoTitle').value.trim();
+            const youtubeUrl = document.getElementById('longVideoYoutubeUrl').value.trim();
+            const date = document.getElementById('longVideoDate').value || new Date().toISOString().split('T')[0];
+            const desc = document.getElementById('longVideoDesc').value.trim();
+            const statusEl = document.getElementById('longVideoStatus');
+
+            try {
+                if (statusEl) {
+                    statusEl.textContent = 'SAVING LONG VIDEO...';
+                    statusEl.style.color = '#60a5fa';
+                }
+                const res = await fetch('/api/socials/long-videos', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-admin-token': adminToken,
+                        'Authorization': `Bearer ${adminToken}`
+                    },
+                    body: JSON.stringify({ title, youtubeUrl, date, desc })
+                });
+                if (res.ok) {
+                    if (statusEl) {
+                        statusEl.textContent = 'LONG VIDEO LOGGED SUCCESSFULLY';
+                        statusEl.style.color = '#4ade80';
+                    }
+                    addLongVideoForm.reset();
+                    loadAdminSocials();
+                } else {
+                    if (statusEl) {
+                        statusEl.textContent = 'ERROR LOGGING VIDEO';
+                        statusEl.style.color = '#ff4444';
+                    }
+                }
+            } catch (err) {
+                if (statusEl) {
+                    statusEl.textContent = 'ERROR: ' + err.message;
+                    statusEl.style.color = '#ff4444';
+                }
+            }
+        });
+    }
+
+    // Add Short Reel
+    if (addShortReelForm) {
+        addShortReelForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const title = document.getElementById('reelTitle').value.trim();
+            const previewEmbedUrl = document.getElementById('reelPreviewEmbedUrl').value.trim();
+            const date = document.getElementById('reelDate').value || new Date().toISOString().split('T')[0];
+            const desc = document.getElementById('reelDesc').value.trim();
+            const youtubeShortUrl = document.getElementById('reelYtShortUrl').value.trim();
+            const tiktokUrl = document.getElementById('reelTiktokUrl').value.trim();
+            const instagramReelUrl = document.getElementById('reelInstagramUrl').value.trim();
+            const statusEl = document.getElementById('reelStatus');
+
+            try {
+                if (statusEl) {
+                    statusEl.textContent = 'SAVING SHORT REEL...';
+                    statusEl.style.color = '#60a5fa';
+                }
+                const res = await fetch('/api/socials/shorts', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-admin-token': adminToken,
+                        'Authorization': `Bearer ${adminToken}`
+                    },
+                    body: JSON.stringify({
+                        title,
+                        previewEmbedUrl,
+                        date,
+                        desc,
+                        youtubeShortUrl,
+                        tiktokUrl,
+                        instagramReelUrl
+                    })
+                });
+                if (res.ok) {
+                    if (statusEl) {
+                        statusEl.textContent = 'SHORT REEL LOGGED SUCCESSFULLY';
+                        statusEl.style.color = '#4ade80';
+                    }
+                    addShortReelForm.reset();
+                    loadAdminSocials();
+                } else {
+                    const d = await res.json();
+                    if (statusEl) {
+                        statusEl.textContent = 'ERROR: ' + (d.error || 'Failed to save');
+                        statusEl.style.color = '#ff4444';
+                    }
+                }
+            } catch (err) {
+                if (statusEl) {
+                    statusEl.textContent = 'ERROR: ' + err.message;
+                    statusEl.style.color = '#ff4444';
+                }
+            }
+        });
+    }
+
+    // 9. Load Stats
     async function loadAdminStats() {
         try {
             const res = await fetch('/api/admin/stats', {

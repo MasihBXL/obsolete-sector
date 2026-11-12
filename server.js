@@ -54,6 +54,77 @@ const UPDATES_DATA_PATH = path.join(DATA_DIR, 'updates.json');
 const MUSIC_DATA_PATH = path.join(DATA_DIR, 'music.json');
 const ART_DATA_PATH = path.join(DATA_DIR, 'art.json');
 const SFX_DATA_PATH = path.join(DATA_DIR, 'sfx.json');
+const SOCIALS_DATA_PATH = path.join(DATA_DIR, 'socials.json');
+
+const DEFAULT_SOCIALS = {
+    profiles: {
+        youtube: 'https://youtube.com/@moptam',
+        tiktok: 'https://tiktok.com/@moptam',
+        instagram: 'https://instagram.com/moptam',
+        discord: 'https://discord.gg/obsolete-sector',
+        twitter: 'https://x.com/moptam_dev',
+        steam: 'https://store.steampowered.com/developer/moptam'
+    },
+    longVideos: [
+        {
+            id: 'long-1',
+            title: '[Documentary] Designing Tactile Horror & PSX Aesthetic in 2026',
+            desc: 'A full deep-dive into how mechanical switches, cold-war audio equipment, and software CRT dithering are built.',
+            youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+            date: '2026-11-01'
+        },
+        {
+            id: 'long-2',
+            title: '[Null Signal: 1986] Full Dev Gameplay & Audio Foley Recording',
+            desc: 'Behind the scenes walkthrough recording reel-to-reel magnetic tape and implementing real-time signal degradation.',
+            youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+            date: '2026-10-15'
+        }
+    ],
+    shortReels: [
+        {
+            id: 'reel-1',
+            title: 'Shotgun Shell Cocking Foley & Low-Poly Reload Animation',
+            desc: 'Crafting sound latency down to 2ms for instant tactile feedback.',
+            date: '2026-11-10',
+            previewEmbedUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+            links: {
+                youtube: 'https://youtube.com/shorts/dQw4w9WgXcQ',
+                tiktok: 'https://www.tiktok.com',
+                instagram: 'https://www.instagram.com/reels'
+            }
+        },
+        {
+            id: 'reel-2',
+            title: 'CRT Phosphor Scanline Glow on Authentic Tube Monitor',
+            desc: 'Testing software CRT shader against actual 1989 Sony Trinitron.',
+            date: '2026-11-05',
+            previewEmbedUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+            links: {
+                youtube: 'https://youtube.com/shorts/dQw4w9WgXcQ',
+                tiktok: 'https://www.tiktok.com',
+                instagram: 'https://www.instagram.com/reels'
+            }
+        }
+    ]
+};
+
+function getSocials() {
+    if (!fs.existsSync(SOCIALS_DATA_PATH)) {
+        fs.writeFileSync(SOCIALS_DATA_PATH, JSON.stringify(DEFAULT_SOCIALS, null, 2));
+        return DEFAULT_SOCIALS;
+    }
+    try {
+        const raw = fs.readFileSync(SOCIALS_DATA_PATH, 'utf8');
+        return JSON.parse(raw);
+    } catch (e) {
+        return DEFAULT_SOCIALS;
+    }
+}
+
+function saveSocials(socials) {
+    fs.writeFileSync(SOCIALS_DATA_PATH, JSON.stringify(socials, null, 2));
+}
 
 function getArt() {
     if (!fs.existsSync(ART_DATA_PATH)) return [];
@@ -1459,6 +1530,115 @@ app.delete('/api/updates/:id', requireAdmin, (req, res) => {
     } catch (err) {
         console.error('Failed to delete devlog update:', err);
         res.status(500).json({ error: 'Failed to delete devlog dispatch: ' + err.message });
+    }
+});
+
+// ============================================================================
+// SOCIALS & EMBEDDED MEDIA APIS
+// ============================================================================
+
+// 1. Get All Socials & Broadcasts
+app.get('/api/socials', (req, res) => {
+    res.json(getSocials());
+});
+
+// 2. Update Social Profiles Links
+app.put('/api/socials/profiles', requireAdmin, (req, res) => {
+    try {
+        const { youtube, tiktok, instagram, discord, twitter, steam } = req.body;
+        const socials = getSocials();
+        socials.profiles = {
+            youtube: youtube ? youtube.trim() : (socials.profiles.youtube || ''),
+            tiktok: tiktok ? tiktok.trim() : (socials.profiles.tiktok || ''),
+            instagram: instagram ? instagram.trim() : (socials.profiles.instagram || ''),
+            discord: discord ? discord.trim() : (socials.profiles.discord || ''),
+            twitter: twitter ? twitter.trim() : (socials.profiles.twitter || ''),
+            steam: steam ? steam.trim() : (socials.profiles.steam || '')
+        };
+        saveSocials(socials);
+        res.json({ success: true, profiles: socials.profiles });
+    } catch (e) {
+        res.status(500).json({ error: 'Failed to update profiles: ' + e.message });
+    }
+});
+
+// 3. Add Long-Form YouTube Video
+app.post('/api/socials/long-videos', requireAdmin, (req, res) => {
+    try {
+        const { title, desc, youtubeUrl, date } = req.body;
+        if (!title || !youtubeUrl) {
+            return res.status(400).json({ error: 'Title and YouTube URL are required' });
+        }
+        const socials = getSocials();
+        const newVideo = {
+            id: 'long-' + Date.now(),
+            title: title.trim(),
+            desc: desc ? desc.trim() : '',
+            youtubeUrl: youtubeUrl.trim(),
+            date: date || new Date().toISOString().split('T')[0]
+        };
+        socials.longVideos = socials.longVideos || [];
+        socials.longVideos.unshift(newVideo);
+        saveSocials(socials);
+        res.status(201).json({ success: true, video: newVideo });
+    } catch (e) {
+        res.status(500).json({ error: 'Failed to add video: ' + e.message });
+    }
+});
+
+// 4. Delete Long-Form YouTube Video
+app.delete('/api/socials/long-videos/:id', requireAdmin, (req, res) => {
+    try {
+        const socials = getSocials();
+        socials.longVideos = (socials.longVideos || []).filter(v => v.id !== req.params.id);
+        saveSocials(socials);
+        res.json({ success: true, message: 'Long video removed.' });
+    } catch (e) {
+        res.status(500).json({ error: 'Failed to delete video: ' + e.message });
+    }
+});
+
+// 5. Add Short / Reel (Cross-Platform Hub: YouTube Shorts, TikTok, Instagram Reels)
+app.post('/api/socials/shorts', requireAdmin, (req, res) => {
+    try {
+        const { title, desc, previewEmbedUrl, youtubeShortUrl, tiktokUrl, instagramReelUrl, date } = req.body;
+        if (!title) {
+            return res.status(400).json({ error: 'Reel title is required' });
+        }
+        if (!youtubeShortUrl && !tiktokUrl && !instagramReelUrl) {
+            return res.status(400).json({ error: 'At least one social platform link (YouTube Shorts, TikTok, or Instagram) is required' });
+        }
+        const socials = getSocials();
+        const newReel = {
+            id: 'reel-' + Date.now(),
+            title: title.trim(),
+            desc: desc ? desc.trim() : '',
+            date: date || new Date().toISOString().split('T')[0],
+            previewEmbedUrl: previewEmbedUrl ? previewEmbedUrl.trim() : (youtubeShortUrl || tiktokUrl || instagramReelUrl || ''),
+            links: {
+                youtube: youtubeShortUrl ? youtubeShortUrl.trim() : null,
+                tiktok: tiktokUrl ? tiktokUrl.trim() : null,
+                instagram: instagramReelUrl ? instagramReelUrl.trim() : null
+            }
+        };
+        socials.shortReels = socials.shortReels || [];
+        socials.shortReels.unshift(newReel);
+        saveSocials(socials);
+        res.status(201).json({ success: true, reel: newReel });
+    } catch (e) {
+        res.status(500).json({ error: 'Failed to add short reel: ' + e.message });
+    }
+});
+
+// 6. Delete Short / Reel
+app.delete('/api/socials/shorts/:id', requireAdmin, (req, res) => {
+    try {
+        const socials = getSocials();
+        socials.shortReels = (socials.shortReels || []).filter(r => r.id !== req.params.id);
+        saveSocials(socials);
+        res.json({ success: true, message: 'Short reel removed.' });
+    } catch (e) {
+        res.status(500).json({ error: 'Failed to delete short reel: ' + e.message });
     }
 });
 
