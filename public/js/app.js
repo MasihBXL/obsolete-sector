@@ -1778,8 +1778,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     assetBtn.href = art.assetSale.url;
                 }
                 if (assetPlatform) {
-                    const plat = (art.assetSale.platform || 'STORE').toUpperCase();
-                    assetPlatform.textContent = `BUY / DOWNLOAD ASSET ON ${plat} ➔`;
+                    const plat = (art.assetSale.platform || 'ITCH.IO').toUpperCase();
+                    assetPlatform.textContent = (plat === 'ITCH.IO' || plat === 'ITCH') ? 'GET 3D ASSETS ON ITCH.IO ➔' : `DOWNLOAD ASSET PACK ON ${plat} ➔`;
                 }
             } else {
                 assetBox.style.display = 'none';
@@ -2440,6 +2440,47 @@ document.addEventListener('DOMContentLoaded', () => {
         return match ? match[1] : null;
     }
 
+    function extractTikTokId(url) {
+        if (!url) return null;
+        const match = url.match(/(?:video\/|vt\.tiktok\.com\/)(\d+)/);
+        if (match) return match[1];
+        return null;
+    }
+
+    function renderReelEmbed(reel, isHomepage = false) {
+        if (!reel) return '';
+        const ytId = extractYouTubeId(reel.previewEmbedUrl || (reel.links && reel.links.youtube));
+        if (ytId) {
+            return `
+                <div class="devlog-video-responsive" style="aspect-ratio: ${isHomepage ? '16/9' : '9/16'}; max-height: ${isHomepage ? '260px' : '440px'};">
+                    ${renderYouTubeHdEmbed(ytId, reel.title, isHomepage ? '16/9' : '9/16')}
+                </div>
+            `;
+        }
+
+        const tiktokId = extractTikTokId(reel.previewEmbedUrl || (reel.links && reel.links.tiktok));
+        if (tiktokId) {
+            return `
+                <div class="tiktok-embed-frame" style="width: 100%; aspect-ratio: ${isHomepage ? '16/9' : '9/16'}; max-height: ${isHomepage ? '260px' : '440px'}; background: #000000; overflow: hidden; position: relative; border-radius: 2px;">
+                    <iframe src="https://www.tiktok.com/player/v1/${tiktokId}?embed_from=oembed&music_info=1&description=1&autoplay=0"
+                        title="${escapeHtml(reel.title || 'TikTok Broadcast')}"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; fullscreen; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen
+                        style="width: 100%; height: 100%; border: 0; display: block;"
+                        loading="lazy">
+                    </iframe>
+                </div>
+            `;
+        }
+
+        return `
+            <div class="social-reel-no-embed" style="padding: 24px 12px;">
+                <span style="font-size: 28px; margin-bottom: 6px;">📱</span>
+                <span style="font-size: 11px; font-weight: bold;">SHORT BROADCAST REEL</span>
+            </div>
+        `;
+    }
+
     // High-Definition YouTube Facade (Uses 1280x720 maxresdefault with fallback to hqdefault)
     function renderYouTubeHdEmbed(ytId, title, aspectRatio = '16/9') {
         if (!ytId) return '';
@@ -2985,28 +3026,25 @@ document.addEventListener('DOMContentLoaded', () => {
             if (links.youtube) {
                 available.push({
                     platform: 'YouTube Shorts',
-                    icon: '🔴',
+                    iconSrc: '/assets/badges/social_youtube.svg',
                     url: links.youtube,
-                    btnClass: 'devlog-pill-yt',
-                    color: '#ef4444'
+                    btnClass: 'platform-btn-yt'
                 });
             }
             if (links.tiktok) {
                 available.push({
                     platform: 'TikTok',
-                    icon: '🎵',
+                    iconSrc: '/assets/badges/social_tiktok.svg',
                     url: links.tiktok,
-                    btnClass: 'devlog-pill-tiktok',
-                    color: '#25f4ee'
+                    btnClass: 'platform-btn-tiktok'
                 });
             }
             if (links.instagram) {
                 available.push({
                     platform: 'Instagram Reels',
-                    icon: '📸',
+                    iconSrc: '/assets/badges/social_instagram.svg',
                     url: links.instagram,
-                    btnClass: 'devlog-pill-instagram',
-                    color: '#e1306c'
+                    btnClass: 'platform-btn-instagram'
                 });
             }
 
@@ -3018,18 +3056,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     btn.href = p.url;
                     btn.target = '_blank';
                     btn.rel = 'noopener noreferrer';
-                    btn.className = 'btn-pixel platform-launch-btn';
+                    btn.className = 'btn-pixel platform-launch-btn ' + (p.btnClass || '');
                     btn.style.display = 'flex';
                     btn.style.alignItems = 'center';
                     btn.style.justifyContent = 'space-between';
                     btn.style.padding = '10px 14px';
+                    btn.style.marginBottom = '8px';
                     btn.style.textDecoration = 'none';
                     btn.innerHTML = `
-                        <span style="display: flex; align-items: center; gap: 8px; font-weight: bold;">
-                            <span style="font-size: 16px;">${p.icon}</span>
-                            <span>Open on ${p.platform}</span>
+                        <span style="display: flex; align-items: center; gap: 10px; font-weight: bold; font-family: var(--font-mono); font-size: 12.5px; color: var(--text-primary);">
+                            <img src="${p.iconSrc}" style="width: 22px; height: 22px; object-fit: contain; vertical-align: middle;" alt="${p.platform}">
+                            <span>Watch on ${p.platform}</span>
                         </span>
-                        <span style="font-size: 11px; opacity: 0.8;">LAUNCH ➔</span>
+                        <span style="font-size: 11px; font-weight: bold; color: var(--link-color);">LAUNCH ➔</span>
                     `;
                     btn.addEventListener('click', () => {
                         closePlatformPicker();
@@ -3057,16 +3096,64 @@ document.addEventListener('DOMContentLoaded', () => {
             if (profilesContainer && data.profiles) {
                 const p = data.profiles;
                 profilesContainer.innerHTML = `
-                    <div style="font-size: 12px; font-weight: bold; color: var(--link-color); margin-bottom: 8px;">
-                        OFFICIAL DIRECT TRANSMISSION FREQUENCIES:
+                    <div style="font-size: 13px; font-weight: bold; color: var(--link-color); margin-bottom: 10px; font-family: var(--font-title); letter-spacing: 0.5px;">
+                        ■ OFFICIAL DIRECT TRANSMISSION FREQUENCIES // ALL CHANNELS
                     </div>
-                    <div class="social-pills-row">
-                        ${p.youtube ? `<a href="${escapeHtml(p.youtube)}" target="_blank" rel="noopener noreferrer" class="btn-pixel social-hub-pill devlog-pill-yt"><span>🔴</span> YouTube Channel</a>` : ''}
-                        ${p.tiktok ? `<a href="${escapeHtml(p.tiktok)}" target="_blank" rel="noopener noreferrer" class="btn-pixel social-hub-pill devlog-pill-tiktok"><span>🎵</span> TikTok</a>` : ''}
-                        ${p.instagram ? `<a href="${escapeHtml(p.instagram)}" target="_blank" rel="noopener noreferrer" class="btn-pixel social-hub-pill devlog-pill-instagram"><span>📸</span> Instagram</a>` : ''}
-                        ${p.discord ? `<a href="${escapeHtml(p.discord)}" target="_blank" rel="noopener noreferrer" class="btn-pixel social-hub-pill devlog-pill-discord"><span>💬</span> Discord Server</a>` : ''}
-                        ${p.twitter ? `<a href="${escapeHtml(p.twitter)}" target="_blank" rel="noopener noreferrer" class="btn-pixel social-hub-pill devlog-pill-x"><span>🐦</span> X / Twitter</a>` : ''}
-                        ${p.steam ? `<a href="${escapeHtml(p.steam)}" target="_blank" rel="noopener noreferrer" class="btn-pixel social-hub-pill devlog-pill-steam"><span>🎮</span> Steam Creator Hub</a>` : ''}
+                    <div class="social-channels-grid">
+                        ${p.youtube ? `
+                            <a href="${escapeHtml(p.youtube)}" target="_blank" rel="noopener noreferrer" class="social-channel-card social-card-yt" title="Official YouTube Channel">
+                                <div class="social-channel-icon-wrap">
+                                    <img src="/assets/badges/social_youtube.svg" alt="YouTube" class="social-channel-img">
+                                </div>
+                                <span class="social-channel-label">YOUTUBE</span>
+                                <span class="social-channel-sub">Documentaries</span>
+                            </a>
+                        ` : ''}
+                        ${p.tiktok ? `
+                            <a href="${escapeHtml(p.tiktok)}" target="_blank" rel="noopener noreferrer" class="social-channel-card social-card-tiktok" title="Official TikTok Broadcasts">
+                                <div class="social-channel-icon-wrap">
+                                    <img src="/assets/badges/social_tiktok.svg" alt="TikTok" class="social-channel-img">
+                                </div>
+                                <span class="social-channel-label">TIKTOK</span>
+                                <span class="social-channel-sub">Tactile Reels</span>
+                            </a>
+                        ` : ''}
+                        ${p.instagram ? `
+                            <a href="${escapeHtml(p.instagram)}" target="_blank" rel="noopener noreferrer" class="social-channel-card social-card-instagram" title="Official Instagram">
+                                <div class="social-channel-icon-wrap">
+                                    <img src="/assets/badges/social_instagram.svg" alt="Instagram" class="social-channel-img">
+                                </div>
+                                <span class="social-channel-label">INSTAGRAM</span>
+                                <span class="social-channel-sub">Visual Feeds</span>
+                            </a>
+                        ` : ''}
+                        ${p.discord ? `
+                            <a href="${escapeHtml(p.discord)}" target="_blank" rel="noopener noreferrer" class="social-channel-card social-card-discord" title="Official Discord Server">
+                                <div class="social-channel-icon-wrap">
+                                    <img src="/assets/badges/social_discord.svg" alt="Discord" class="social-channel-img">
+                                </div>
+                                <span class="social-channel-label">DISCORD</span>
+                                <span class="social-channel-sub">Community Net</span>
+                            </a>
+                        ` : ''}
+                        ${(p.itch || p.itchio) ? `
+                            <a href="${escapeHtml(p.itch || p.itchio)}" target="_blank" rel="noopener noreferrer" class="social-channel-card social-card-itch" title="Official Itch.io Game Releases & 3D Assets">
+                                <div class="social-channel-icon-wrap">
+                                    <img src="/assets/badges/social_itchio.svg" alt="Itch.io" class="social-channel-img">
+                                </div>
+                                <span class="social-channel-label">ITCH.IO</span>
+                                <span class="social-channel-sub">Games &amp; 3D Packs</span>
+                            </a>
+                        ` : ''}
+                        ${p.steam ? `
+                            <a href="${escapeHtml(p.steam)}" target="_blank" rel="noopener noreferrer" class="social-channel-card social-card-steam" title="Official Steam Creator Hub">
+                                <div class="social-channel-icon-wrap">
+                                    <img src="/assets/badges/social_steam.svg" alt="Steam" class="social-channel-img">
+                                </div>
+                                <span class="social-channel-label">STEAM</span>
+                                <span class="social-channel-sub">Commercial Hub</span>
+                            </a>
+                        ` : ''}
                     </div>
                 `;
             }
@@ -3121,21 +3208,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         const card = document.createElement('div');
                         card.className = 'social-reel-card';
 
-                        // YouTube Embed preview if available
-                        const ytId = extractYouTubeId(reel.previewEmbedUrl || (reel.links && reel.links.youtube));
-
                         card.innerHTML = `
                             <div class="social-reel-preview">
-                                ${ytId ? `
-                                    <div class="devlog-video-responsive" style="aspect-ratio: 9/16; max-height: 420px;">
-                                        ${renderYouTubeHdEmbed(ytId, reel.title, '9/16')}
-                                    </div>
-                                ` : `
-                                    <div class="social-reel-no-embed">
-                                        <span style="font-size: 32px; margin-bottom: 8px;">📱</span>
-                                        <span style="font-size: 12px; font-weight: bold;">TACTILE SHORT REEL</span>
-                                    </div>
-                                `}
+                                ${renderReelEmbed(reel, false)}
                             </div>
                             <div class="social-reel-info">
                                 <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 4px;">
@@ -3218,18 +3293,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (shortDateEl) shortDateEl.textContent = latestReel.date || '';
             if (shortDescEl) shortDescEl.textContent = latestReel.desc || '';
 
-            const ytId = extractYouTubeId(latestReel.previewEmbedUrl || (latestReel.links && latestReel.links.youtube));
             if (shortPreviewEl) {
-                if (ytId) {
-                    shortPreviewEl.innerHTML = renderYouTubeHdEmbed(ytId, latestReel.title, '16/9');
-                } else {
-                    shortPreviewEl.innerHTML = `
-                        <div class="social-reel-no-embed" style="padding: 24px 12px;">
-                            <span style="font-size: 28px; margin-bottom: 6px;">📱</span>
-                            <span style="font-size: 11px; font-weight: bold;">SHORT BROADCAST REEL</span>
-                        </div>
-                    `;
-                }
+                shortPreviewEl.innerHTML = renderReelEmbed(latestReel, true);
             }
 
             if (shortActionsEl) {

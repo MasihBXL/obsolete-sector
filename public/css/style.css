@@ -5302,36 +5302,332 @@ html[data-theme="dark"] body {
 
 .socials-profile-bar {
     background: var(--bg-card);
-    border: 1px dashed var(--border-color);
-    padding: 14px 18px;
+    border: 1px solid var(--border-color);
+    padding: 16px 18px;
     margin-bottom: 24px;
-    border-radius: 2px;
+    border-radius: var(--doc-radius, 2px);
 }
 
-.social-pills-row {
+/* Official Transmission Channels Grid (Vertical Cards with Large Themed SVGs) */
+.social-channels-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.social-channel-card {
     display: flex;
-    gap: 8px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 10px;
+    text-decoration: none;
+    text-align: center;
+    background: var(--bg-card-inner, #ffffff);
+    border: 2px solid var(--border-color);
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.08);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    border-radius: var(--doc-radius, 3px);
+}
+
+.social-channel-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--link-color);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.social-channel-icon-wrap {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+}
+
+.social-channel-img {
+    width: 44px;
+    height: 44px;
+    display: block;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.25));
+    transition: transform 0.15s ease;
+}
+
+.social-channel-card:hover .social-channel-img {
+    transform: scale(1.08);
+}
+
+.social-channel-label {
+    font-family: var(--font-title);
+    font-size: 17px;
+    font-weight: bold;
+    color: var(--text-primary);
+    letter-spacing: 0.5px;
+    line-height: 1.1;
+    margin-bottom: 3px;
+}
+
+.social-channel-sub {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-dim);
+}
+
+/* Theme Adaptation: Win98 Social Channel Cards */
+[data-theme="win98"] .social-channel-card {
+    background: #c0c0c0 !important;
+    border: 2px solid !important;
+    border-color: #ffffff #808080 #808080 #ffffff !important;
+    box-shadow: 1px 1px 0 #000000 !important;
+    border-radius: 0 !important;
+}
+[data-theme="win98"] .social-channel-card:hover {
+    background: #d4d0c8 !important;
+    transform: none !important;
+}
+[data-theme="win98"] .social-channel-card:active {
+    border-color: #808080 #ffffff #ffffff #808080 !important;
+    box-shadow: none !important;
+    padding-top: 15px !important;
+    padding-bottom: 13px !important;
+}
+[data-theme="win98"] .social-channel-label {
+    color: #000080 !important;
+}
+[data-theme="win98"] .social-channel-sub {
+    color: #333333 !important;
+}
+
+/* Theme Adaptation: Backrooms Social Channel Cards */
+[data-theme="backrooms"] .social-channel-card {
+    background: #eadebe !important;
+    border: 2px solid #8f805a !important;
+    box-shadow: 2px 2px 0 rgba(40, 32, 16, 0.2) !important;
+    border-radius: 2px !important;
+}
+[data-theme="backrooms"] .social-channel-card:hover {
+    border-color: #7d490c !important;
+    box-shadow: 0 0 8px rgba(184, 109, 26, 0.4) !important;
+}
+[data-theme="backrooms"] .social-channel-label {
+    color: #7d490c !important;
+}
+[data-theme="backrooms"] .social-channel-sub {
+    color: #615234 !important;
+}
+
+/* Theme Adaptation: CRT Phosphor Themes (Dark, Green, Amber, Blood) */
+[data-theme="dark"] .social-channel-card,
+[data-theme="green"] .social-channel-card,
+[data-theme="amber"] .social-channel-card,
+[data-theme="blood"] .social-channel-card {
+    background: var(--bg-card-inner, #111317) !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: none !important;
+}
+[data-theme="dark"] .social-channel-card:hover,
+[data-theme="green"] .social-channel-card:hover,
+[data-theme="amber"] .social-channel-card:hover,
+[data-theme="blood"] .social-channel-card:hover {
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 10px var(--glow) !important;
+}
+[data-theme="dark"] .social-channel-label,
+[data-theme="green"] .social-channel-label,
+[data-theme="amber"] .social-channel-label,
+[data-theme="blood"] .social-channel-label {
+    color: var(--accent) !important;
+}
+[data-theme="dark"] .social-channel-sub,
+[data-theme="green"] .social-channel-sub,
+[data-theme="amber"] .social-channel-sub,
+[data-theme="blood"] .social-channel-sub {
+    color: var(--text-dim) !important;
+}
+
+/* ==========================================================================
+   ART MODAL: TACTILE GAME-READY 3D ASSET CARTRIDGE BOX
+   ========================================================================== */
+.art-asset-cartridge-box {
+    background: var(--bg-card, #f4f8fe);
+    border: 2px solid var(--border-color);
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.08);
+    padding: 12px 16px;
+    margin-bottom: 18px;
+    border-radius: var(--doc-radius, 3px);
+}
+
+.art-asset-top-strip {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 8px;
+    margin-bottom: 10px;
+}
+
+.art-asset-tag {
+    font-family: var(--font-title);
+    font-size: 15px;
+    font-weight: bold;
+    color: var(--link-color);
+    letter-spacing: 0.5px;
+}
+
+.art-asset-price-tag {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: bold;
+    background: #111111;
+    color: #4ade80;
+    padding: 2px 8px;
+    border: 1px solid #333333;
+    border-radius: 2px;
+    letter-spacing: 0.5px;
+}
+
+.art-asset-main-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     flex-wrap: wrap;
+    gap: 12px;
+}
+
+.art-asset-info {
+    flex: 1;
+    min-width: 220px;
+}
+
+.art-asset-name {
+    font-family: var(--font-title);
+    font-size: 18px;
+    color: var(--text-primary);
+    margin: 0 0 4px 0;
+    line-height: 1.2;
+}
+
+.art-asset-formats {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-dim);
+}
+
+.art-asset-action {
+    display: flex;
     align-items: center;
 }
 
-.social-hub-pill {
-    padding: 6px 14px !important;
-    font-size: 11.5px !important;
+.art-asset-download-btn {
+    background: linear-gradient(180deg, #ff6b6b 0%, #fa5c5c 50%, #e04545 100%);
+    border: 1px solid #c0392b;
+    border-radius: 3px;
+    color: #ffffff !important;
+    text-decoration: none !important;
+    font-family: var(--font-mono);
+    font-weight: bold;
+    font-size: 12px;
+    padding: 8px 18px;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    text-decoration: none;
-    font-weight: bold;
+    gap: 8px;
+    box-shadow: 0 2px 6px rgba(250, 92, 92, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    transition: all 0.15s ease;
+    cursor: pointer;
 }
 
-.devlog-pill-tiktok {
-    border-color: #25f4ee !important;
-    color: #25f4ee !important;
+.art-asset-download-btn:hover {
+    background: linear-gradient(180deg, #ff7e7e 0%, #ff6b6b 50%, #fa5c5c 100%);
+    box-shadow: 0 4px 14px rgba(250, 92, 92, 0.6), inset 0 1px 0 #ffffff;
+    transform: translateY(-1px);
 }
-.devlog-pill-instagram {
-    border-color: #e1306c !important;
-    color: #e1306c !important;
+
+.art-asset-download-btn:active {
+    transform: translateY(1px);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.art-asset-itch-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+}
+
+/* Theme Adaptation: Win98 Art Asset Box */
+[data-theme="win98"] .art-asset-cartridge-box {
+    background: #c0c0c0 !important;
+    border: 2px solid !important;
+    border-color: #808080 #ffffff #ffffff #808080 !important;
+    box-shadow: inset 1px 1px 0 #000000 !important;
+    border-radius: 0 !important;
+}
+[data-theme="win98"] .art-asset-top-strip {
+    border-bottom: 2px groove #ffffff !important;
+}
+[data-theme="win98"] .art-asset-tag {
+    color: #000080 !important;
+    font-size: 16px !important;
+}
+[data-theme="win98"] .art-asset-name {
+    color: #000080 !important;
+    font-size: 19px !important;
+}
+[data-theme="win98"] .art-asset-formats {
+    color: #222222 !important;
+}
+[data-theme="win98"] .art-asset-download-btn {
+    border: 2px solid !important;
+    border-color: #ffffff #808080 #808080 #ffffff !important;
+    box-shadow: 1px 1px 0 #000000 !important;
+    border-radius: 0 !important;
+}
+[data-theme="win98"] .art-asset-download-btn:active {
+    border-color: #808080 #ffffff #ffffff #808080 !important;
+    box-shadow: none !important;
+}
+
+/* Theme Adaptation: Backrooms Art Asset Box */
+[data-theme="backrooms"] .art-asset-cartridge-box {
+    background: #eadebe !important;
+    border: 2px solid #8f805a !important;
+    border-radius: 2px !important;
+}
+[data-theme="backrooms"] .art-asset-top-strip {
+    border-bottom: 1px dashed #8f805a !important;
+}
+[data-theme="backrooms"] .art-asset-tag {
+    color: #7d490c !important;
+}
+[data-theme="backrooms"] .art-asset-name {
+    color: #7d490c !important;
+}
+[data-theme="backrooms"] .art-asset-formats {
+    color: #615234 !important;
+}
+
+/* Theme Adaptation: CRT Phosphor Art Asset Box */
+[data-theme="dark"] .art-asset-cartridge-box,
+[data-theme="green"] .art-asset-cartridge-box,
+[data-theme="amber"] .art-asset-cartridge-box,
+[data-theme="blood"] .art-asset-cartridge-box {
+    background: var(--bg-card-inner, #111317) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 0 !important;
+}
+[data-theme="dark"] .art-asset-tag,
+[data-theme="green"] .art-asset-tag,
+[data-theme="amber"] .art-asset-tag,
+[data-theme="blood"] .art-asset-tag {
+    color: var(--accent) !important;
+}
+[data-theme="dark"] .art-asset-name,
+[data-theme="green"] .art-asset-name,
+[data-theme="amber"] .art-asset-name,
+[data-theme="blood"] .art-asset-name {
+    color: var(--accent) !important;
 }
 
 .social-section-header {

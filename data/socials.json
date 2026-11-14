@@ -1,10 +1,10 @@
 {
   "profiles": {
     "youtube": "https://youtube.com/@moptam",
-    "tiktok": "https://tiktok.com/@moptam",
+    "tiktok": "https://www.tiktok.com/@realmoptam",
     "instagram": "https://instagram.com/moptam",
     "discord": "https://discord.gg/obsolete-sector",
-    "twitter": "https://x.com/moptam_dev",
+    "itch": "https://moptam.itch.io",
     "steam": "https://store.steampowered.com/developer/moptam"
   },
   "longVideos": [
@@ -26,14 +26,14 @@
   "shortReels": [
     {
       "id": "reel-1",
-      "title": "Shotgun Shell Cocking Foley & Low-Poly Reload Animation",
-      "desc": "Crafting sound latency down to 2ms for instant tactile feedback.",
-      "date": "2026-11-10",
-      "previewEmbedUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "title": "MOPTAM // Subterranean Sound Design & Tactile Foley",
+      "desc": "Direct broadcast from the audio foley lab: acoustic tape textures, mechanical switches, and analog low-poly dread.",
+      "date": "2026-11-14",
+      "previewEmbedUrl": "https://www.tiktok.com/@realmoptam/video/7701442127766637845",
       "links": {
-        "youtube": "https://youtube.com/shorts/dQw4w9WgXcQ",
-        "tiktok": "https://www.tiktok.com",
-        "instagram": "https://www.instagram.com/reels"
+        "tiktok": "https://www.tiktok.com/@realmoptam/video/7701442127766637845",
+        "youtube": "https://youtube.com/@moptam",
+        "instagram": "https://instagram.com/moptam"
       }
     },
     {
@@ -44,7 +44,7 @@
       "previewEmbedUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
       "links": {
         "youtube": "https://youtube.com/shorts/dQw4w9WgXcQ",
-        "tiktok": "https://www.tiktok.com",
+        "tiktok": "https://www.tiktok.com/@realmoptam",
         "instagram": "https://www.instagram.com/reels"
       }
     }

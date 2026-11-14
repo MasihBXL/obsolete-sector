@@ -683,10 +683,11 @@ function getAppBaseUrl(req) {
 function renderOAuthSetupGuide(res, provider, redirectUri) {
     const isGoogle = provider === 'google';
     const isGithub = provider === 'github';
-    const title = isGoogle ? 'Google Cloud Console' : (isGithub ? 'GitHub Developer Settings' : 'Apple Developer Portal');
-    const docLink = isGoogle ? 'https://console.cloud.google.com/apis/credentials' : (isGithub ? 'https://github.com/settings/developers' : 'https://developer.apple.com');
-    const envKey1 = isGoogle ? 'GOOGLE_CLIENT_ID' : (isGithub ? 'GITHUB_CLIENT_ID' : 'APPLE_CLIENT_ID');
-    const envKey2 = isGoogle ? 'GOOGLE_CLIENT_SECRET' : (isGithub ? 'GITHUB_CLIENT_SECRET' : 'APPLE_KEY_ID');
+    const isFacebook = provider === 'facebook';
+    const title = isGoogle ? 'Google Cloud Console' : (isGithub ? 'GitHub Developer Settings' : (isFacebook ? 'Meta for Developers (Facebook Login)' : 'Apple Developer Portal'));
+    const docLink = isGoogle ? 'https://console.cloud.google.com/apis/credentials' : (isGithub ? 'https://github.com/settings/developers' : (isFacebook ? 'https://developers.facebook.com/apps/' : 'https://developer.apple.com'));
+    const envKey1 = isGoogle ? 'GOOGLE_CLIENT_ID' : (isGithub ? 'GITHUB_CLIENT_ID' : (isFacebook ? 'FACEBOOK_APP_ID' : 'APPLE_CLIENT_ID'));
+    const envKey2 = isGoogle ? 'GOOGLE_CLIENT_SECRET' : (isGithub ? 'GITHUB_CLIENT_SECRET' : (isFacebook ? 'FACEBOOK_APP_SECRET' : 'APPLE_KEY_ID'));
 
     res.send(`
     <!DOCTYPE html>
@@ -932,7 +933,84 @@ app.get('/api/auth/github/callback', async (req, res) => {
     }
 });
 
-// 4c. Apple Sign In Route
+// 4c. Facebook OAuth 2.0
+app.get('/api/auth/facebook', (req, res) => {
+    const FACEBOOK_APP_ID = process.env.FACEBOOK_APP_ID;
+    const FACEBOOK_APP_SECRET = process.env.FACEBOOK_APP_SECRET;
+    const redirectUri = `${getAppBaseUrl(req)}/api/auth/facebook/callback`;
+
+    if (!FACEBOOK_APP_ID || !FACEBOOK_APP_SECRET) {
+        return renderOAuthSetupGuide(res, 'facebook', redirectUri);
+    }
+
+    const state = crypto.randomBytes(16).toString('hex');
+    const authUrl = `https://www.facebook.com/v18.0/dialog/oauth?` + new URLSearchParams({
+        client_id: FACEBOOK_APP_ID,
+        redirect_uri: redirectUri,
+        state: state,
+        scope: 'email,public_profile'
+    }).toString();
+
+    res.redirect(authUrl);
+});
+
+app.get('/api/auth/facebook/callback', async (req, res) => {
+    try {
+        const { code, error, error_description } = req.query;
+        if (error) {
+            return res.redirect(`/auth/callback.html?error=${encodeURIComponent(error_description || error)}`);
+        }
+        if (!code) {
+            return res.redirect(`/auth/callback.html?error=No_authorization_code_received`);
+        }
+
+        const FACEBOOK_APP_ID = process.env.FACEBOOK_APP_ID;
+        const FACEBOOK_APP_SECRET = process.env.FACEBOOK_APP_SECRET;
+        const redirectUri = `${getAppBaseUrl(req)}/api/auth/facebook/callback`;
+
+        // Exchange code for token
+        const tokenRes = await fetch(`https://graph.facebook.com/v18.0/oauth/access_token?` + new URLSearchParams({
+            client_id: FACEBOOK_APP_ID,
+            client_secret: FACEBOOK_APP_SECRET,
+            redirect_uri: redirectUri,
+            code: String(code)
+        }));
+
+        const tokenData = await tokenRes.json();
+        if (!tokenRes.ok || !tokenData.access_token) {
+            return res.redirect(`/auth/callback.html?error=${encodeURIComponent(tokenData.error?.message || 'Facebook token exchange failed')}`);
+        }
+
+        // Fetch User Profile from Facebook Graph API
+        const userRes = await fetch(`https://graph.facebook.com/me?fields=id,name,email,picture.width(200).height(200)&access_token=${tokenData.access_token}`);
+        const profile = await userRes.json();
+
+        const providerId = profile.id;
+        const email = profile.email || null;
+        const name = profile.name || 'Operative';
+        const avatar = profile.picture?.data?.url || null;
+
+        // Check if user already exists
+        let user = db.getUserByProviderId('facebook', providerId);
+        if (!user && email) {
+            user = db.getUserByEmail(email);
+        }
+
+        if (user) {
+            const session = db.createSession(user.id);
+            return res.redirect(`/auth/callback.html?status=success&token=${encodeURIComponent(session.token)}&username=${encodeURIComponent(user.username)}`);
+        }
+
+        // New user: redirect to pick call-sign
+        const suggestedName = (name || (email ? email.split('@')[0] : 'Operator')).replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 18);
+        return res.redirect(`/auth/callback.html?status=new_user&provider=facebook&providerId=${encodeURIComponent(providerId)}&email=${encodeURIComponent(email || '')}&suggestedName=${encodeURIComponent(suggestedName)}&avatar=${encodeURIComponent(avatar || '')}`);
+    } catch (err) {
+        console.error('Facebook OAuth callback error:', err);
+        res.redirect(`/auth/callback.html?error=${encodeURIComponent(err.message)}`);
+    }
+});
+
+// 4d. Apple Sign In Route
 app.get('/api/auth/apple', (req, res) => {
     const APPLE_CLIENT_ID = process.env.APPLE_CLIENT_ID;
     const redirectUri = `${getAppBaseUrl(req)}/api/auth/apple/callback`;
@@ -957,6 +1035,7 @@ app.get('/api/auth/providers-status', (req, res) => {
     res.json({
         google: !!(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET),
         github: !!(process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET),
+        facebook: !!(process.env.FACEBOOK_APP_ID && process.env.FACEBOOK_APP_SECRET),
         apple: !!process.env.APPLE_CLIENT_ID,
         baseUrl: getAppBaseUrl(req)
     });
