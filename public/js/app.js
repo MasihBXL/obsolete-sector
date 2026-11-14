@@ -525,6 +525,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (gameFeedbackForm) gameFeedbackForm.style.display = 'none';
         }
 
+        // Re-render any open comments drawers so the input area immediately reflects current login state
+        document.querySelectorAll('.devlog-comments-drawer.open').forEach(drawer => {
+            const devlogId = drawer.getAttribute('data-devlog-id');
+            if (devlogId) refreshDevlogCommentsList(devlogId);
+        });
+
         loadGuestbook();
     }
 
@@ -2260,26 +2266,37 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    async function toggleDevlogCommentsDrawer(devlogId) {
-        const drawer = document.getElementById(`commentsDrawer_${devlogId}`);
-        if (!drawer) return;
+    async function toggleDevlogCommentsDrawer(devlogId, btn = null) {
+        let targetDrawer = null;
+        if (btn) {
+            const card = btn.closest('.latest-update-card, .devlog-card');
+            if (card) targetDrawer = card.querySelector('.devlog-comments-drawer');
+        }
+        if (!targetDrawer) {
+            targetDrawer = document.querySelector(`.devlog-comments-drawer[data-devlog-id="${devlogId}"]`);
+        }
+        if (!targetDrawer) return;
 
-        const isCurrentlyOpen = drawer.classList.contains('open');
+        const isCurrentlyOpen = targetDrawer.classList.contains('open');
         if (isCurrentlyOpen) {
-            drawer.classList.remove('open');
+            targetDrawer.classList.remove('open');
         } else {
-            drawer.classList.add('open');
+            targetDrawer.classList.add('open');
             await refreshDevlogCommentsList(devlogId);
         }
         if (window.soundEngine) window.soundEngine.playSelect();
     }
 
     async function refreshDevlogCommentsList(devlogId) {
-        const listEl = document.getElementById(`commentsList_${devlogId}`);
-        const inputArea = document.getElementById(`commentInputArea_${devlogId}`);
-        if (!listEl) return;
+        const drawers = document.querySelectorAll(`.devlog-comments-drawer[data-devlog-id="${devlogId}"]`);
+        if (drawers.length === 0) return;
 
-        listEl.innerHTML = '<div style="font-size: 11px; color: var(--text-dim); padding: 4px;">Accessing transmission stream...</div>';
+        drawers.forEach(drawer => {
+            const listEl = drawer.querySelector('.devlog-comments-list');
+            if (listEl) {
+                listEl.innerHTML = '<div style="font-size: 11px; color: var(--text-dim); padding: 4px;">Accessing transmission stream...</div>';
+            }
+        });
 
         try {
             const res = await fetch(`/api/devlogs/${devlogId}/comments`);
@@ -2290,103 +2307,115 @@ document.addEventListener('DOMContentLoaded', () => {
             // Refresh spotlight boxes and comment counts for this devlog
             refreshSpotlightDisplay(devlogId);
 
-            if (comments.length === 0) {
-                listEl.innerHTML = '<div style="font-size: 11px; color: var(--text-dim); padding: 6px 0;">No comments logged yet. Transmit your reaction below!</div>';
-            } else {
-                listEl.innerHTML = comments.map(c => {
-                    const avatarSrc = c.user_avatar || getThemeDefaultAvatarInfo().url;
-                    const rolePill = c.user_role === 'admin'
-                        ? `<span style="background: var(--accent); color: #fff; font-size: 9px; padding: 1px 4px; border-radius: 2px;">ADMIN</span>`
-                        : `<span style="background: #0055ea; color: #fff; font-size: 9px; padding: 1px 4px; border-radius: 2px;">USER</span>`;
-                    const deleteBtn = (currentUser && (currentUser.role === 'admin' || currentUser.username === c.username))
-                        ? `<button type="button" class="btn-delete-comment" data-id="${c.id}" data-devlog="${devlogId}" style="background:none; border:none; color:red; cursor:pointer; font-size:10px;">[DELETE]</button>`
-                        : '';
+            drawers.forEach(drawer => {
+                const listEl = drawer.querySelector('.devlog-comments-list');
+                const inputArea = drawer.querySelector('.devlog-comment-input-area');
 
-                    return `
-                        <div class="devlog-comment-item">
-                            <img class="devlog-comment-avatar" src="${avatarSrc}" alt="Avatar">
-                            <div class="devlog-comment-content">
-                                <div class="devlog-comment-meta">
-                                    <div style="display: flex; align-items: center; gap: 6px;">
-                                        <span class="devlog-comment-author">${escapeHtml(c.username)}</span>
-                                        ${rolePill}
-                                    </div>
-                                    <div style="display: flex; align-items: center; gap: 8px;">
-                                        <span class="devlog-comment-date">${c.created_at ? c.created_at.slice(0, 10) : ''}</span>
-                                        ${deleteBtn}
+                if (listEl) {
+                    if (comments.length === 0) {
+                        listEl.innerHTML = '<div style="font-size: 11px; color: var(--text-dim); padding: 6px 0;">No comments logged yet. Transmit your reaction below!</div>';
+                    } else {
+                        listEl.innerHTML = comments.map(c => {
+                            const avatarSrc = c.user_avatar || getThemeDefaultAvatarInfo().url;
+                            const rolePill = c.user_role === 'admin'
+                                ? `<span style="background: var(--accent); color: #fff; font-size: 9px; padding: 1px 4px; border-radius: 2px;">ADMIN</span>`
+                                : `<span style="background: #0055ea; color: #fff; font-size: 9px; padding: 1px 4px; border-radius: 2px;">USER</span>`;
+                            const deleteBtn = (currentUser && (currentUser.role === 'admin' || currentUser.username === c.username))
+                                ? `<button type="button" class="btn-delete-comment" data-id="${c.id}" data-devlog="${devlogId}" style="background:none; border:none; color:red; cursor:pointer; font-size:10px;">[DELETE]</button>`
+                                : '';
+
+                            return `
+                                <div class="devlog-comment-item">
+                                    <img class="devlog-comment-avatar" src="${avatarSrc}" alt="Avatar">
+                                    <div class="devlog-comment-content">
+                                        <div class="devlog-comment-meta">
+                                            <div style="display: flex; align-items: center; gap: 6px;">
+                                                <span class="devlog-comment-author">${escapeHtml(c.username)}</span>
+                                                ${rolePill}
+                                            </div>
+                                            <div style="display: flex; align-items: center; gap: 8px;">
+                                                <span class="devlog-comment-date">${c.created_at ? c.created_at.slice(0, 10) : ''}</span>
+                                                ${deleteBtn}
+                                            </div>
+                                        </div>
+                                        <div class="devlog-comment-text">${escapeHtml(c.content)}</div>
                                     </div>
                                 </div>
-                                <div class="devlog-comment-text">${escapeHtml(c.content)}</div>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
+                            `;
+                        }).join('');
 
-                listEl.querySelectorAll('.btn-delete-comment').forEach(btn => {
-                    btn.addEventListener('click', async () => {
-                        const commentId = btn.getAttribute('data-id');
-                        if (confirm('Delete this comment transmission?')) {
-                            await fetch(`/api/devlogs/comments/${commentId}`, {
-                                method: 'DELETE',
-                                headers: { 'Authorization': `Bearer ${authToken}` }
+                        listEl.querySelectorAll('.btn-delete-comment').forEach(btn => {
+                            btn.addEventListener('click', async () => {
+                                const commentId = btn.getAttribute('data-id');
+                                if (confirm('Delete this comment transmission?')) {
+                                    await fetch(`/api/devlogs/comments/${commentId}`, {
+                                        method: 'DELETE',
+                                        headers: { 'Authorization': `Bearer ${authToken}` }
+                                    });
+                                    await refreshDevlogCommentsList(devlogId);
+                                }
                             });
-                            await refreshDevlogCommentsList(devlogId);
-                        }
-                    });
-                });
-            }
-
-            // Render Input Area
-            if (inputArea) {
-                if (currentUser) {
-                    inputArea.innerHTML = `
-                        <div class="devlog-comment-form">
-                            <textarea class="devlog-comment-textarea" id="textarea_${devlogId}" placeholder="Enter comment transmission as [${currentUser.username}]... (Max 1000 characters)"></textarea>
-                            <div style="display: flex; justify-content: flex-end; gap: 8px;">
-                                <button type="button" class="btn-pixel btn-pixel-accent btn-submit-comment" data-devlog="${devlogId}">
-                                    TRANSMIT COMMENT ➔
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                    const submitBtn = inputArea.querySelector('.btn-submit-comment');
-                    const textarea = inputArea.querySelector(`#textarea_${devlogId}`);
-                    submitBtn.addEventListener('click', async () => {
-                        const content = textarea.value.trim();
-                        if (!content) return;
-                        submitBtn.disabled = true;
-                        try {
-                            const postRes = await fetch(`/api/devlogs/${devlogId}/comments`, {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'Authorization': `Bearer ${authToken}`
-                                },
-                                body: JSON.stringify({ content })
-                            });
-                            if (postRes.ok) {
-                                textarea.value = '';
-                                await refreshDevlogCommentsList(devlogId);
-                                if (window.soundEngine) window.soundEngine.playSelect();
-                            }
-                        } catch(e) {} finally {
-                            submitBtn.disabled = false;
-                        }
-                    });
-                } else {
-                    inputArea.innerHTML = `
-                        <div style="background: rgba(0,0,0,0.03); border: 1px dashed var(--border-color); padding: 8px 12px; margin-top: 8px; font-size: 11px; display: flex; justify-content: space-between; align-items: center;">
-                            <span>Sign in to post comments under this devlog.</span>
-                            <button type="button" class="btn-pixel btn-login-prompt" style="font-size: 10.5px;">SIGN IN</button>
-                        </div>
-                    `;
-                    inputArea.querySelector('.btn-login-prompt').addEventListener('click', () => {
-                        openAuthModal('Sign in to leave a comment on this devlog.', 'login');
-                    });
+                        });
+                    }
                 }
-            }
+
+                // Render Input Area inside this specific drawer
+                if (inputArea) {
+                    if (currentUser) {
+                        inputArea.innerHTML = `
+                            <div class="devlog-comment-form">
+                                <textarea class="devlog-comment-textarea" placeholder="Enter comment transmission as [${currentUser.username}]... (Max 1000 characters)"></textarea>
+                                <div style="display: flex; justify-content: flex-end; gap: 8px;">
+                                    <button type="button" class="btn-pixel btn-pixel-accent btn-submit-comment" data-devlog="${devlogId}">
+                                        TRANSMIT COMMENT ➔
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                        const submitBtn = inputArea.querySelector('.btn-submit-comment');
+                        const textarea = inputArea.querySelector('.devlog-comment-textarea');
+                        if (submitBtn && textarea) {
+                            submitBtn.addEventListener('click', async () => {
+                                const content = textarea.value.trim();
+                                if (!content) return;
+                                submitBtn.disabled = true;
+                                try {
+                                    const postRes = await fetch(`/api/devlogs/${devlogId}/comments`, {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'Authorization': `Bearer ${authToken}`
+                                        },
+                                        body: JSON.stringify({ content })
+                                    });
+                                    if (postRes.ok) {
+                                        textarea.value = '';
+                                        await refreshDevlogCommentsList(devlogId);
+                                        if (window.soundEngine) window.soundEngine.playSelect();
+                                    }
+                                } catch(e) {} finally {
+                                    submitBtn.disabled = false;
+                                }
+                            });
+                        }
+                    } else {
+                        inputArea.innerHTML = `
+                            <div style="background: rgba(0,0,0,0.03); border: 1px dashed var(--border-color); padding: 8px 12px; margin-top: 8px; font-size: 11px; display: flex; justify-content: space-between; align-items: center;">
+                                <span>Sign in to post comments under this devlog.</span>
+                                <button type="button" class="btn-pixel btn-login-prompt" style="font-size: 10.5px;">SIGN IN</button>
+                            </div>
+                        `;
+                        const loginPromptBtn = inputArea.querySelector('.btn-login-prompt');
+                        if (loginPromptBtn) {
+                            loginPromptBtn.addEventListener('click', () => {
+                                openAuthModal('Sign in to leave a comment on this devlog.', 'login');
+                            });
+                        }
+                    }
+                }
+            });
         } catch (e) {
-            listEl.innerHTML = '<div style="font-size: 11px; color: var(--accent);">Failed to load comments stream.</div>';
+            console.error('Failed to load comments:', e);
         }
     }
 
@@ -2567,7 +2596,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             </div>
 
                             <!-- Collapsible Comments Drawer -->
-                            <div class="devlog-comments-drawer" id="commentsDrawer_${u.id}">
+                            <div class="devlog-comments-drawer" id="commentsDrawer_${u.id}" data-devlog-id="${u.id}">
                                 <div class="devlog-comments-list" id="commentsList_${u.id}"></div>
                                 <div class="devlog-comment-input-area" id="commentInputArea_${u.id}"></div>
                             </div>
@@ -2602,11 +2631,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const homeCommentsDrawer = document.getElementById('homeLatestCommentsDrawer');
                 if (homeCommentsDrawer) {
-                    homeCommentsDrawer.id = `commentsDrawer_${latest.id}`;
-                    const listEl = homeCommentsDrawer.querySelector('#homeLatestCommentsList');
-                    if (listEl) listEl.id = `commentsList_${latest.id}`;
-                    const inputArea = homeCommentsDrawer.querySelector('#homeLatestCommentInputArea');
-                    if (inputArea) inputArea.id = `commentInputArea_${latest.id}`;
+                    homeCommentsDrawer.setAttribute('data-devlog-id', latest.id);
                 }
             }
 
@@ -2622,7 +2647,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.devlog-comments-toggle-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
                     const target = btn.getAttribute('data-target');
-                    toggleDevlogCommentsDrawer(target);
+                    toggleDevlogCommentsDrawer(target, btn);
                 });
             });
 

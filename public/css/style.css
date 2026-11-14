@@ -103,9 +103,9 @@
     --active-row-bg: #000080;
     --active-row-text: #ffffff;
 
-    /* WIN98 DEDICATED AUTHENTIC RETRO PIXEL FONT STACK */
-    --font-title: 'Pixelify Sans', 'VT323', monospace;
-    --font-mono: 'Share Tech Mono', 'Courier New', monospace;
+    /* WIN98 DEDICATED AUTHENTIC DEFAULT MICROSOFT FONT STACK */
+    --font-title: 'MS Sans Serif', Tahoma, 'Segoe UI', Arial, sans-serif;
+    --font-mono: 'Lucida Console', 'Courier New', monospace;
     --doc-radius: 0;
 }
 
@@ -128,7 +128,7 @@
     padding: 3px 6px;
     background: linear-gradient(90deg, #000080 0%, #1084d0 100%) !important;
     color: #ffffff !important;
-    font-family: 'Pixelify Sans', 'VT323', monospace !important;
+    font-family: 'MS Sans Serif', Tahoma, 'Segoe UI', Arial, sans-serif !important;
     font-size: 11.5px !important;
     font-weight: bold !important;
     letter-spacing: 0;
@@ -168,7 +168,7 @@
 }
 
 [data-theme="win98"] .headertext {
-    font-family: 'Pixelify Sans', 'VT323', monospace !important;
+    font-family: 'MS Sans Serif', Tahoma, 'Segoe UI', Arial, sans-serif !important;
     font-size: 20px !important;
     font-weight: bold !important;
     color: #000080 !important;
@@ -179,7 +179,7 @@
 }
 
 [data-theme="win98"] .page-main-title {
-    font-family: 'Pixelify Sans', 'VT323', monospace !important;
+    font-family: 'MS Sans Serif', Tahoma, 'Segoe UI', Arial, sans-serif !important;
     font-size: 18px !important;
     font-weight: bold !important;
     color: #000080 !important;
@@ -191,7 +191,7 @@
 }
 
 [data-theme="win98"] .lr h2 {
-    font-family: 'Pixelify Sans', 'VT323', monospace !important;
+    font-family: 'MS Sans Serif', Tahoma, 'Segoe UI', Arial, sans-serif !important;
     font-size: 14px !important;
     font-weight: bold !important;
     color: #000080 !important;
@@ -201,7 +201,7 @@
 
 [data-theme="win98"] .cat-title,
 [data-theme="win98"] .album-title {
-    font-family: 'Pixelify Sans', 'VT323', monospace !important;
+    font-family: 'MS Sans Serif', Tahoma, 'Segoe UI', Arial, sans-serif !important;
     font-size: 13px !important;
     font-weight: bold !important;
     color: #000080 !important;
@@ -212,7 +212,7 @@
 }
 
 [data-theme="win98"] .hero-moptam-name {
-    font-family: 'Pixelify Sans', 'VT323', monospace !important;
+    font-family: 'MS Sans Serif', Tahoma, 'Segoe UI', Arial, sans-serif !important;
     font-size: 20px !important;
     font-weight: bold !important;
     color: #000080 !important;
@@ -222,7 +222,7 @@
 }
 
 [data-theme="win98"] .latest-update-title {
-    font-family: 'Pixelify Sans', 'VT323', monospace !important;
+    font-family: 'MS Sans Serif', Tahoma, 'Segoe UI', Arial, sans-serif !important;
     font-size: 13.5px !important;
     font-weight: bold !important;
     color: #000080 !important;
@@ -233,7 +233,7 @@
 }
 
 [data-theme="win98"] .xp-task-card-title {
-    font-family: 'Pixelify Sans', 'VT323', monospace !important;
+    font-family: 'MS Sans Serif', Tahoma, 'Segoe UI', Arial, sans-serif !important;
     font-size: 11.5px !important;
     font-weight: bold !important;
     letter-spacing: 0 !important;
@@ -247,7 +247,7 @@
     background: #c0c0c0 !important;
     color: #000000 !important;
     box-shadow: 1px 1px 0 #000000 !important;
-    font-family: 'Pixelify Sans', 'VT323', monospace !important;
+    font-family: 'MS Sans Serif', Tahoma, 'Segoe UI', Arial, sans-serif !important;
     font-size: 11px !important;
     font-weight: bold !important;
 }
@@ -1864,7 +1864,7 @@ html[data-theme="dark"] body {
     border-radius: 0 !important;
 }
 [data-theme="win98"] .hero-moptam-name {
-    font-family: 'Pixelify Sans', 'VT323', monospace !important;
+    font-family: 'MS Sans Serif', Tahoma, 'Segoe UI', Arial, sans-serif !important;
     font-size: 22px !important;
     font-weight: bold !important;
     color: #000080 !important;
@@ -1874,7 +1874,7 @@ html[data-theme="dark"] body {
 }
 [data-theme="win98"] .hero-moptam-tagline {
     color: #000000 !important;
-    font-family: 'Pixelify Sans', 'VT323', monospace !important;
+    font-family: 'MS Sans Serif', Tahoma, 'Segoe UI', Arial, sans-serif !important;
     font-size: 11.5px !important;
     line-height: 1.5 !important;
 }
@@ -1889,7 +1889,7 @@ html[data-theme="dark"] body {
     border: 2px solid !important;
     border-color: #ffffff #808080 #808080 #ffffff !important;
     color: #000000 !important;
-    font-family: 'Pixelify Sans', 'VT323', monospace !important;
+    font-family: 'MS Sans Serif', Tahoma, 'Segoe UI', Arial, sans-serif !important;
     font-size: 11px !important;
     font-weight: bold !important;
     box-shadow: 1px 1px 0 #000000 !important;
@@ -1917,7 +1917,7 @@ html[data-theme="dark"] body {
 }
 [data-theme="win98"] .xp-task-card-title {
     font-size: 11.5px !important;
-    font-family: 'Pixelify Sans', 'VT323', monospace !important;
+    font-family: 'MS Sans Serif', Tahoma, 'Segoe UI', Arial, sans-serif !important;
     font-weight: bold !important;
     letter-spacing: 0 !important;
     text-shadow: none !important;
@@ -1947,7 +1947,7 @@ html[data-theme="dark"] body {
 }
 [data-theme="win98"] .xp-task-card-desc {
     color: #000000 !important;
-    font-family: 'Pixelify Sans', 'VT323', monospace !important;
+    font-family: 'MS Sans Serif', Tahoma, 'Segoe UI', Arial, sans-serif !important;
     font-size: 11px !important;
     line-height: 1.45 !important;
 }
@@ -1958,7 +1958,7 @@ html[data-theme="dark"] body {
     border-radius: 0 !important;
     color: #000000 !important;
     box-shadow: 1px 1px 0 #000000 !important;
-    font-family: 'Pixelify Sans', 'VT323', monospace !important;
+    font-family: 'MS Sans Serif', Tahoma, 'Segoe UI', Arial, sans-serif !important;
     font-size: 11px !important;
     font-weight: bold !important;
     padding: 3px 12px !important;
@@ -1997,7 +1997,7 @@ html[data-theme="dark"] body {
 }
 [data-theme="win98"] .latest-update-title {
     color: #000080 !important;
-    font-family: 'Pixelify Sans', 'VT323', monospace !important;
+    font-family: 'MS Sans Serif', Tahoma, 'Segoe UI', Arial, sans-serif !important;
     font-size: 14px !important;
     font-weight: bold !important;
     margin: 8px 0 6px 0 !important;
@@ -2009,7 +2009,7 @@ html[data-theme="dark"] body {
     box-shadow: inset 1px 1px 0 #000000 !important;
     padding: 10px 12px !important;
     color: #000000 !important;
-    font-family: 'Pixelify Sans', 'VT323', monospace !important;
+    font-family: 'MS Sans Serif', Tahoma, 'Segoe UI', Arial, sans-serif !important;
     font-size: 11.5px !important;
     line-height: 1.5 !important;
     margin: 6px 0 !important;
@@ -5689,7 +5689,7 @@ html[data-theme="dark"] body {
     border-radius: 0 !important;
 }
 [data-theme="win98"] .home-socials-title {
-    font-family: 'Pixelify Sans', 'VT323', monospace !important;
+    font-family: 'MS Sans Serif', Tahoma, 'Segoe UI', Arial, sans-serif !important;
     font-size: 16px !important;
     color: #000080 !important;
 }
@@ -5708,7 +5708,7 @@ html[data-theme="dark"] body {
     color: #ffffff !important;
 }
 [data-theme="win98"] .home-social-heading {
-    font-family: 'Pixelify Sans', 'VT323', monospace !important;
+    font-family: 'MS Sans Serif', Tahoma, 'Segoe UI', Arial, sans-serif !important;
     font-size: 15px !important;
     color: #000080 !important;
 }
