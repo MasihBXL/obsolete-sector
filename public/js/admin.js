@@ -27,12 +27,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const tabDevlog = document.getElementById('tabDevlog');
     const tabArt = document.getElementById('tabArt');
     const tabSocials = document.getElementById('tabSocials');
+    const tabSettings = document.getElementById('tabSettings');
     const tabUsers = document.getElementById('tabUsers');
     const sectionUpload = document.getElementById('sectionUpload');
     const sectionManage = document.getElementById('sectionManage');
     const sectionDevlog = document.getElementById('sectionDevlog');
     const sectionArt = document.getElementById('sectionArt');
     const sectionSocials = document.getElementById('sectionSocials');
+    const sectionSettings = document.getElementById('sectionSettings');
     const sectionUsers = document.getElementById('sectionUsers');
 
     // Upload components
@@ -144,11 +146,12 @@ document.addEventListener('DOMContentLoaded', () => {
     tabDevlog.addEventListener('click', () => switchTab('devlog'));
     if (tabArt) tabArt.addEventListener('click', () => switchTab('art'));
     if (tabSocials) tabSocials.addEventListener('click', () => switchTab('socials'));
+    if (tabSettings) tabSettings.addEventListener('click', () => switchTab('settings'));
     if (tabUsers) tabUsers.addEventListener('click', () => switchTab('users'));
 
     function switchTab(tab) {
-        [tabUpload, tabManage, tabDevlog, tabArt, tabSocials, tabUsers].forEach(t => { if (t) t.classList.remove('active'); });
-        [sectionUpload, sectionManage, sectionDevlog, sectionArt, sectionSocials, sectionUsers].forEach(s => { if (s) s.style.display = 'none'; });
+        [tabUpload, tabManage, tabDevlog, tabArt, tabSocials, tabSettings, tabUsers].forEach(t => { if (t) t.classList.remove('active'); });
+        [sectionUpload, sectionManage, sectionDevlog, sectionArt, sectionSocials, sectionSettings, sectionUsers].forEach(s => { if (s) s.style.display = 'none'; });
 
         if (tab === 'upload') {
             tabUpload.classList.add('active');
@@ -169,6 +172,10 @@ document.addEventListener('DOMContentLoaded', () => {
             tabSocials.classList.add('active');
             sectionSocials.style.display = 'block';
             loadAdminSocials();
+        } else if (tab === 'settings') {
+            if (tabSettings) tabSettings.classList.add('active');
+            if (sectionSettings) sectionSettings.style.display = 'block';
+            loadAdminSettings();
         } else if (tab === 'users') {
             tabUsers.classList.add('active');
             sectionUsers.style.display = 'block';
@@ -1139,6 +1146,140 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         });
+    }
+
+    // 9.5 Marquee & Site Settings Management
+    const marqueeForm = document.getElementById('marqueeSettingsForm');
+    const marqueeInput = document.getElementById('adminMarqueeInput');
+    const marqueePreview = document.getElementById('marqueeLivePreview');
+    const marqueeFeedback = document.getElementById('marqueeStatusFeedback');
+    const btnResetMarquee = document.getElementById('btnResetMarquee');
+
+    const DEFAULT_MARQUEE_TEMPLATE = '⚡ Hello, I am MOPTAM // PERSONAL CREATIVE HUB & GAMES ARCHIVE // ANOMALY DETECTED // VISITORS LOGGED: 004,924 // TRANSMISSIONS VERIFIED ⚡';
+
+    if (marqueeInput && marqueePreview) {
+        marqueeInput.addEventListener('input', () => {
+            const val = marqueeInput.value.trim();
+            marqueePreview.textContent = val || '⚡ (Marquee is empty...)';
+        });
+    }
+
+    // Quick Templates
+    const btnTplAnomaly = document.getElementById('btnTplAnomaly');
+    const btnTplNewRelease = document.getElementById('btnTplNewRelease');
+    const btnTplDevlog = document.getElementById('btnTplDevlog');
+    const btnTplMaintenance = document.getElementById('btnTplMaintenance');
+
+    if (btnTplAnomaly) {
+        btnTplAnomaly.addEventListener('click', () => {
+            if (marqueeInput) {
+                marqueeInput.value = '🚨 CRITICAL ANOMALY DETECTED // SUBTERRANEAN SECTOR BREACHED // SYSTEM PURGE IMMINENT // STAY ALERT 🚨';
+                marqueeInput.dispatchEvent(new Event('input'));
+            }
+        });
+    }
+    if (btnTplNewRelease) {
+        btnTplNewRelease.addEventListener('click', () => {
+            if (marqueeInput) {
+                marqueeInput.value = '🎮 NEW RELEASE: [Chamber Protocol v1.4.2] IS NOW ARCHIVED // DOWNLOAD STANDALONE FREE BUILD IN GAMES ARCHIVE ➔';
+                marqueeInput.dispatchEvent(new Event('input'));
+            }
+        });
+    }
+    if (btnTplDevlog) {
+        btnTplDevlog.addEventListener('click', () => {
+            if (marqueeInput) {
+                marqueeInput.value = '📝 NEW DISPATCH: Tactile Foley & CRT Audio Engine Breakdown Published // Inspect Devlogs For Full Post-Mortem ⚡';
+                marqueeInput.dispatchEvent(new Event('input'));
+            }
+        });
+    }
+    if (btnTplMaintenance) {
+        btnTplMaintenance.addEventListener('click', () => {
+            if (marqueeInput) {
+                marqueeInput.value = '🔧 SCHEDULED TAPE ALIGNMENT // AUDIO LAB CALIBRATING 56K DIAL-UP PROTOCOLS // ARCHIVE REMAINS OPERATIONAL 🔧';
+                marqueeInput.dispatchEvent(new Event('input'));
+            }
+        });
+    }
+
+    if (btnResetMarquee) {
+        btnResetMarquee.addEventListener('click', () => {
+            if (marqueeInput) {
+                marqueeInput.value = DEFAULT_MARQUEE_TEMPLATE;
+                marqueeInput.dispatchEvent(new Event('input'));
+            }
+        });
+    }
+
+    if (marqueeForm) {
+        marqueeForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const text = marqueeInput ? marqueeInput.value.trim() : '';
+            if (!text) {
+                if (marqueeFeedback) {
+                    marqueeFeedback.textContent = 'ERROR: Marquee text cannot be empty.';
+                    marqueeFeedback.style.color = '#ef4444';
+                }
+                return;
+            }
+
+            const saveBtn = document.getElementById('btnSaveMarquee');
+            if (saveBtn) {
+                saveBtn.disabled = true;
+                saveBtn.textContent = 'TRANSMITTING TO TERMINAL...';
+            }
+
+            try {
+                const res = await fetch('/api/settings/marquee', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-admin-token': adminToken,
+                        'Authorization': `Bearer ${adminToken}`
+                    },
+                    body: JSON.stringify({ marqueeText: text })
+                });
+
+                const data = await res.json();
+                if (res.ok) {
+                    if (marqueeFeedback) {
+                        marqueeFeedback.textContent = '✓ MARQUEE ANNOUNCEMENT BROADCASTED ACROSS ENTIRE SECTOR SUCCESSFULLY!';
+                        marqueeFeedback.style.color = '#4ade80';
+                    }
+                } else {
+                    if (marqueeFeedback) {
+                        marqueeFeedback.textContent = 'UPDATE FAILED: ' + (data.error || 'Server error');
+                        marqueeFeedback.style.color = '#ef4444';
+                    }
+                }
+            } catch (err) {
+                if (marqueeFeedback) {
+                    marqueeFeedback.textContent = 'NETWORK FAULT: ' + err.message;
+                    marqueeFeedback.style.color = '#ef4444';
+                }
+            } finally {
+                if (saveBtn) {
+                    saveBtn.disabled = false;
+                    saveBtn.textContent = '💾 SAVE MARQUEE ANNOUNCEMENT';
+                }
+            }
+        });
+    }
+
+    async function loadAdminSettings() {
+        try {
+            const res = await fetch('/api/settings');
+            if (res.ok) {
+                const settings = await res.json();
+                if (marqueeInput && settings.marqueeText) {
+                    marqueeInput.value = settings.marqueeText;
+                    if (marqueePreview) marqueePreview.textContent = settings.marqueeText;
+                }
+            }
+        } catch (e) {
+            console.error('Failed to load settings:', e);
+        }
     }
 
     // 10. Load Stats

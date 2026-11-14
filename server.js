@@ -55,6 +55,11 @@ const MUSIC_DATA_PATH = path.join(DATA_DIR, 'music.json');
 const ART_DATA_PATH = path.join(DATA_DIR, 'art.json');
 const SFX_DATA_PATH = path.join(DATA_DIR, 'sfx.json');
 const SOCIALS_DATA_PATH = path.join(DATA_DIR, 'socials.json');
+const SETTINGS_DATA_PATH = path.join(DATA_DIR, 'settings.json');
+
+const DEFAULT_SETTINGS = {
+    marqueeText: '⚡ Hello, I am MOPTAM // PERSONAL CREATIVE HUB & GAMES ARCHIVE // ANOMALY DETECTED // VISITORS LOGGED: 004,924 // TRANSMISSIONS VERIFIED ⚡'
+};
 
 const DEFAULT_SOCIALS = {
     profiles: {
@@ -124,6 +129,23 @@ function getSocials() {
 
 function saveSocials(socials) {
     fs.writeFileSync(SOCIALS_DATA_PATH, JSON.stringify(socials, null, 2));
+}
+
+function getSettings() {
+    if (!fs.existsSync(SETTINGS_DATA_PATH)) {
+        fs.writeFileSync(SETTINGS_DATA_PATH, JSON.stringify(DEFAULT_SETTINGS, null, 2));
+        return DEFAULT_SETTINGS;
+    }
+    try {
+        const raw = fs.readFileSync(SETTINGS_DATA_PATH, 'utf8');
+        return JSON.parse(raw);
+    } catch (e) {
+        return DEFAULT_SETTINGS;
+    }
+}
+
+function saveSettings(settings) {
+    fs.writeFileSync(SETTINGS_DATA_PATH, JSON.stringify(settings, null, 2));
 }
 
 function getArt() {
@@ -1738,6 +1760,31 @@ app.delete('/api/socials/shorts/:id', requireAdmin, (req, res) => {
         res.json({ success: true, message: 'Short reel removed.' });
     } catch (e) {
         res.status(500).json({ error: 'Failed to delete short reel: ' + e.message });
+    }
+});
+
+// ============================================================================
+// SITE SETTINGS & MARQUEE CONFIGURATION
+// ============================================================================
+
+// 1. Get Public Site Settings
+app.get('/api/settings', (req, res) => {
+    res.json(getSettings());
+});
+
+// 2. Update Scrolling Marquee Announcement (Admin Only)
+app.put('/api/settings/marquee', requireAdmin, (req, res) => {
+    try {
+        const { marqueeText } = req.body;
+        if (!marqueeText || typeof marqueeText !== 'string' || !marqueeText.trim()) {
+            return res.status(400).json({ error: 'Marquee text string is required.' });
+        }
+        const settings = getSettings();
+        settings.marqueeText = marqueeText.trim();
+        saveSettings(settings);
+        res.json({ success: true, marqueeText: settings.marqueeText });
+    } catch (e) {
+        res.status(500).json({ error: 'Failed to update marquee text: ' + e.message });
     }
 });
 

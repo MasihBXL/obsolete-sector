@@ -2411,12 +2411,43 @@ document.addEventListener('DOMContentLoaded', () => {
         return match ? match[1] : null;
     }
 
+    // High-Definition YouTube Facade (Uses 1280x720 maxresdefault with fallback to hqdefault)
+    function renderYouTubeHdEmbed(ytId, title, aspectRatio = '16/9') {
+        if (!ytId) return '';
+        const safeTitle = escapeHtml(title || 'YouTube Transmission');
+        return `
+            <div class="yt-hd-facade" style="aspect-ratio: ${aspectRatio};" data-yt-id="${ytId}" data-title="${safeTitle}" onclick="window.activateYouTubeFacade(this)">
+                <img class="yt-hd-thumb-img" src="https://i.ytimg.com/vi/${ytId}/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/${ytId}/hqdefault.jpg';" alt="${safeTitle}" loading="lazy">
+                <div class="yt-facade-overlay">
+                    <div class="yt-facade-play-btn" title="Click to Initialize Stream">
+                        <span class="yt-facade-play-triangle">▶</span>
+                    </div>
+                    <div class="yt-facade-banner">
+                        <span class="yt-facade-dot">●</span>
+                        <span class="yt-facade-title">${safeTitle}</span>
+                        <span class="yt-facade-hd-badge">1080p HD</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    window.activateYouTubeFacade = function(facadeElem) {
+        if (!facadeElem) return;
+        const ytId = facadeElem.getAttribute('data-yt-id');
+        const title = facadeElem.getAttribute('data-title') || 'YouTube Stream';
+        facadeElem.innerHTML = `
+            <iframe src="https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&rel=0&modestbranding=1" title="${title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="width:100%;height:100%;position:absolute;top:0;left:0;border:0;"></iframe>
+        `;
+        facadeElem.classList.add('playing');
+    };
+
     function renderDevlogMediaHtml(u) {
         if (!u) return '';
         let html = '';
         const ytId = extractYouTubeId(u.youtubeUrl);
 
-        // 1. YouTube Video Embed (Responsive 16:9 Retro Bezel)
+        // 1. YouTube Video Embed (Responsive HD Facade)
         if (ytId) {
             html += `
                 <div class="devlog-media-block devlog-yt-block">
@@ -2425,7 +2456,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <a href="${escapeHtml(u.youtubeUrl)}" target="_blank" rel="noopener noreferrer" class="devlog-ext-link">OPEN IN YOUTUBE ➔</a>
                     </div>
                     <div class="devlog-video-responsive">
-                        <iframe src="https://www.youtube-nocookie.com/embed/${ytId}" title="${escapeHtml(u.title)}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                        ${renderYouTubeHdEmbed(ytId, u.title, '16/9')}
                     </div>
                 </div>
             `;
@@ -3015,7 +3046,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
             }
 
-            // 2. Render Long-Form YouTube Broadcasts (Dedicated Full Embed Player)
+            // 2. Render Long-Form YouTube Broadcasts (Dedicated Full Embed Player with HD Facade)
             if (longVideosGrid) {
                 const longs = data.longVideos || [];
                 if (longs.length === 0) {
@@ -3028,7 +3059,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <div class="social-long-video-frame">
                                     ${ytId ? `
                                         <div class="devlog-video-responsive">
-                                            <iframe src="https://www.youtube-nocookie.com/embed/${ytId}" title="${escapeHtml(v.title)}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                                            ${renderYouTubeHdEmbed(ytId, v.title, '16/9')}
                                         </div>
                                     ` : `
                                         <div style="padding: 30px; text-align: center; color: var(--text-dim); font-size: 12px;">
@@ -3054,7 +3085,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            // 3. Render Cross-Platform Short Reels
+            // 3. Render Cross-Platform Short Reels (with HD Facade)
             if (shortsGrid) {
                 const reels = data.shortReels || [];
                 if (reels.length === 0) {
@@ -3072,7 +3103,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <div class="social-reel-preview">
                                 ${ytId ? `
                                     <div class="devlog-video-responsive" style="aspect-ratio: 9/16; max-height: 420px;">
-                                        <iframe src="https://www.youtube-nocookie.com/embed/${ytId}" title="${escapeHtml(reel.title)}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                                        ${renderYouTubeHdEmbed(ytId, reel.title, '9/16')}
                                     </div>
                                 ` : `
                                     <div class="social-reel-no-embed">
@@ -3105,8 +3136,120 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                 }
             }
+
+            // Cache data globally for triggers
+            window._cachedSocialsData = data;
+
+            // 4. Render Homepage Latest Social Transmissions (Side-by-Side)
+            renderHomeSocials(data);
         } catch (e) {
             console.error('Failed to load socials hub:', e);
+        }
+    }
+
+    // Render Homepage Latest Social Media Transmissions
+    function renderHomeSocials(data) {
+        if (!data) return;
+        const section = document.getElementById('homeSocialsSection');
+        if (!section) return;
+
+        const longs = data.longVideos || [];
+        const reels = data.shortReels || [];
+
+        // 1. Long Video Column
+        const latestLong = longs[0];
+        if (latestLong) {
+            const longTitleEl = document.getElementById('homeLatestLongTitle');
+            const longDateEl = document.getElementById('homeLatestLongDate');
+            const longDescEl = document.getElementById('homeLatestLongDesc');
+            const longLinkEl = document.getElementById('homeLatestLongLink');
+            const longPreviewEl = document.getElementById('homeLatestLongPreview');
+
+            if (longTitleEl) longTitleEl.textContent = latestLong.title;
+            if (longDateEl) longDateEl.textContent = latestLong.date || '';
+            if (longDescEl) longDescEl.textContent = latestLong.desc || '';
+            if (longLinkEl) longLinkEl.href = latestLong.youtubeUrl || '#';
+
+            const ytId = extractYouTubeId(latestLong.youtubeUrl);
+            if (longPreviewEl) {
+                if (ytId) {
+                    longPreviewEl.innerHTML = renderYouTubeHdEmbed(ytId, latestLong.title, '16/9');
+                } else {
+                    longPreviewEl.innerHTML = `<div style="padding: 30px; text-align: center; color: var(--text-dim); font-size: 11.5px;">No preview stream.</div>`;
+                }
+            }
+        }
+
+        // 2. Short Reel Column
+        const latestReel = reels[0];
+        if (latestReel) {
+            const shortTitleEl = document.getElementById('homeLatestShortTitle');
+            const shortDateEl = document.getElementById('homeLatestShortDate');
+            const shortDescEl = document.getElementById('homeLatestShortDesc');
+            const shortPreviewEl = document.getElementById('homeLatestShortPreview');
+            const shortActionsEl = document.getElementById('homeLatestShortActions');
+
+            if (shortTitleEl) shortTitleEl.textContent = latestReel.title;
+            if (shortDateEl) shortDateEl.textContent = latestReel.date || '';
+            if (shortDescEl) shortDescEl.textContent = latestReel.desc || '';
+
+            const ytId = extractYouTubeId(latestReel.previewEmbedUrl || (latestReel.links && latestReel.links.youtube));
+            if (shortPreviewEl) {
+                if (ytId) {
+                    shortPreviewEl.innerHTML = renderYouTubeHdEmbed(ytId, latestReel.title, '16/9');
+                } else {
+                    shortPreviewEl.innerHTML = `
+                        <div class="social-reel-no-embed" style="padding: 24px 12px;">
+                            <span style="font-size: 28px; margin-bottom: 6px;">📱</span>
+                            <span style="font-size: 11px; font-weight: bold;">SHORT BROADCAST REEL</span>
+                        </div>
+                    `;
+                }
+            }
+
+            if (shortActionsEl) {
+                const links = latestReel.links || {};
+                const availableCount = (links.youtube ? 1 : 0) + (links.tiktok ? 1 : 0) + (links.instagram ? 1 : 0);
+                if (availableCount > 1) {
+                    shortActionsEl.innerHTML = `
+                        <button type="button" class="btn-pixel" style="font-size: 11px; width: 100%;" onclick="window.triggerPlatformPickerModal('${escapeHtml(latestReel.id)}')">
+                            CHOOSE APP (YOUTUBE / TIKTOK / INSTA) ➔
+                        </button>
+                    `;
+                } else {
+                    const singleUrl = links.youtube || links.tiktok || links.instagram || '#';
+                    const singleLabel = links.youtube ? '🔴 WATCH ON SHORTS' : (links.tiktok ? '🎵 WATCH ON TIKTOK' : '📸 WATCH ON INSTAGRAM');
+                    shortActionsEl.innerHTML = `
+                        <a href="${escapeHtml(singleUrl)}" target="_blank" rel="noopener noreferrer" class="btn-pixel" style="font-size: 11px; width: 100%; text-align: center;">
+                            ${singleLabel} ➔
+                        </a>
+                    `;
+                }
+            }
+        }
+    }
+
+    window.triggerPlatformPickerModal = function(reelId) {
+        if (!window._cachedSocialsData || !window._cachedSocialsData.shortReels) return;
+        const reel = window._cachedSocialsData.shortReels.find(r => r.id === reelId);
+        if (reel) promptOpenReel(reel);
+    };
+
+    // Load Site Dynamic Settings (Marquee Ticker Text)
+    async function loadSiteSettings() {
+        try {
+            const res = await fetch('/api/settings');
+            if (res.ok) {
+                const settings = await res.json();
+                if (settings && settings.marqueeText) {
+                    const marqueeEl = document.getElementById('siteMarqueeText');
+                    if (marqueeEl) {
+                        marqueeEl.textContent = settings.marqueeText;
+                    }
+                }
+            }
+        } catch (e) {
+            console.warn('Could not fetch site settings:', e);
         }
     }
 
@@ -3114,6 +3257,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // INITIALIZATION
     // ========================================================================
     checkAuth();
+    loadSiteSettings();
     loadGames();
     loadReactions();
     loadArt();

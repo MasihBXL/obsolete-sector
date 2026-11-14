@@ -82,6 +82,7 @@
                 <button id="tabArt" class="tab-btn">ART &amp; ASSETS STORE</button>
                 <button id="tabSocials" class="tab-btn">MANAGE SOCIALS &amp; REELS</button>
                 <button id="tabUsers" class="tab-btn">USER ACCOUNTS</button>
+                <button id="tabSettings" class="tab-btn">⚡ MARQUEE &amp; SETTINGS</button>
             </div>
 
             <!-- TAB 1: UPLOAD GAME -->
@@ -643,8 +644,63 @@
                 </div>
             </div>
 
-        </div>
+            <!-- TAB 7: SITE SETTINGS & MARQUEE ANNOUNCEMENT -->
+            <div id="sectionSettings" style="display: none;">
+                <div class="admin-card">
+                    <div class="card-title">
+                        <span>⚡ SCROLLING MARQUEE ANNOUNCEMENT BAR</span>
+                        <span style="font-size: 12px; color: #f59e0b;">TOP TICKER BROADCAST</span>
+                    </div>
 
+                    <p style="font-size: 13px; color: #94a3b8; line-height: 1.5; margin-bottom: 20px;">
+                        Customize the retro scrolling marquee banner that scrolls across the top of all pages in the Obsolete Sector terminal. You can write announcements, patch notes, custom system alerts, or lore transmissions.
+                    </p>
+
+                    <!-- Real-time Live Preview -->
+                    <div style="margin-bottom: 20px;">
+                        <label class="form-label" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                            <span>LIVE PREVIEW:</span>
+                            <span style="font-size: 11px; color: #64748b;">(Displays how it scrolls across the main site)</span>
+                        </label>
+                        <div style="background: #090c10; border: 1px dashed #38bdf8; padding: 12px 16px; border-radius: 4px; overflow: hidden; position: relative;">
+                            <div id="marqueeLivePreview" style="font-family: 'Share Tech Mono', monospace; font-size: 13px; color: #38bdf8; white-space: nowrap; font-weight: bold; letter-spacing: 0.5px;">
+                                ⚡ Loading marquee preview...
+                            </div>
+                        </div>
+                    </div>
+
+                    <form id="marqueeSettingsForm">
+                        <div class="form-group" style="margin-bottom: 16px;">
+                            <label class="form-label" for="adminMarqueeInput">Marquee Ticker Text:</label>
+                            <textarea id="adminMarqueeInput" class="form-textarea" rows="3" style="width: 100%; font-family: 'Share Tech Mono', monospace; font-size: 13px; padding: 10px; background: #0b0e14; color: #f1f5f9; border: 1px solid #334155; border-radius: 4px;" placeholder="e.g. ⚡ Hello, I am MOPTAM // NEW DEMO RELEASED // VISITORS LOGGED: 005,100 // SYSTEM OPTIMAL ⚡" required></textarea>
+                            <div style="font-size: 11px; color: #64748b; margin-top: 6px;">
+                                Pro-tip: Use <code>//</code> as retro dividers and symbols like <code>⚡</code>, <code>🚨</code>, <code>📻</code>, <code>🎮</code> to preserve the cyberdeck terminal feeling.
+                            </div>
+                        </div>
+
+                        <!-- Quick Template Snippets -->
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px;">
+                            <span style="font-size: 11.5px; color: #64748b; align-self: center;">Quick Templates:</span>
+                            <button type="button" class="btn-sm" id="btnTplAnomaly" style="background: #1e293b; color: #94a3b8; border: 1px solid #334155; padding: 4px 10px; font-size: 11px; cursor: pointer;">Anomaly Alert</button>
+                            <button type="button" class="btn-sm" id="btnTplNewRelease" style="background: #1e293b; color: #94a3b8; border: 1px solid #334155; padding: 4px 10px; font-size: 11px; cursor: pointer;">Game Release</button>
+                            <button type="button" class="btn-sm" id="btnTplDevlog" style="background: #1e293b; color: #94a3b8; border: 1px solid #334155; padding: 4px 10px; font-size: 11px; cursor: pointer;">Devlog Update</button>
+                            <button type="button" class="btn-sm" id="btnTplMaintenance" style="background: #1e293b; color: #94a3b8; border: 1px solid #334155; padding: 4px 10px; font-size: 11px; cursor: pointer;">Maintenance</button>
+                        </div>
+
+                        <div style="display: flex; gap: 12px; align-items: center;">
+                            <button type="submit" id="btnSaveMarquee" class="btn-submit" style="flex: 1; padding: 12px; background: #2563eb; color: #fff; font-weight: bold; border: none; border-radius: 4px; cursor: pointer;">
+                                💾 SAVE MARQUEE ANNOUNCEMENT
+                            </button>
+                            <button type="button" id="btnResetMarquee" class="btn-sm" style="padding: 12px 18px; background: #1e293b; color: #ef4444; border: 1px solid #dc2626; border-radius: 4px; cursor: pointer; font-weight: bold;">
+                                ↺ RESET TO DEFAULT
+                            </button>
+                        </div>
+
+                        <div id="marqueeStatusFeedback" style="margin-top: 14px; font-size: 12px; font-weight: bold; min-height: 20px; text-align: center;"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="/js/admin.js"></script>

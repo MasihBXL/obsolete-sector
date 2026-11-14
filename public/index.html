@@ -89,13 +89,13 @@
                                 <span class="sep">...</span>
                                 <a href="#" class="open-terminal-btn">terminal [~]</a>
                             </div>
-                            <div style="font-size: 11.5px; color: var(--text-dim);">ZONE: DIAL-UP 56K &bull; v2.5 &bull; ARCHIVE ACTIVE</div>
+                            <div class="nav-zone-badge">ZONE: DIAL-UP 56K &bull; v2.5 &bull; ARCHIVE ACTIVE</div>
                         </div>
                     </div>
 
                     <!-- Scrolling Warning Marquee -->
                     <div class="marquee-container">
-                        <div class="marquee-text">
+                        <div class="marquee-text" id="siteMarqueeText">
                             ⚡ Hello, I am MOPTAM // PERSONAL CREATIVE HUB &amp; GAMES ARCHIVE // ANOMALY DETECTED // VISITORS LOGGED: 004,924 // TRANSMISSIONS VERIFIED ⚡
                         </div>
                     </div>
@@ -203,6 +203,57 @@
                                     </p>
                                     <div class="xp-task-card-action">
                                         <button type="button" class="btn-pixel xp-btn-action">READ DEVLOGS ➔</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- LATEST SOCIAL TRANSMISSIONS (SIDE-BY-SIDE LONG VIDEO & SHORT REEL) -->
+                        <div class="home-socials-section" id="homeSocialsSection">
+                            <div class="home-socials-header">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="font-size: 16px;">📡</span>
+                                    <span class="home-socials-title">LATEST SOCIAL TRANSMISSIONS &amp; BROADCASTS</span>
+                                </div>
+                                <a href="#socials" class="btn-pixel nav-link-item" data-view="socials" style="font-size: 11px;">VIEW ALL SOCIALS ➔</a>
+                            </div>
+
+                            <div class="home-socials-grid">
+                                <!-- Col 1: Latest Long-Form Documentary / Video -->
+                                <div class="home-social-col home-social-long" id="homeLatestLongCol">
+                                    <div class="home-social-badge-bar">
+                                        <span class="home-social-badge">📺 LATEST LONG VIDEO</span>
+                                        <span id="homeLatestLongDate" class="home-social-date">--</span>
+                                    </div>
+                                    <div id="homeLatestLongPreview" class="home-social-media-frame">
+                                        <!-- Rendered via JS -->
+                                    </div>
+                                    <div class="home-social-details">
+                                        <h4 id="homeLatestLongTitle" class="home-social-heading">Loading documentary...</h4>
+                                        <p id="homeLatestLongDesc" class="home-social-desc"></p>
+                                        <div class="home-social-actions">
+                                            <a id="homeLatestLongLink" href="https://youtube.com/@moptam" target="_blank" rel="noopener noreferrer" class="btn-pixel" style="font-size: 11px;">
+                                                WATCH DIRECTLY ON YOUTUBE ➔
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Col 2: Latest Short Reel -->
+                                <div class="home-social-col home-social-reel" id="homeLatestShortCol">
+                                    <div class="home-social-badge-bar">
+                                        <span class="home-social-badge">📱 LATEST SHORT REEL</span>
+                                        <span id="homeLatestShortDate" class="home-social-date">--</span>
+                                    </div>
+                                    <div id="homeLatestShortPreview" class="home-social-media-frame">
+                                        <!-- Rendered via JS -->
+                                    </div>
+                                    <div class="home-social-details">
+                                        <h4 id="homeLatestShortTitle" class="home-social-heading">Loading reel...</h4>
+                                        <p id="homeLatestShortDesc" class="home-social-desc"></p>
+                                        <div class="home-social-actions" id="homeLatestShortActions">
+                                            <!-- Rendered via JS -->
+                                        </div>
                                     </div>
                                 </div>
                             </div>
