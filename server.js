@@ -684,10 +684,10 @@ function renderOAuthSetupGuide(res, provider, redirectUri) {
     const isGoogle = provider === 'google';
     const isGithub = provider === 'github';
     const isFacebook = provider === 'facebook';
-    const title = isGoogle ? 'Google Cloud Console' : (isGithub ? 'GitHub Developer Settings' : (isFacebook ? 'Meta for Developers (Facebook Login)' : 'Apple Developer Portal'));
-    const docLink = isGoogle ? 'https://console.cloud.google.com/apis/credentials' : (isGithub ? 'https://github.com/settings/developers' : (isFacebook ? 'https://developers.facebook.com/apps/' : 'https://developer.apple.com'));
-    const envKey1 = isGoogle ? 'GOOGLE_CLIENT_ID' : (isGithub ? 'GITHUB_CLIENT_ID' : (isFacebook ? 'FACEBOOK_APP_ID' : 'APPLE_CLIENT_ID'));
-    const envKey2 = isGoogle ? 'GOOGLE_CLIENT_SECRET' : (isGithub ? 'GITHUB_CLIENT_SECRET' : (isFacebook ? 'FACEBOOK_APP_SECRET' : 'APPLE_KEY_ID'));
+    const title = isGoogle ? 'Google Cloud Console' : (isGithub ? 'GitHub Developer Settings' : 'Meta for Developers (Facebook Login)');
+    const docLink = isGoogle ? 'https://console.cloud.google.com/apis/credentials' : (isGithub ? 'https://github.com/settings/developers' : 'https://developers.facebook.com/apps/');
+    const envKey1 = isGoogle ? 'GOOGLE_CLIENT_ID' : (isGithub ? 'GITHUB_CLIENT_ID' : 'FACEBOOK_APP_ID');
+    const envKey2 = isGoogle ? 'GOOGLE_CLIENT_SECRET' : (isGithub ? 'GITHUB_CLIENT_SECRET' : 'FACEBOOK_APP_SECRET');
 
     res.send(`
     <!DOCTYPE html>
@@ -1010,33 +1010,12 @@ app.get('/api/auth/facebook/callback', async (req, res) => {
     }
 });
 
-// 4d. Apple Sign In Route
-app.get('/api/auth/apple', (req, res) => {
-    const APPLE_CLIENT_ID = process.env.APPLE_CLIENT_ID;
-    const redirectUri = `${getAppBaseUrl(req)}/api/auth/apple/callback`;
-
-    if (!APPLE_CLIENT_ID) {
-        return renderOAuthSetupGuide(res, 'apple', redirectUri);
-    }
-
-    const authUrl = `https://appleid.apple.com/auth/authorize?` + new URLSearchParams({
-        client_id: APPLE_CLIENT_ID,
-        redirect_uri: redirectUri,
-        response_type: 'code id_token',
-        scope: 'name email',
-        response_mode: 'form_post'
-    }).toString();
-
-    res.redirect(authUrl);
-});
-
 // Check configured OAuth providers status
 app.get('/api/auth/providers-status', (req, res) => {
     res.json({
         google: !!(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET),
         github: !!(process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET),
         facebook: !!(process.env.FACEBOOK_APP_ID && process.env.FACEBOOK_APP_SECRET),
-        apple: !!process.env.APPLE_CLIENT_ID,
         baseUrl: getAppBaseUrl(req)
     });
 });
@@ -1046,10 +1025,10 @@ app.get('/api/auth/providers-status', (req, res) => {
 app.post('/api/auth/social-check', (req, res) => {
     try {
         const { provider, email, providerId, name } = req.body;
-        const validProviders = ['google', 'apple', 'github', 'facebook'];
+        const validProviders = ['google', 'github', 'facebook'];
 
         if (!provider || !validProviders.includes(provider.toLowerCase())) {
-            return res.status(400).json({ error: 'Valid provider required (Google, GitHub, Apple, or Facebook).' });
+            return res.status(400).json({ error: 'Valid provider required (Google, GitHub, or Facebook).' });
         }
 
         // Check if user already exists by providerId or by verified email
@@ -1108,10 +1087,10 @@ app.post('/api/auth/social-check', (req, res) => {
 app.post('/api/auth/social-complete', (req, res) => {
     try {
         const { provider, email, providerId, username, avatar } = req.body;
-        const validProviders = ['google', 'apple', 'github', 'facebook'];
+        const validProviders = ['google', 'github', 'facebook'];
 
         if (!provider || !validProviders.includes(provider.toLowerCase())) {
-            return res.status(400).json({ error: 'Valid provider required (Google, GitHub, Apple, or Facebook).' });
+            return res.status(400).json({ error: 'Valid provider required (Google, GitHub, or Facebook).' });
         }
 
         if (!username || typeof username !== 'string') {
@@ -1190,10 +1169,10 @@ app.post('/api/auth/social-complete', (req, res) => {
 app.post('/api/auth/social', (req, res) => {
     try {
         const { provider, username, email, providerId } = req.body;
-        const validProviders = ['google', 'apple', 'github', 'facebook'];
+        const validProviders = ['google', 'github', 'facebook'];
 
         if (!provider || !validProviders.includes(provider.toLowerCase())) {
-            return res.status(400).json({ error: 'Valid social provider required (Google, Apple, GitHub, or Facebook).' });
+            return res.status(400).json({ error: 'Valid social provider required (Google, GitHub, or Facebook).' });
         }
 
         if (!username || typeof username !== 'string') {

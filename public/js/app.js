@@ -3247,6 +3247,114 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Tactile Reel Theater Modal Elements & Handlers
+    const reelTheaterModal = document.getElementById('reelTheaterModal');
+    const reelTheaterTitle = document.getElementById('reelTheaterTitle');
+    const reelTheaterPlayerArea = document.getElementById('reelTheaterPlayerArea');
+    const reelTheaterDirectLink = document.getElementById('reelTheaterDirectLink');
+    const reelTheaterClose = document.getElementById('reelTheaterClose');
+    const reelTheaterCloseBtn = document.getElementById('reelTheaterCloseBtn');
+
+    function closeReelTheater() {
+        if (reelTheaterModal) reelTheaterModal.classList.remove('open');
+        if (reelTheaterPlayerArea) reelTheaterPlayerArea.innerHTML = ''; // immediately kill audio/video on close
+    }
+
+    if (reelTheaterClose) reelTheaterClose.addEventListener('click', closeReelTheater);
+    if (reelTheaterCloseBtn) reelTheaterCloseBtn.addEventListener('click', closeReelTheater);
+    if (reelTheaterModal) {
+        reelTheaterModal.addEventListener('click', (e) => {
+            if (e.target === reelTheaterModal) closeReelTheater();
+        });
+    }
+
+    window.openReelTheater = function(reelId) {
+        if (!window._cachedSocialsData || !window._cachedSocialsData.shortReels) return;
+        const reel = window._cachedSocialsData.shortReels.find(r => r.id === reelId);
+        if (!reel || !reelTheaterModal) return;
+
+        if (reelTheaterTitle) {
+            reelTheaterTitle.textContent = `${reel.title || 'MOPTAM SHORT'} // THEATER`;
+        }
+
+        const links = reel.links || {};
+        const directUrl = links.tiktok || links.youtube || links.instagram || reel.previewEmbedUrl || '#';
+        if (reelTheaterDirectLink) {
+            reelTheaterDirectLink.href = directUrl;
+            const platformName = links.tiktok ? 'TIKTOK' : (links.youtube ? 'YOUTUBE' : 'INSTAGRAM');
+            reelTheaterDirectLink.innerHTML = `<span>📱</span> OPEN ON ${platformName} ➔`;
+        }
+
+        if (reelTheaterPlayerArea) {
+            const tiktokId = extractTikTokId(reel.previewEmbedUrl || links.tiktok);
+            if (tiktokId) {
+                reelTheaterPlayerArea.innerHTML = `
+                    <iframe src="https://www.tiktok.com/player/v1/${tiktokId}?embed_from=oembed&music_info=1&description=1&autoplay=1"
+                        title="${escapeHtml(reel.title || 'TikTok Reel')}"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; fullscreen; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen
+                        style="width: 100%; height: 100%; border: 0;"
+                        loading="lazy">
+                    </iframe>
+                `;
+            } else {
+                const ytId = extractYouTubeId(reel.previewEmbedUrl || links.youtube);
+                if (ytId) {
+                    reelTheaterPlayerArea.innerHTML = `
+                        <iframe src="https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&rel=0&modestbranding=1"
+                            title="${escapeHtml(reel.title || 'Short Reel')}"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; fullscreen; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen
+                            style="width: 100%; height: 100%; border: 0;"
+                            loading="lazy">
+                        </iframe>
+                    `;
+                } else {
+                    reelTheaterPlayerArea.innerHTML = `<div style="padding: 40px; color: #fff;">Stream unavailable.</div>`;
+                }
+            }
+        }
+
+        reelTheaterModal.classList.add('open');
+        if (window.soundEngine) window.soundEngine.playSelect();
+    };
+
+    function renderHomeShortFacade(reel) {
+        if (!reel) return '';
+        const safeTitle = escapeHtml(reel.title || 'Tactile Short Broadcast');
+        const isTikTok = !!(reel.links && reel.links.tiktok) || (reel.previewEmbedUrl && reel.previewEmbedUrl.includes('tiktok'));
+        const isYouTube = !!(reel.links && reel.links.youtube) || (reel.previewEmbedUrl && reel.previewEmbedUrl.includes('youtube'));
+        const badgeText = isTikTok ? 'TIKTOK REEL' : (isYouTube ? 'YOUTUBE SHORTS' : 'TACTILE REEL');
+        const badgeIcon = isTikTok ? '/assets/badges/social_tiktok.svg' : (isYouTube ? '/assets/badges/social_youtube.svg' : '/assets/badges/badge_res.svg');
+
+        return `
+            <div class="home-reel-facade" style="aspect-ratio: 16/9;" onclick="window.openReelTheater('${escapeHtml(reel.id)}')" title="Click to Watch in Theater">
+                <div class="home-reel-backdrop">
+                    <div class="home-reel-scanlines"></div>
+                    <div class="home-reel-content">
+                        <div class="home-reel-top-row">
+                            <span class="home-reel-rec-pill">● REC // TACTILE REEL</span>
+                            <div class="home-reel-brand-pill">
+                                <img src="${badgeIcon}" class="home-reel-badge-img" alt="${badgeText}">
+                                <span>${badgeText}</span>
+                            </div>
+                        </div>
+                        <div class="home-reel-center-play">
+                            <div class="home-reel-play-btn" title="Click to Launch Theater">
+                                <span class="home-reel-play-triangle">▶</span>
+                            </div>
+                            <span class="home-reel-play-caption">WATCH IN THEATER</span>
+                        </div>
+                        <div class="home-reel-bottom-row">
+                            <span class="home-reel-frequency">FREQ: 89.43 MHz</span>
+                            <span class="home-reel-res-badge">9:16 VERTICAL HD</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
     // Render Homepage Latest Social Media Transmissions
     function renderHomeSocials(data) {
         if (!data) return;
@@ -3294,27 +3402,27 @@ document.addEventListener('DOMContentLoaded', () => {
             if (shortDescEl) shortDescEl.textContent = latestReel.desc || '';
 
             if (shortPreviewEl) {
-                shortPreviewEl.innerHTML = renderReelEmbed(latestReel, true);
+                shortPreviewEl.innerHTML = renderHomeShortFacade(latestReel);
             }
 
             if (shortActionsEl) {
                 const links = latestReel.links || {};
-                const availableCount = (links.youtube ? 1 : 0) + (links.tiktok ? 1 : 0) + (links.instagram ? 1 : 0);
-                if (availableCount > 1) {
-                    shortActionsEl.innerHTML = `
-                        <button type="button" class="btn-pixel" style="font-size: 11px; width: 100%;" onclick="window.triggerPlatformPickerModal('${escapeHtml(latestReel.id)}')">
-                            CHOOSE APP (YOUTUBE / TIKTOK / INSTA) ➔
+                const directUrl = links.tiktok || links.youtube || links.instagram || '#';
+                const isTikTok = !!links.tiktok;
+                const platformIcon = isTikTok ? '/assets/badges/social_tiktok.svg' : (links.youtube ? '/assets/badges/social_youtube.svg' : '/assets/badges/social_instagram.svg');
+                const platformLabel = isTikTok ? 'OPEN TIKTOK ➔' : (links.youtube ? 'OPEN SHORTS ➔' : 'OPEN REELS ➔');
+
+                shortActionsEl.innerHTML = `
+                    <div style="display: flex; gap: 8px; width: 100%;">
+                        <button type="button" class="btn-pixel" style="flex: 1.2; font-size: 11px; justify-content: center; display: inline-flex; align-items: center; gap: 6px;" onclick="window.openReelTheater('${escapeHtml(latestReel.id)}')">
+                            <span>▶</span> PLAY IN THEATER
                         </button>
-                    `;
-                } else {
-                    const singleUrl = links.youtube || links.tiktok || links.instagram || '#';
-                    const singleLabel = links.youtube ? '🔴 WATCH ON SHORTS' : (links.tiktok ? '🎵 WATCH ON TIKTOK' : '📸 WATCH ON INSTAGRAM');
-                    shortActionsEl.innerHTML = `
-                        <a href="${escapeHtml(singleUrl)}" target="_blank" rel="noopener noreferrer" class="btn-pixel" style="font-size: 11px; width: 100%; text-align: center;">
-                            ${singleLabel} ➔
+                        <a href="${escapeHtml(directUrl)}" target="_blank" rel="noopener noreferrer" class="btn-pixel" style="flex: 1; font-size: 11px; justify-content: center; display: inline-flex; align-items: center; gap: 6px;" title="Watch directly on external platform">
+                            <img src="${platformIcon}" style="width: 14px; height: 14px; object-fit: contain;" alt="App">
+                            <span>${platformLabel}</span>
                         </a>
-                    `;
-                }
+                    </div>
+                `;
             }
         }
     }
