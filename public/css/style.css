@@ -103,9 +103,9 @@
     --active-row-bg: #000080;
     --active-row-text: #ffffff;
 
-    /* WIN98 DEDICATED AUTHENTIC DEFAULT MICROSOFT FONT STACK */
-    --font-title: 'MS Sans Serif', Tahoma, 'Segoe UI', Arial, sans-serif;
-    --font-mono: 'Lucida Console', 'Courier New', monospace;
+    /* WIN98 RETRO MONOSPACE & PIXEL FONT STACK */
+    --font-title: 'VT323', monospace;
+    --font-mono: 'Share Tech Mono', monospace;
     --doc-radius: 0;
 }
 
@@ -128,10 +128,9 @@
     padding: 3px 6px;
     background: linear-gradient(90deg, #000080 0%, #1084d0 100%) !important;
     color: #ffffff !important;
-    font-family: 'MS Sans Serif', Tahoma, 'Segoe UI', Arial, sans-serif !important;
-    font-size: 11.5px !important;
-    font-weight: bold !important;
-    letter-spacing: 0;
+    font-family: var(--font-title) !important;
+    font-size: 16px !important;
+    letter-spacing: 0.5px;
     text-shadow: none;
     white-space: nowrap;
     overflow: hidden;
@@ -168,9 +167,8 @@
 }
 
 [data-theme="win98"] .headertext {
-    font-family: 'MS Sans Serif', Tahoma, 'Segoe UI', Arial, sans-serif !important;
-    font-size: 20px !important;
-    font-weight: bold !important;
+    font-family: var(--font-title) !important;
+    font-size: 26px !important;
     color: #000080 !important;
     letter-spacing: 0 !important;
     text-transform: none !important;
@@ -179,9 +177,8 @@
 }
 
 [data-theme="win98"] .page-main-title {
-    font-family: 'MS Sans Serif', Tahoma, 'Segoe UI', Arial, sans-serif !important;
-    font-size: 18px !important;
-    font-weight: bold !important;
+    font-family: var(--font-title) !important;
+    font-size: 24px !important;
     color: #000080 !important;
     letter-spacing: 0 !important;
     text-transform: none !important;
@@ -191,9 +188,8 @@
 }
 
 [data-theme="win98"] .lr h2 {
-    font-family: 'MS Sans Serif', Tahoma, 'Segoe UI', Arial, sans-serif !important;
-    font-size: 14px !important;
-    font-weight: bold !important;
+    font-family: var(--font-title) !important;
+    font-size: 20px !important;
     color: #000080 !important;
     letter-spacing: 0 !important;
     white-space: nowrap;
@@ -201,9 +197,8 @@
 
 [data-theme="win98"] .cat-title,
 [data-theme="win98"] .album-title {
-    font-family: 'MS Sans Serif', Tahoma, 'Segoe UI', Arial, sans-serif !important;
-    font-size: 13px !important;
-    font-weight: bold !important;
+    font-family: var(--font-title) !important;
+    font-size: 19px !important;
     color: #000080 !important;
     letter-spacing: 0 !important;
     white-space: nowrap;
@@ -212,9 +207,8 @@
 }
 
 [data-theme="win98"] .hero-moptam-name {
-    font-family: 'MS Sans Serif', Tahoma, 'Segoe UI', Arial, sans-serif !important;
-    font-size: 20px !important;
-    font-weight: bold !important;
+    font-family: var(--font-title) !important;
+    font-size: 28px !important;
     color: #000080 !important;
     letter-spacing: 0 !important;
     text-transform: none !important;
@@ -222,9 +216,8 @@
 }
 
 [data-theme="win98"] .latest-update-title {
-    font-family: 'MS Sans Serif', Tahoma, 'Segoe UI', Arial, sans-serif !important;
-    font-size: 13.5px !important;
-    font-weight: bold !important;
+    font-family: var(--font-title) !important;
+    font-size: 20px !important;
     color: #000080 !important;
     letter-spacing: 0 !important;
     white-space: nowrap;
@@ -233,9 +226,8 @@
 }
 
 [data-theme="win98"] .xp-task-card-title {
-    font-family: 'MS Sans Serif', Tahoma, 'Segoe UI', Arial, sans-serif !important;
-    font-size: 11.5px !important;
-    font-weight: bold !important;
+    font-family: var(--font-title) !important;
+    font-size: 17px !important;
     letter-spacing: 0 !important;
     white-space: nowrap;
 }
@@ -247,7 +239,7 @@
     background: #c0c0c0 !important;
     color: #000000 !important;
     box-shadow: 1px 1px 0 #000000 !important;
-    font-family: 'MS Sans Serif', Tahoma, 'Segoe UI', Arial, sans-serif !important;
+    font-family: var(--font-mono) !important;
     font-size: 11px !important;
     font-weight: bold !important;
 }
@@ -1864,8 +1856,8 @@ html[data-theme="dark"] body {
     border-radius: 0 !important;
 }
 [data-theme="win98"] .hero-moptam-name {
-    font-family: 'MS Sans Serif', Tahoma, 'Segoe UI', Arial, sans-serif !important;
-    font-size: 22px !important;
+    font-family: var(--font-title) !important;
+    font-size: 28px !important;
     font-weight: bold !important;
     color: #000080 !important;
     letter-spacing: 0 !important;
@@ -1874,8 +1866,8 @@ html[data-theme="dark"] body {
 }
 [data-theme="win98"] .hero-moptam-tagline {
     color: #000000 !important;
-    font-family: 'MS Sans Serif', Tahoma, 'Segoe UI', Arial, sans-serif !important;
-    font-size: 11.5px !important;
+    font-family: var(--font-mono) !important;
+    font-size: 12px !important;
     line-height: 1.5 !important;
 }
 [data-theme="win98"] .hero-stats-strip {
@@ -1889,7 +1881,7 @@ html[data-theme="dark"] body {
     border: 2px solid !important;
     border-color: #ffffff #808080 #808080 #ffffff !important;
     color: #000000 !important;
-    font-family: 'MS Sans Serif', Tahoma, 'Segoe UI', Arial, sans-serif !important;
+    font-family: var(--font-mono) !important;
     font-size: 11px !important;
     font-weight: bold !important;
     box-shadow: 1px 1px 0 #000000 !important;
@@ -1916,8 +1908,8 @@ html[data-theme="dark"] body {
     border-radius: 0 !important;
 }
 [data-theme="win98"] .xp-task-card-title {
-    font-size: 11.5px !important;
-    font-family: 'MS Sans Serif', Tahoma, 'Segoe UI', Arial, sans-serif !important;
+    font-size: 17px !important;
+    font-family: var(--font-title) !important;
     font-weight: bold !important;
     letter-spacing: 0 !important;
     text-shadow: none !important;
@@ -1947,8 +1939,8 @@ html[data-theme="dark"] body {
 }
 [data-theme="win98"] .xp-task-card-desc {
     color: #000000 !important;
-    font-family: 'MS Sans Serif', Tahoma, 'Segoe UI', Arial, sans-serif !important;
-    font-size: 11px !important;
+    font-family: var(--font-mono) !important;
+    font-size: 12px !important;
     line-height: 1.45 !important;
 }
 [data-theme="win98"] .xp-btn-action {
@@ -1958,7 +1950,7 @@ html[data-theme="dark"] body {
     border-radius: 0 !important;
     color: #000000 !important;
     box-shadow: 1px 1px 0 #000000 !important;
-    font-family: 'MS Sans Serif', Tahoma, 'Segoe UI', Arial, sans-serif !important;
+    font-family: var(--font-mono) !important;
     font-size: 11px !important;
     font-weight: bold !important;
     padding: 3px 12px !important;
@@ -1994,11 +1986,12 @@ html[data-theme="dark"] body {
     color: #ffffff !important;
     font-size: 9.5px !important;
     border-radius: 0 !important;
+    font-family: var(--font-mono) !important;
 }
 [data-theme="win98"] .latest-update-title {
     color: #000080 !important;
-    font-family: 'MS Sans Serif', Tahoma, 'Segoe UI', Arial, sans-serif !important;
-    font-size: 14px !important;
+    font-family: var(--font-title) !important;
+    font-size: 20px !important;
     font-weight: bold !important;
     margin: 8px 0 6px 0 !important;
 }
@@ -2009,8 +2002,8 @@ html[data-theme="dark"] body {
     box-shadow: inset 1px 1px 0 #000000 !important;
     padding: 10px 12px !important;
     color: #000000 !important;
-    font-family: 'MS Sans Serif', Tahoma, 'Segoe UI', Arial, sans-serif !important;
-    font-size: 11.5px !important;
+    font-family: var(--font-mono) !important;
+    font-size: 12px !important;
     line-height: 1.5 !important;
     margin: 6px 0 !important;
 }
@@ -3107,7 +3100,7 @@ html[data-theme="dark"] body {
 }
 
 [data-theme="win98"] .player-track-title {
-    font-size: 13px;
+    font-size: 22px;
 }
 
 .player-track-artist {
@@ -4348,8 +4341,8 @@ html[data-theme="dark"] body {
     color: #000000 !important;
     border-radius: 0 !important;
     box-shadow: 1px 1px 0 #000000 !important;
-    font-family: 'Tahoma', sans-serif !important;
-    font-size: 9.5px !important;
+    font-family: var(--font-mono) !important;
+    font-size: 10px !important;
     font-weight: bold !important;
 }
 
@@ -5689,8 +5682,8 @@ html[data-theme="dark"] body {
     border-radius: 0 !important;
 }
 [data-theme="win98"] .home-socials-title {
-    font-family: 'MS Sans Serif', Tahoma, 'Segoe UI', Arial, sans-serif !important;
-    font-size: 16px !important;
+    font-family: var(--font-title) !important;
+    font-size: 22px !important;
     color: #000080 !important;
 }
 [data-theme="win98"] .home-social-col {
@@ -5708,8 +5701,8 @@ html[data-theme="dark"] body {
     color: #ffffff !important;
 }
 [data-theme="win98"] .home-social-heading {
-    font-family: 'MS Sans Serif', Tahoma, 'Segoe UI', Arial, sans-serif !important;
-    font-size: 15px !important;
+    font-family: var(--font-title) !important;
+    font-size: 18px !important;
     color: #000080 !important;
 }
 
