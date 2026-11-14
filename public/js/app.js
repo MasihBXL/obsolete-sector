@@ -323,7 +323,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // ========================================================================
 
     const themes = ['xp-luna', 'win98', 'backrooms', 'dark', 'green', 'amber', 'blood'];
-    const savedTheme = localStorage.getItem('crt_theme') || 'xp-luna';
+    const urlParams = new URLSearchParams(window.location.search);
+    const savedTheme = urlParams.get('theme') || localStorage.getItem('crt_theme') || 'xp-luna';
     setTheme(savedTheme);
 
     const crtEnabled = localStorage.getItem('crt_scanlines') !== 'false';
@@ -2519,15 +2520,15 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <span style="font-size: 11px; color: var(--text-dim); font-weight: bold;">${u.date}</span>
                             </div>
 
-                            <!-- Subtle Random Spotlight Comment -->
-                            <div class="devlog-spotlight-box" data-devlog-id="${u.id}">
-                                ${renderDevlogSpotlightHtml(u.id)}
-                            </div>
-
                             <div style="font-size: 12.5px; line-height: 1.6; color: var(--text-primary); white-space: pre-wrap;">${escapeHtml(u.body)}</div>
 
                             <!-- Attached Media & Social Channels -->
                             ${renderDevlogMediaHtml(u)}
+
+                            <!-- Subtle Random Spotlight Comment (Positioned below content text) -->
+                            <div class="devlog-spotlight-box" data-devlog-id="${u.id}">
+                                ${renderDevlogSpotlightHtml(u.id)}
+                            </div>
 
                             <!-- Devlog Actions Bar (Reactions + Comments Toggle) -->
                             <div class="devlog-actions-bar">

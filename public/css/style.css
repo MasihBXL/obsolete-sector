@@ -103,19 +103,19 @@
     --active-row-bg: #000080;
     --active-row-text: #ffffff;
 
-    /* WIN98 DEDICATED FONT STACK (Clean single-line headings) */
-    --font-title: 'VT323', monospace;
-    --font-mono: 'Share Tech Mono', monospace;
+    /* WIN98 DEDICATED AUTHENTIC FONT STACK */
+    --font-title: 'Tahoma', 'MS Sans Serif', 'Segoe UI', Arial, sans-serif;
+    --font-mono: 'Lucida Console', 'Courier New', monospace;
     --doc-radius: 0;
 }
 
 /* Windows 98 Specific Overrides */
 [data-theme="win98"] .doc {
     border-radius: 0 !important;
-    border: 2px solid !important;
-    border-color: #ffffff #808080 #808080 #ffffff !important;
+    border: 3px solid !important;
+    border-color: #dfdfdf #000000 #000000 #dfdfdf !important;
     background: #c0c0c0 !important;
-    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.4) !important;
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5) !important;
 }
 
 [data-theme="win98"] .doccontents {
@@ -128,8 +128,9 @@
     padding: 3px 6px;
     background: linear-gradient(90deg, #000080 0%, #1084d0 100%) !important;
     color: #ffffff !important;
-    font-family: var(--font-title);
-    font-size: 15px;
+    font-family: 'Tahoma', 'MS Sans Serif', sans-serif !important;
+    font-size: 11.5px !important;
+    font-weight: bold !important;
     letter-spacing: 0;
     text-shadow: none;
     white-space: nowrap;
@@ -138,80 +139,104 @@
 }
 
 [data-theme="win98"] .xp-ctrl-btn {
-    background: #d4d0c8 !important;
+    background: #c0c0c0 !important;
     color: #000000 !important;
     border: 2px solid !important;
     border-color: #ffffff #808080 #808080 #ffffff !important;
     border-radius: 0 !important;
-    box-shadow: none !important;
-    width: 17px;
-    height: 15px;
-    font-size: 10px;
+    box-shadow: 1px 1px 0 #000000 !important;
+    width: 16px;
+    height: 14px;
+    font-size: 9px;
     font-weight: bold;
+    font-family: sans-serif !important;
+    line-height: 1;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 [data-theme="win98"] .xp-btn-close {
-    background: #d4d0c8 !important;
+    background: #c0c0c0 !important;
     color: #000000 !important;
 }
 
 [data-theme="win98"] .xp-ctrl-btn:active {
     border-color: #808080 #ffffff #ffffff #808080 !important;
+    box-shadow: none !important;
 }
 
 [data-theme="win98"] .headertext {
-    font-family: var(--font-title);
-    font-size: 22px;
-    color: #000080;
-    letter-spacing: 0;
+    font-family: 'Tahoma', 'MS Sans Serif', sans-serif !important;
+    font-size: 20px !important;
+    font-weight: bold !important;
+    color: #000080 !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+    text-shadow: none !important;
     white-space: nowrap;
 }
 
 [data-theme="win98"] .page-main-title {
-    font-family: var(--font-title);
-    font-size: 22px;
-    letter-spacing: 0;
+    font-family: 'Tahoma', 'MS Sans Serif', sans-serif !important;
+    font-size: 18px !important;
+    font-weight: bold !important;
+    color: #000080 !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
 [data-theme="win98"] .lr h2 {
-    font-family: var(--font-title);
-    font-size: 20px;
-    color: #000080;
-    letter-spacing: 0;
+    font-family: 'Tahoma', 'MS Sans Serif', sans-serif !important;
+    font-size: 14px !important;
+    font-weight: bold !important;
+    color: #000080 !important;
+    letter-spacing: 0 !important;
     white-space: nowrap;
 }
 
 [data-theme="win98"] .cat-title,
 [data-theme="win98"] .album-title {
-    font-family: var(--font-title);
-    font-size: 18px;
-    color: #000080;
-    letter-spacing: 0;
+    font-family: 'Tahoma', 'MS Sans Serif', sans-serif !important;
+    font-size: 13px !important;
+    font-weight: bold !important;
+    color: #000080 !important;
+    letter-spacing: 0 !important;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
 [data-theme="win98"] .hero-moptam-name {
-    font-size: 24px;
-    letter-spacing: 0;
+    font-family: 'Tahoma', 'MS Sans Serif', sans-serif !important;
+    font-size: 20px !important;
+    font-weight: bold !important;
+    color: #000080 !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
     white-space: nowrap;
 }
 
 [data-theme="win98"] .latest-update-title {
-    font-size: 15px;
-    letter-spacing: 0;
+    font-family: 'Tahoma', 'MS Sans Serif', sans-serif !important;
+    font-size: 13.5px !important;
+    font-weight: bold !important;
+    color: #000080 !important;
+    letter-spacing: 0 !important;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
 [data-theme="win98"] .xp-task-card-title {
-    font-size: 15px;
-    letter-spacing: 0;
+    font-family: 'Tahoma', 'MS Sans Serif', sans-serif !important;
+    font-size: 11.5px !important;
+    font-weight: bold !important;
+    letter-spacing: 0 !important;
     white-space: nowrap;
 }
 
@@ -219,8 +244,21 @@
     border-radius: 0 !important;
     border: 2px solid !important;
     border-color: #ffffff #808080 #808080 #ffffff !important;
-    background: #d4d0c8 !important;
+    background: #c0c0c0 !important;
     color: #000000 !important;
+    box-shadow: 1px 1px 0 #000000 !important;
+    font-family: 'Tahoma', 'MS Sans Serif', sans-serif !important;
+    font-size: 11px !important;
+    font-weight: bold !important;
+}
+
+[data-theme="win98"] .btn-pixel:hover {
+    background: #d4d0c8 !important;
+    border-color: #ffffff #808080 #808080 #ffffff !important;
+}
+
+[data-theme="win98"] .btn-pixel:active {
+    border-color: #808080 #ffffff #ffffff #808080 !important;
     box-shadow: none !important;
 }
 
@@ -496,52 +534,52 @@
    Extracted from https://backrooms-wiki.wikidot.com
    ========================================================================== */
 [data-theme="backrooms"] {
-    --bg-page: #3c382a;              /* --dark-gray-monochrome: 60, 56, 42 */
-    --xp-bliss-grad: linear-gradient(180deg, #262319 0%, #3c382a 40%, #4d4336 80%, #7a6d52 100%);
-    --banner-bg: rgba(31, 28, 20, 0.4);
-    --banner-dot: radial-gradient(#7a6d52 1px, transparent 1px);
-    --bg-doc: #ede9df;               /* --pale-gray-monochrome: 237, 233, 223 (damp wallpaper) */
-    --bg-surface: #fcfcfc;           /* --white-monochrome: 252, 252, 252 */
-    --bg-card: #e5e0d3;
-    --bg-card-inner: #fcfcfc;
-    --border-color: #a5a09b;         /* --light-gray-monochrome: 165, 160, 155 */
-    --border-dark: #7a6d52;          /* --dark-accent: 122, 109, 82 */
-    --border-subtle: #dcd7d2;
+    --bg-page: #231f15;              /* Dark liminal backing */
+    --xp-bliss-grad: url('/assets/images/backrooms_wallpaper.jpg') no-repeat center center / cover;
+    --banner-bg: rgba(35, 30, 18, 0.65);
+    --banner-dot: radial-gradient(#6b5d38 1px, transparent 1px);
+    --bg-doc: #ede5cc;               /* Liminal damp aged wallpaper tone */
+    --bg-surface: #fdfaf0;
+    --bg-card: #e4daba;              /* Distinct Manila document card */
+    --bg-card-inner: #fdfaf0;
+    --border-color: #8f805a;         /* High-contrast liminal border */
+    --border-dark: #5e502c;
+    --border-subtle: #b8aa84;
 
-    --xp-titlebar-bg: linear-gradient(180deg, #a19370 0%, #7a6d52 100%); /* --gradient-header */
-    --xp-titlebar-text: #fcfcfc;
+    --xp-titlebar-bg: linear-gradient(180deg, #6e5c33 0%, #473a1c 100%);
+    --xp-titlebar-text: #fdfaf0;
 
-    --xp-taskbar-bg: linear-gradient(180deg, #7a6d52 0%, #4d4336 100%);
-    --xp-start-bg: linear-gradient(180deg, #a19370 0%, #7a6d52 100%);
+    --xp-taskbar-bg: linear-gradient(180deg, #574825 0%, #362c14 100%);
+    --xp-start-bg: linear-gradient(180deg, #6e5c33 0%, #473a1c 100%);
 
-    --text-primary: #1f1c14;         /* --black-monochrome: 31, 28, 20 */
-    --text-muted: #4d4336;           /* --gray-monochrome: 77, 67, 54 */
-    --text-dim: #7a6d52;             /* --medium-accent: 122, 109, 82 */
+    --text-primary: #1c180e;         /* High-contrast dark ink */
+    --text-muted: #4f4327;
+    --text-dim: #75653e;
 
-    --accent: #e61744;               /* --pale-accent: 230, 23, 68 (Level Danger Red) */
-    --accent-glow: rgba(230, 23, 68, 0.35);
-    --link-color: #b8530b;           /* --alt-accent: 221, 102, 17 (Backrooms Amber-Orange) */
-    --link-hover: #e61744;
+    --accent: #9c5e18;               /* WARM LIMINAL AMBER (NOT RED!) */
+    --accent-glow: rgba(156, 94, 24, 0.4);
+    --link-color: #874909;
+    --link-hover: #b86d1a;
 
-    --marquee-bg: #ede9df;
-    --marquee-border: #a5a09b;
-    --marquee-text: #4d4336;
+    --marquee-bg: #dfd4b0;
+    --marquee-border: #8f805a;
+    --marquee-text: #4a3e20;
 
-    --btn-bg: linear-gradient(180deg, #fcfcfc 0%, #ede9df 50%, #dcd7d2 100%);
-    --btn-border: #a5a09b;
-    --btn-text: #1f1c14;
-    --btn-hover-bg: #dfd9cb;
-    --btn-hover-border: #7a6d52;
-    --btn-hover-text: #b8530b;
-    --btn-accent-bg: linear-gradient(180deg, #e61744 0%, #b31032 60%, #75051c 100%);
-    --btn-accent-border: #590415;
+    --btn-bg: linear-gradient(180deg, #fdfaf0 0%, #e8dfc5 50%, #dcd0ae 100%);
+    --btn-border: #8f805a;
+    --btn-text: #1c180e;
+    --btn-hover-bg: #d9cca6;
+    --btn-hover-border: #5e502c;
+    --btn-hover-text: #874909;
+    --btn-accent-bg: linear-gradient(180deg, #a66a1e 0%, #7d490c 100%);
+    --btn-accent-border: #4d2b04;
 
-    --active-row-bg: #7a6d52;
-    --active-row-text: #fcfcfc;
+    --active-row-bg: #6e5c33;
+    --active-row-text: #fdfaf0;
 
     --font-title: 'VT323', monospace;
     --font-mono: 'Share Tech Mono', monospace;
-    --doc-radius: 6px 6px 0 0;
+    --doc-radius: 4px 4px 0 0;
 }
 
 [data-theme="backrooms"] .banner {
@@ -562,8 +600,8 @@
 }
 
 [data-theme="backrooms"] .btn-pixel-accent {
-    background: linear-gradient(180deg, #e61744 0%, #b31032 60%, #75051c 100%);
-    border-color: #590415;
+    background: linear-gradient(180deg, #b86d1a 0%, #8c4e09 100%);
+    border-color: #522d05;
     color: #ffffff !important;
 }
 
@@ -609,7 +647,8 @@ html[data-theme="blood"] body {
     background: #0c0101 !important;
 }
 html[data-theme="backrooms"] body {
-    background: #3c382a !important;
+    background: #231f15 url('/assets/images/backrooms_wallpaper.jpg') repeat fixed center top !important;
+    background-size: cover !important;
 }
 html[data-theme="dark"] body {
     background: #000000 !important;
@@ -1799,35 +1838,172 @@ html[data-theme="dark"] body {
     font-family: var(--font-pixel);
     font-size: 10px;
 }
-[data-theme="win98"] .xp-task-card:hover .xp-btn-action {
-    background: #d4d0c8;
-    border-color: #ffffff;
-    color: #000000;
-    box-shadow: none;
+/* 1. WINDOWS 98 AUTHENTIC 3D DESKTOP & WEB STYLING (High Contrast, Deep Bevels) */
+[data-theme="win98"] .home-hero-box {
+    background: #ffffff !important;
+    border: 2px solid !important;
+    border-color: #808080 #ffffff #ffffff #808080 !important;
+    box-shadow: inset 1px 1px 0 #000000 !important;
+    padding: 16px 18px !important;
+    border-radius: 0 !important;
 }
-[data-theme="win98"] .latest-update-card {
-    background: #c0c0c0;
-    border: 2px outset #ffffff;
-    box-shadow: none;
+[data-theme="win98"] .hero-moptam-name {
+    font-family: 'Tahoma', 'MS Sans Serif', sans-serif !important;
+    font-size: 22px !important;
+    font-weight: bold !important;
+    color: #000080 !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+    margin-bottom: 8px !important;
 }
-[data-theme="win98"] .latest-update-badge {
-    background: #000080;
-    border-radius: 0;
+[data-theme="win98"] .hero-moptam-tagline {
+    color: #000000 !important;
+    font-family: 'Tahoma', 'MS Sans Serif', sans-serif !important;
+    font-size: 11.5px !important;
+    line-height: 1.5 !important;
 }
-[data-theme="win98"] .latest-update-title {
-    color: #000080;
-    font-size: 13px;
+[data-theme="win98"] .hero-stats-strip {
+    border-top: 2px groove #ffffff !important;
+    margin-top: 12px !important;
+    padding-top: 10px !important;
+    gap: 8px !important;
 }
-[data-theme="win98"] .latest-update-excerpt {
-    color: #000000;
+[data-theme="win98"] .hero-stat-pill {
+    background: #c0c0c0 !important;
+    border: 2px solid !important;
+    border-color: #ffffff #808080 #808080 #ffffff !important;
+    color: #000000 !important;
+    font-family: 'Tahoma', 'MS Sans Serif', sans-serif !important;
+    font-size: 11px !important;
+    font-weight: bold !important;
+    box-shadow: 1px 1px 0 #000000 !important;
+    border-radius: 0 !important;
 }
 
-/* 2. CRT & Other Themes (Dark CRT, Phosphor Green, Amber, Blood Noir, Backrooms) */
+[data-theme="win98"] .xp-task-card {
+    background: #c0c0c0 !important;
+    border: 2px solid !important;
+    border-color: #ffffff #808080 #808080 #ffffff !important;
+    box-shadow: 1px 1px 0 #000000 !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+}
+[data-theme="win98"] .xp-task-card:hover {
+    transform: none !important;
+    box-shadow: 1px 1px 0 #000000 !important;
+}
+[data-theme="win98"] .xp-task-card-header {
+    background: linear-gradient(90deg, #000080 0%, #1084d0 100%) !important;
+    border-bottom: 2px solid #808080 !important;
+    padding: 4px 8px !important;
+    border-radius: 0 !important;
+}
+[data-theme="win98"] .xp-task-card-title {
+    font-size: 11.5px !important;
+    font-family: 'Tahoma', 'MS Sans Serif', sans-serif !important;
+    font-weight: bold !important;
+    letter-spacing: 0 !important;
+    text-shadow: none !important;
+    color: #ffffff !important;
+}
+[data-theme="win98"] .xp-task-chevron {
+    background: #c0c0c0 !important;
+    color: #000000 !important;
+    border: 2px solid !important;
+    border-color: #ffffff #808080 #808080 #ffffff !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    width: 15px !important;
+    height: 15px !important;
+    font-size: 9px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+[data-theme="win98"] .xp-task-card-body {
+    background: #ffffff !important;
+    border: 2px solid !important;
+    border-color: #808080 #ffffff #ffffff #808080 !important;
+    box-shadow: inset 1px 1px 0 #000000 !important;
+    margin: 4px !important;
+    padding: 10px 12px !important;
+}
+[data-theme="win98"] .xp-task-card-desc {
+    color: #000000 !important;
+    font-family: 'Tahoma', 'MS Sans Serif', sans-serif !important;
+    font-size: 11px !important;
+    line-height: 1.45 !important;
+}
+[data-theme="win98"] .xp-btn-action {
+    background: #c0c0c0 !important;
+    border: 2px solid !important;
+    border-color: #ffffff #808080 #808080 #ffffff !important;
+    border-radius: 0 !important;
+    color: #000000 !important;
+    box-shadow: 1px 1px 0 #000000 !important;
+    font-family: 'Tahoma', 'MS Sans Serif', sans-serif !important;
+    font-size: 11px !important;
+    font-weight: bold !important;
+    padding: 3px 12px !important;
+}
+[data-theme="win98"] .xp-task-card:hover .xp-btn-action {
+    background: #d4d0c8 !important;
+    border-color: #ffffff #808080 #808080 #ffffff !important;
+    color: #000000 !important;
+}
+[data-theme="win98"] .xp-btn-action:active {
+    border-color: #808080 #ffffff #ffffff #808080 !important;
+    box-shadow: none !important;
+    padding: 4px 11px 2px 13px !important;
+}
+
+[data-theme="win98"] .latest-update-card {
+    background: #c0c0c0 !important;
+    border: 2px solid !important;
+    border-color: #ffffff #808080 #808080 #ffffff !important;
+    box-shadow: 1px 1px 0 #000000 !important;
+    border-radius: 0 !important;
+    padding: 6px !important;
+}
+[data-theme="win98"] .latest-update-header {
+    background: linear-gradient(90deg, #000080 0%, #1084d0 100%) !important;
+    padding: 4px 8px !important;
+    margin-bottom: 6px !important;
+    border-bottom: 1px solid #808080 !important;
+}
+[data-theme="win98"] .latest-update-badge {
+    background: #000080 !important;
+    border: 1px solid #ffffff !important;
+    color: #ffffff !important;
+    font-size: 9.5px !important;
+    border-radius: 0 !important;
+}
+[data-theme="win98"] .latest-update-title {
+    color: #000080 !important;
+    font-family: 'Tahoma', 'MS Sans Serif', sans-serif !important;
+    font-size: 14px !important;
+    font-weight: bold !important;
+    margin: 8px 0 6px 0 !important;
+}
+[data-theme="win98"] .latest-update-excerpt {
+    background: #ffffff !important;
+    border: 2px solid !important;
+    border-color: #808080 #ffffff #ffffff #808080 !important;
+    box-shadow: inset 1px 1px 0 #000000 !important;
+    padding: 10px 12px !important;
+    color: #000000 !important;
+    font-family: 'Tahoma', 'MS Sans Serif', sans-serif !important;
+    font-size: 11.5px !important;
+    line-height: 1.5 !important;
+    margin: 6px 0 !important;
+}
+
+/* 2. CRT & PHOSPHOR THEMES (Dark CRT, Phosphor Green, Amber, Blood Noir) */
 [data-theme="dark"] .xp-task-card,
 [data-theme="green"] .xp-task-card,
 [data-theme="amber"] .xp-task-card,
-[data-theme="blood"] .xp-task-card,
-[data-theme="backrooms"] .xp-task-card {
+[data-theme="blood"] .xp-task-card {
     background: var(--bg-card);
     border: 1px solid var(--border-color);
     border-radius: 0;
@@ -1836,8 +2012,7 @@ html[data-theme="dark"] body {
 [data-theme="dark"] .xp-task-card:hover,
 [data-theme="green"] .xp-task-card:hover,
 [data-theme="amber"] .xp-task-card:hover,
-[data-theme="blood"] .xp-task-card:hover,
-[data-theme="backrooms"] .xp-task-card:hover {
+[data-theme="blood"] .xp-task-card:hover {
     transform: none;
     border-color: var(--accent);
     box-shadow: 0 0 8px var(--glow);
@@ -1845,8 +2020,7 @@ html[data-theme="dark"] body {
 [data-theme="dark"] .xp-task-card-header,
 [data-theme="green"] .xp-task-card-header,
 [data-theme="amber"] .xp-task-card-header,
-[data-theme="blood"] .xp-task-card-header,
-[data-theme="backrooms"] .xp-task-card-header {
+[data-theme="blood"] .xp-task-card-header {
     background: var(--bg-card-inner, #0a0a0a);
     border-bottom: 1px solid var(--border-color);
     color: var(--accent);
@@ -1854,15 +2028,13 @@ html[data-theme="dark"] body {
 [data-theme="dark"] .xp-task-card:hover .xp-task-card-header,
 [data-theme="green"] .xp-task-card:hover .xp-task-card-header,
 [data-theme="amber"] .xp-task-card:hover .xp-task-card-header,
-[data-theme="blood"] .xp-task-card:hover .xp-task-card-header,
-[data-theme="backrooms"] .xp-task-card:hover .xp-task-card-header {
+[data-theme="blood"] .xp-task-card:hover .xp-task-card-header {
     background: var(--bg-card-inner, #0a0a0a);
 }
 [data-theme="dark"] .xp-task-card-title,
 [data-theme="green"] .xp-task-card-title,
 [data-theme="amber"] .xp-task-card-title,
-[data-theme="blood"] .xp-task-card-title,
-[data-theme="backrooms"] .xp-task-card-title {
+[data-theme="blood"] .xp-task-card-title {
     color: var(--accent);
     text-shadow: 0 0 6px var(--glow);
     font-size: 18px;
@@ -1870,8 +2042,7 @@ html[data-theme="dark"] body {
 [data-theme="dark"] .xp-task-chevron,
 [data-theme="green"] .xp-task-chevron,
 [data-theme="amber"] .xp-task-chevron,
-[data-theme="blood"] .xp-task-chevron,
-[data-theme="backrooms"] .xp-task-chevron {
+[data-theme="blood"] .xp-task-chevron {
     background: transparent;
     color: var(--accent);
     border: 1px solid var(--border-color);
@@ -1881,22 +2052,19 @@ html[data-theme="dark"] body {
 [data-theme="dark"] .xp-task-card-body,
 [data-theme="green"] .xp-task-card-body,
 [data-theme="amber"] .xp-task-card-body,
-[data-theme="blood"] .xp-task-card-body,
-[data-theme="backrooms"] .xp-task-card-body {
+[data-theme="blood"] .xp-task-card-body {
     background: var(--bg-card);
 }
 [data-theme="dark"] .xp-task-card-desc,
 [data-theme="green"] .xp-task-card-desc,
 [data-theme="amber"] .xp-task-card-desc,
-[data-theme="blood"] .xp-task-card-desc,
-[data-theme="backrooms"] .xp-task-card-desc {
+[data-theme="blood"] .xp-task-card-desc {
     color: var(--text-muted);
 }
 [data-theme="dark"] .xp-btn-action,
 [data-theme="green"] .xp-btn-action,
 [data-theme="amber"] .xp-btn-action,
-[data-theme="blood"] .xp-btn-action,
-[data-theme="backrooms"] .xp-btn-action {
+[data-theme="blood"] .xp-btn-action {
     background: var(--btn-bg);
     border: 1px solid var(--btn-border, var(--border-color));
     color: var(--btn-text);
@@ -1907,8 +2075,7 @@ html[data-theme="dark"] body {
 [data-theme="dark"] .xp-task-card:hover .xp-btn-action,
 [data-theme="green"] .xp-task-card:hover .xp-btn-action,
 [data-theme="amber"] .xp-task-card:hover .xp-btn-action,
-[data-theme="blood"] .xp-task-card:hover .xp-btn-action,
-[data-theme="backrooms"] .xp-task-card:hover .xp-btn-action {
+[data-theme="blood"] .xp-task-card:hover .xp-btn-action {
     background: var(--accent);
     color: var(--bg-primary, #000);
     border-color: var(--accent);
@@ -1917,8 +2084,7 @@ html[data-theme="dark"] body {
 [data-theme="dark"] .latest-update-card,
 [data-theme="green"] .latest-update-card,
 [data-theme="amber"] .latest-update-card,
-[data-theme="blood"] .latest-update-card,
-[data-theme="backrooms"] .latest-update-card {
+[data-theme="blood"] .latest-update-card {
     background: var(--bg-card);
     border: 1px solid var(--border-color);
     box-shadow: none;
@@ -1926,8 +2092,7 @@ html[data-theme="dark"] body {
 [data-theme="dark"] .latest-update-badge,
 [data-theme="green"] .latest-update-badge,
 [data-theme="amber"] .latest-update-badge,
-[data-theme="blood"] .latest-update-badge,
-[data-theme="backrooms"] .latest-update-badge {
+[data-theme="blood"] .latest-update-badge {
     background: var(--accent);
     color: var(--bg-primary, #000);
     border-radius: 0;
@@ -1935,46 +2100,21 @@ html[data-theme="dark"] body {
 [data-theme="dark"] .latest-update-title,
 [data-theme="green"] .latest-update-title,
 [data-theme="amber"] .latest-update-title,
-[data-theme="blood"] .latest-update-title,
-[data-theme="backrooms"] .latest-update-title {
+[data-theme="blood"] .latest-update-title {
     color: var(--accent);
     text-shadow: 0 0 6px var(--glow);
 }
 [data-theme="dark"] .latest-update-excerpt,
 [data-theme="green"] .latest-update-excerpt,
 [data-theme="amber"] .latest-update-excerpt,
-[data-theme="blood"] .latest-update-excerpt,
-[data-theme="backrooms"] .latest-update-excerpt {
+[data-theme="blood"] .latest-update-excerpt {
     color: var(--text-primary);
-}
-
-/* Home Hero Box adaptation for non-XP themes */
-[data-theme="win98"] .home-hero-box {
-    background: #c0c0c0;
-    border: 2px outset #ffffff;
-    box-shadow: none;
-}
-[data-theme="win98"] .hero-moptam-name {
-    color: #000080;
-}
-[data-theme="win98"] .hero-moptam-tagline {
-    color: #000000;
-}
-[data-theme="win98"] .hero-stats-strip {
-    border-top: 1px solid #808080;
-}
-[data-theme="win98"] .hero-stat-pill {
-    background: #c0c0c0;
-    border: 2px outset #ffffff;
-    color: #000080;
-    box-shadow: none;
 }
 
 [data-theme="dark"] .home-hero-box,
 [data-theme="green"] .home-hero-box,
 [data-theme="amber"] .home-hero-box,
-[data-theme="blood"] .home-hero-box,
-[data-theme="backrooms"] .home-hero-box {
+[data-theme="blood"] .home-hero-box {
     background: var(--bg-card);
     border: 1px solid var(--border-color);
     box-shadow: none;
@@ -1982,34 +2122,168 @@ html[data-theme="dark"] body {
 [data-theme="dark"] .hero-moptam-name,
 [data-theme="green"] .hero-moptam-name,
 [data-theme="amber"] .hero-moptam-name,
-[data-theme="blood"] .hero-moptam-name,
-[data-theme="backrooms"] .hero-moptam-name {
+[data-theme="blood"] .hero-moptam-name {
     color: var(--accent);
     text-shadow: 0 0 8px var(--glow);
 }
 [data-theme="dark"] .hero-moptam-tagline,
 [data-theme="green"] .hero-moptam-tagline,
 [data-theme="amber"] .hero-moptam-tagline,
-[data-theme="blood"] .hero-moptam-tagline,
-[data-theme="backrooms"] .hero-moptam-tagline {
+[data-theme="blood"] .hero-moptam-tagline {
     color: var(--text-muted);
 }
 [data-theme="dark"] .hero-stats-strip,
 [data-theme="green"] .hero-stats-strip,
 [data-theme="amber"] .hero-stats-strip,
-[data-theme="blood"] .hero-stats-strip,
-[data-theme="backrooms"] .hero-stats-strip {
+[data-theme="blood"] .hero-stats-strip {
     border-top: 1px solid var(--border-color);
 }
 [data-theme="dark"] .hero-stat-pill,
 [data-theme="green"] .hero-stat-pill,
 [data-theme="amber"] .hero-stat-pill,
-[data-theme="blood"] .hero-stat-pill,
-[data-theme="backrooms"] .hero-stat-pill {
+[data-theme="blood"] .hero-stat-pill {
     background: var(--bg-card-inner, #111317);
     border: 1px solid var(--border-color);
     color: var(--text-primary);
     box-shadow: none;
+}
+
+/* 3. THE BACKROOMS WIKI DEDICATED LIMINAL STYLING (Aged Manila Wallpaper & Amber Gold Palette) */
+[data-theme="backrooms"] .home-hero-box {
+    background: #eadebe !important;
+    border: 2px solid #8f805a !important;
+    box-shadow: 2px 2px 0 rgba(40, 32, 16, 0.25) !important;
+    border-radius: 2px !important;
+    padding: 16px 18px !important;
+}
+[data-theme="backrooms"] .hero-moptam-name {
+    color: #7d490c !important;
+    text-shadow: 0 0 6px rgba(184, 109, 26, 0.35) !important;
+    font-family: var(--font-title);
+    letter-spacing: 1px;
+}
+[data-theme="backrooms"] .hero-moptam-tagline {
+    color: #3b321a !important;
+    font-size: 13px !important;
+}
+[data-theme="backrooms"] .hero-stats-strip {
+    border-top: 1px solid #8f805a !important;
+    margin-top: 12px !important;
+    padding-top: 10px !important;
+}
+[data-theme="backrooms"] .hero-stat-pill {
+    background: #fdfaf0 !important;
+    border: 1px solid #8f805a !important;
+    color: #7d490c !important;
+    box-shadow: 1px 1px 0 rgba(40, 32, 16, 0.15) !important;
+    font-weight: bold !important;
+}
+[data-theme="backrooms"] .xp-task-card {
+    background: #eadebe !important;
+    border: 2px solid #8f805a !important;
+    box-shadow: 2px 2px 0 rgba(40, 32, 16, 0.25) !important;
+    border-radius: 2px !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+}
+[data-theme="backrooms"] .xp-task-card:hover {
+    transform: translateY(-1px) !important;
+    border-color: #7d490c !important;
+    box-shadow: 0 0 10px rgba(184, 109, 26, 0.45) !important;
+}
+[data-theme="backrooms"] .xp-task-card-header {
+    background: #d4c59b !important;
+    border-bottom: 1px solid #8f805a !important;
+    color: #4a3e20 !important;
+    padding: 6px 10px !important;
+}
+[data-theme="backrooms"] .xp-task-card:hover .xp-task-card-header {
+    background: #cbb98c !important;
+}
+[data-theme="backrooms"] .xp-task-card-title {
+    color: #7d490c !important;
+    text-shadow: none !important;
+    font-size: 18px !important;
+}
+[data-theme="backrooms"] .xp-task-chevron {
+    background: #fdfaf0 !important;
+    color: #7d490c !important;
+    border: 1px solid #8f805a !important;
+    border-radius: 2px !important;
+}
+[data-theme="backrooms"] .xp-task-card-body {
+    background: #fdfaf0 !important;
+    margin: 4px !important;
+    padding: 10px 12px !important;
+    border: 1px solid #c2b592 !important;
+}
+[data-theme="backrooms"] .xp-task-card-desc {
+    color: #3b321a !important;
+    font-size: 12px !important;
+}
+[data-theme="backrooms"] .xp-btn-action {
+    background: linear-gradient(180deg, #fdfaf0 0%, #eadebe 100%) !important;
+    border: 1px solid #8f805a !important;
+    color: #7d490c !important;
+    box-shadow: 1px 1px 0 rgba(40, 32, 16, 0.2) !important;
+    font-family: var(--font-mono) !important;
+    font-weight: bold !important;
+}
+[data-theme="backrooms"] .xp-btn-action:hover {
+    background: #7d490c !important;
+    color: #fdfaf0 !important;
+    border-color: #5c3204 !important;
+}
+[data-theme="backrooms"] .latest-update-card {
+    background: #eadebe !important;
+    border: 2px solid #8f805a !important;
+    box-shadow: 2px 2px 0 rgba(40, 32, 16, 0.25) !important;
+    border-radius: 2px !important;
+}
+[data-theme="backrooms"] .latest-update-header {
+    border-bottom: 1px solid #8f805a !important;
+    padding-bottom: 6px !important;
+}
+[data-theme="backrooms"] .latest-update-badge {
+    background: #6e5c33 !important;
+    color: #fdfaf0 !important;
+    border: 1px solid #4a3e20 !important;
+    font-weight: bold !important;
+}
+[data-theme="backrooms"] .latest-update-title {
+    color: #7d490c !important;
+    text-shadow: none !important;
+    font-size: 18px !important;
+}
+[data-theme="backrooms"] .latest-update-excerpt {
+    color: #2b2311 !important;
+    font-size: 13px !important;
+    line-height: 1.6 !important;
+}
+[data-theme="backrooms"] .devlog-spotlight-box {
+    background: #dfd4b0 !important;
+    border: 1px solid #8f805a !important;
+    color: #4a3e20 !important;
+}
+[data-theme="backrooms"] .headertext {
+    color: #7d490c !important;
+}
+[data-theme="backrooms"] .page-main-title,
+[data-theme="backrooms"] .lr h2,
+[data-theme="backrooms"] .cat-title,
+[data-theme="backrooms"] .album-title {
+    color: #7d490c !important;
+}
+[data-theme="backrooms"] .player-deck-title {
+    color: #7d490c !important;
+    text-shadow: 0 0 4px rgba(184, 109, 26, 0.3) !important;
+}
+[data-theme="backrooms"] .devlog-card {
+    background: #eadebe !important;
+    border: 2px solid #8f805a !important;
+}
+[data-theme="backrooms"] .devlog-card h3 {
+    color: #7d490c !important;
 }
 
 /* XP Address Bar & Go button adaptation for non-XP themes */
@@ -2750,7 +3024,7 @@ html[data-theme="dark"] body {
 .player-deck-title {
     font-family: var(--font-title);
     font-size: 18px;
-    color: #ffffff;
+    color: #ffffff !important;
     letter-spacing: 0.5px;
     text-shadow: 1px 1px 1px #001f5c;
 }
@@ -3223,9 +3497,9 @@ html[data-theme="dark"] body {
 
 /* Phosphor Green, Amber, Blood Noir, Backrooms Theme Overrides */
 [data-theme="green"] .win-music-player,
+[data-theme="green"] .win-music-player,
 [data-theme="amber"] .win-music-player,
-[data-theme="blood"] .win-music-player,
-[data-theme="backrooms"] .win-music-player {
+[data-theme="blood"] .win-music-player {
     background: var(--bg-card);
     border: 1px solid var(--border-color);
     border-radius: 0;
@@ -3233,76 +3507,65 @@ html[data-theme="dark"] body {
 }
 [data-theme="green"] .player-header-bar,
 [data-theme="amber"] .player-header-bar,
-[data-theme="blood"] .player-header-bar,
-[data-theme="backrooms"] .player-header-bar {
+[data-theme="blood"] .player-header-bar {
     background: var(--bg-card-inner, #0a0a0a);
     border-bottom: 1px solid var(--border-color);
     color: var(--accent);
 }
 [data-theme="green"] .player-deck-title,
 [data-theme="amber"] .player-deck-title,
-[data-theme="blood"] .player-deck-title,
-[data-theme="backrooms"] .player-deck-title {
-    color: var(--accent);
+[data-theme="blood"] .player-deck-title {
+    color: var(--accent) !important;
     text-shadow: 0 0 6px var(--glow);
 }
 [data-theme="green"] .player-status-badge,
 [data-theme="amber"] .player-status-badge,
-[data-theme="blood"] .player-status-badge,
-[data-theme="backrooms"] .player-status-badge {
+[data-theme="blood"] .player-status-badge {
     color: var(--accent);
     text-shadow: 0 0 6px var(--glow);
 }
 [data-theme="green"] .player-main-strip,
 [data-theme="amber"] .player-main-strip,
 [data-theme="blood"] .player-main-strip,
-[data-theme="backrooms"] .player-main-strip,
 [data-theme="green"] .player-controls-row,
 [data-theme="amber"] .player-controls-row,
-[data-theme="blood"] .player-controls-row,
-[data-theme="backrooms"] .player-controls-row {
+[data-theme="blood"] .player-controls-row {
     background: var(--bg-card);
     border-color: var(--border-color);
 }
 [data-theme="green"] .player-cover-square,
 [data-theme="amber"] .player-cover-square,
-[data-theme="blood"] .player-cover-square,
-[data-theme="backrooms"] .player-cover-square {
+[data-theme="blood"] .player-cover-square {
     background: var(--bg-card-inner, #000000);
     border: 1px solid var(--border-color);
     border-radius: 0;
 }
 [data-theme="green"] .player-screen,
 [data-theme="amber"] .player-screen,
-[data-theme="blood"] .player-screen,
-[data-theme="backrooms"] .player-screen {
+[data-theme="blood"] .player-screen {
     background: var(--bg-card-inner, #000000);
     border: 1px solid var(--border-color);
     border-radius: 0;
 }
 [data-theme="green"] .player-track-title,
 [data-theme="amber"] .player-track-title,
-[data-theme="blood"] .player-track-title,
-[data-theme="backrooms"] .player-track-title {
+[data-theme="blood"] .player-track-title {
     color: var(--accent);
     text-shadow: 0 0 6px var(--glow);
 }
 [data-theme="green"] .player-track-artist,
 [data-theme="amber"] .player-track-artist,
-[data-theme="blood"] .player-track-artist,
-[data-theme="backrooms"] .player-track-artist {
+[data-theme="blood"] .player-track-artist {
     color: var(--text-dim);
 }
 [data-theme="green"] .player-scrubber-row,
 [data-theme="amber"] .player-scrubber-row,
-[data-theme="blood"] .player-scrubber-row,
-[data-theme="backrooms"] .player-scrubber-row {
+[data-theme="blood"] .player-scrubber-row {
     color: var(--accent);
 }
 [data-theme="green"] .player-btn,
 [data-theme="amber"] .player-btn,
-[data-theme="blood"] .player-btn,
-[data-theme="backrooms"] .player-btn {
+[data-theme="blood"] .player-btn {
     background: var(--btn-bg);
     border: 1px solid var(--btn-border, var(--border-color));
     color: var(--btn-text);
@@ -3312,8 +3575,7 @@ html[data-theme="dark"] body {
 }
 [data-theme="green"] .player-btn:hover,
 [data-theme="amber"] .player-btn:hover,
-[data-theme="blood"] .player-btn:hover,
-[data-theme="backrooms"] .player-btn:hover {
+[data-theme="blood"] .player-btn:hover {
     background: var(--accent);
     color: var(--bg-primary, #000);
     border-color: var(--accent);
@@ -3321,8 +3583,7 @@ html[data-theme="dark"] body {
 }
 [data-theme="green"] .player-btn-play,
 [data-theme="amber"] .player-btn-play,
-[data-theme="blood"] .player-btn-play,
-[data-theme="backrooms"] .player-btn-play {
+[data-theme="blood"] .player-btn-play {
     background: var(--btn-accent-bg, var(--btn-bg));
     border-color: var(--accent);
     color: var(--accent);
@@ -3330,14 +3591,12 @@ html[data-theme="dark"] body {
 }
 [data-theme="green"] .player-btn-download,
 [data-theme="amber"] .player-btn-download,
-[data-theme="blood"] .player-btn-download,
-[data-theme="backrooms"] .player-btn-download {
+[data-theme="blood"] .player-btn-download {
     color: var(--accent);
 }
 [data-theme="green"] .player-volume-group,
 [data-theme="amber"] .player-volume-group,
-[data-theme="blood"] .player-volume-group,
-[data-theme="backrooms"] .player-volume-group {
+[data-theme="blood"] .player-volume-group {
     color: var(--accent);
 }
 [data-theme="green"] .player-seek-slider::-webkit-slider-thumb,
@@ -3345,12 +3604,101 @@ html[data-theme="dark"] body {
 [data-theme="amber"] .player-seek-slider::-webkit-slider-thumb,
 [data-theme="amber"] .player-vol-slider::-webkit-slider-thumb,
 [data-theme="blood"] .player-seek-slider::-webkit-slider-thumb,
-[data-theme="blood"] .player-vol-slider::-webkit-slider-thumb,
-[data-theme="backrooms"] .player-seek-slider::-webkit-slider-thumb,
-[data-theme="backrooms"] .player-vol-slider::-webkit-slider-thumb {
+[data-theme="blood"] .player-vol-slider::-webkit-slider-thumb {
     background: var(--accent);
     border: 1px solid #000000;
     box-shadow: 0 0 6px var(--glow);
+}
+
+/* Dedicated Backrooms Theme Overrides for Audio Deck */
+[data-theme="backrooms"] .win-music-player {
+    background: #ede5cc !important;
+    border: 2px solid #8f805a !important;
+    border-radius: 2px !important;
+    box-shadow: 2px 2px 0 rgba(40, 32, 16, 0.25) !important;
+}
+[data-theme="backrooms"] .player-header-bar {
+    background: #d4c59b !important;
+    border-bottom: 2px solid #8f805a !important;
+    color: #4a3e20 !important;
+}
+[data-theme="backrooms"] .player-deck-title {
+    color: #7d490c !important;
+    text-shadow: none !important;
+    font-weight: bold !important;
+}
+[data-theme="backrooms"] .player-status-badge {
+    color: #7d490c !important;
+    text-shadow: none !important;
+    font-weight: bold !important;
+}
+[data-theme="backrooms"] .player-main-strip {
+    background: #eadebe !important;
+}
+[data-theme="backrooms"] .player-cover-square {
+    background: #dfd4b0 !important;
+    border: 1px solid #8f805a !important;
+    box-shadow: inset 1px 1px 0 rgba(0, 0, 0, 0.1) !important;
+    border-radius: 0 !important;
+}
+[data-theme="backrooms"] .player-screen {
+    background: #fdfaf0 !important;
+    border: 2px inset #dfd4b0 !important;
+    box-shadow: inset 1px 1px 2px rgba(60, 50, 30, 0.15) !important;
+    border-radius: 0 !important;
+}
+[data-theme="backrooms"] .player-track-title {
+    color: #7d490c !important;
+    text-shadow: none !important;
+    font-weight: bold !important;
+}
+[data-theme="backrooms"] .player-track-artist {
+    color: #6b5a37 !important;
+}
+[data-theme="backrooms"] .player-scrubber-row {
+    color: #4a3e20 !important;
+}
+[data-theme="backrooms"] .player-controls-row {
+    background: #e2d7ba !important;
+    border-top: 1px solid #c2b48a !important;
+}
+[data-theme="backrooms"] .player-btn {
+    background: #dfd4b0 !important;
+    border: 2px outset #fdfaf0 !important;
+    color: #362a12 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    font-family: var(--font-mono) !important;
+    font-weight: bold !important;
+}
+[data-theme="backrooms"] .player-btn:hover {
+    background: #7d490c !important;
+    color: #fdfaf0 !important;
+    border-color: #5c3204 !important;
+    box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2) !important;
+}
+[data-theme="backrooms"] .player-btn-play {
+    background: #d4c59b !important;
+    border: 2px outset #fdfaf0 !important;
+    color: #7d490c !important;
+}
+[data-theme="backrooms"] .player-btn-play:hover {
+    background: #7d490c !important;
+    color: #fdfaf0 !important;
+}
+[data-theme="backrooms"] .player-btn-download {
+    color: #7d490c !important;
+    font-weight: bold !important;
+}
+[data-theme="backrooms"] .player-volume-group {
+    color: #4a3e20 !important;
+    font-weight: bold !important;
+}
+[data-theme="backrooms"] .player-seek-slider::-webkit-slider-thumb,
+[data-theme="backrooms"] .player-vol-slider::-webkit-slider-thumb {
+    background: #7d490c !important;
+    border: 1px solid #5c3204 !important;
+    box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2) !important;
 }
 
 /* ==========================================================================
@@ -3961,9 +4309,17 @@ html[data-theme="dark"] body {
     box-shadow: none !important;
     padding: 5px !important;
 }
+[data-theme="win98"] .game-shot-card {
+    background: #c0c0c0 !important;
+    border: 2px solid !important;
+    border-color: #ffffff #808080 #808080 #ffffff !important;
+    box-shadow: 1px 1px 0 #000000 !important;
+    padding: 5px !important;
+    border-radius: 0 !important;
+}
 [data-theme="win98"] .game-shot-card:hover {
     transform: none !important;
-    box-shadow: none !important;
+    box-shadow: 1px 1px 0 #000000 !important;
 }
 [data-theme="win98"] .game-shot-frame {
     border: 2px inset #ffffff !important;
@@ -3971,18 +4327,46 @@ html[data-theme="dark"] body {
 }
 [data-theme="win98"] .game-shot-zoom-pill {
     background: #c0c0c0 !important;
-    border: 2px outset #ffffff !important;
+    border: 2px solid !important;
+    border-color: #ffffff #808080 #808080 #ffffff !important;
+    color: #000000 !important;
     border-radius: 0 !important;
-    box-shadow: none !important;
-    font-family: var(--font-pixel) !important;
-    font-size: 9px !important;
+    box-shadow: 1px 1px 0 #000000 !important;
+    font-family: 'Tahoma', sans-serif !important;
+    font-size: 9.5px !important;
+    font-weight: bold !important;
+}
+
+[data-theme="backrooms"] .game-shot-card {
+    background: #eadebe !important;
+    border: 2px solid #8f805a !important;
+    border-radius: 2px !important;
+    box-shadow: 2px 2px 0 rgba(40, 32, 16, 0.2) !important;
+    padding: 6px !important;
+}
+[data-theme="backrooms"] .game-shot-card:hover {
+    border-color: #7d490c !important;
+    box-shadow: 0 0 8px rgba(184, 109, 26, 0.4) !important;
+    transform: translateY(-1px) !important;
+}
+[data-theme="backrooms"] .game-shot-frame {
+    border: 1px solid #8f805a !important;
+    border-radius: 0 !important;
+}
+[data-theme="backrooms"] .game-shot-zoom-pill {
+    background: #7d490c !important;
+    color: #fdfaf0 !important;
+    border: 1px solid #5c3204 !important;
+    border-radius: 2px !important;
+    box-shadow: 1px 1px 0 rgba(0,0,0,0.2) !important;
+    font-family: var(--font-mono) !important;
+    font-weight: bold !important;
 }
 
 [data-theme="dark"] .game-shot-card,
 [data-theme="green"] .game-shot-card,
 [data-theme="amber"] .game-shot-card,
-[data-theme="blood"] .game-shot-card,
-[data-theme="backrooms"] .game-shot-card {
+[data-theme="blood"] .game-shot-card {
     background: var(--bg-card-inner, #111317) !important;
     border: 1px solid var(--border-color) !important;
     border-radius: 0 !important;
@@ -3991,8 +4375,7 @@ html[data-theme="dark"] body {
 [data-theme="dark"] .game-shot-card:hover,
 [data-theme="green"] .game-shot-card:hover,
 [data-theme="amber"] .game-shot-card:hover,
-[data-theme="blood"] .game-shot-card:hover,
-[data-theme="backrooms"] .game-shot-card:hover {
+[data-theme="blood"] .game-shot-card:hover {
     transform: none !important;
     border-color: var(--accent) !important;
     box-shadow: 0 0 10px var(--glow) !important;
@@ -4000,16 +4383,14 @@ html[data-theme="dark"] body {
 [data-theme="dark"] .game-shot-frame,
 [data-theme="green"] .game-shot-frame,
 [data-theme="amber"] .game-shot-frame,
-[data-theme="blood"] .game-shot-frame,
-[data-theme="backrooms"] .game-shot-frame {
+[data-theme="blood"] .game-shot-frame {
     border: 1px solid var(--border-color) !important;
     border-radius: 0 !important;
 }
 [data-theme="dark"] .game-shot-zoom-pill,
 [data-theme="green"] .game-shot-zoom-pill,
 [data-theme="amber"] .game-shot-zoom-pill,
-[data-theme="blood"] .game-shot-zoom-pill,
-[data-theme="backrooms"] .game-shot-zoom-pill {
+[data-theme="blood"] .game-shot-zoom-pill {
     background: var(--accent) !important;
     color: var(--bg-primary, #000) !important;
     border: 1px solid var(--accent) !important;
@@ -4442,11 +4823,17 @@ html[data-theme="dark"] body {
     border: 2px inset #ffffff !important;
 }
 
+[data-theme="backrooms"] .devlog-rx-btn.active {
+    background: #7d490c !important;
+    color: #fdfaf0 !important;
+    border-color: #5c3204 !important;
+    box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2) !important;
+}
+
 [data-theme="dark"] .devlog-rx-btn.active,
 [data-theme="green"] .devlog-rx-btn.active,
 [data-theme="amber"] .devlog-rx-btn.active,
-[data-theme="blood"] .devlog-rx-btn.active,
-[data-theme="backrooms"] .devlog-rx-btn.active {
+[data-theme="blood"] .devlog-rx-btn.active {
     background: var(--accent) !important;
     color: var(--bg-primary, #000) !important;
     box-shadow: 0 0 6px var(--glow);
@@ -4459,7 +4846,7 @@ html[data-theme="dark"] body {
 
 /* Collapsible Comments Drawer */
 .devlog-comments-drawer {
-    display: none;
+    display: none !important;
     margin-top: 12px;
     padding: 12px 14px;
     background: var(--bg-card-inner, #ffffff);
@@ -4469,7 +4856,7 @@ html[data-theme="dark"] body {
 }
 
 .devlog-comments-drawer.open {
-    display: block;
+    display: block !important;
 }
 
 .devlog-comments-list {
@@ -4867,6 +5254,37 @@ html[data-theme="dark"] body {
 [data-theme="blood"] .devlog-channel-pill:hover {
     border-color: var(--accent);
     box-shadow: 0 0 6px var(--glow);
+}
+
+/* Backrooms Theme Media Block Overrides */
+[data-theme="backrooms"] .devlog-media-block {
+    background: #eadebe;
+    border: 2px solid #8f805a;
+}
+[data-theme="backrooms"] .devlog-media-topbar {
+    background: #d4c59b;
+    border-bottom: 1px solid #8f805a;
+    color: #4a3e20;
+}
+[data-theme="backrooms"] .devlog-media-topbar-title {
+    color: #7d490c;
+}
+[data-theme="backrooms"] .devlog-ext-link {
+    color: #874909;
+}
+[data-theme="backrooms"] .devlog-channels-bar {
+    background: #ede5cc;
+    border: 1px dashed #8f805a;
+}
+[data-theme="backrooms"] .devlog-channel-pill {
+    background: #fdfaf0;
+    border: 1px solid #8f805a;
+    color: #7d490c;
+}
+[data-theme="backrooms"] .devlog-channel-pill:hover {
+    background: #7d490c;
+    color: #fdfaf0;
+    border-color: #5c3204;
 }
 
 /* ==========================================================================
