@@ -1247,7 +1247,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="game-banner-meta">
                         <span>SIZE: ${game.fileSize || '35 MB'}</span>
                         <div class="game-banner-cta-btn">
-                            OPEN GAME PAGE ➔
+                            VIEW GAME ➔
                         </div>
                     </div>
                 </div>
@@ -1445,7 +1445,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (game.playInBrowserUrl) {
                 btnPagePlayBrowser.style.display = 'inline-flex';
                 btnPagePlayBrowser.onclick = () => {
-                    document.getElementById('playGameTitle').textContent = `RUNNING // ${game.title}`;
+                    document.getElementById('playGameTitle').textContent = `PLAYING // ${game.title}`;
                     playIframe.src = game.playInBrowserUrl;
                     playModal.classList.add('open');
                 };
@@ -2271,7 +2271,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return `
                 <div class="spotlight-comment-inner">
                     <span class="spotlight-bubble-icon">💭</span>
-                    <span class="spotlight-empty-label">No transmissions logged yet.</span>
+                    <span class="spotlight-empty-label">No comments yet.</span>
                 </div>
                 <button type="button" class="spotlight-expand-pill" data-target="${devlogId}">+ Add Comment</button>
             `;
@@ -2320,7 +2320,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function handleToggleReaction(targetId, reactionType) {
         if (!currentUser) {
-            openAuthModal('Sign in to leave reactions on games and devlog dispatches.', 'login');
+            openAuthModal('Sign in to leave reactions on games and devlogs.', 'login');
             return;
         }
 
@@ -2392,7 +2392,7 @@ document.addEventListener('DOMContentLoaded', () => {
         drawers.forEach(drawer => {
             const listEl = drawer.querySelector('.devlog-comments-list');
             if (listEl) {
-                listEl.innerHTML = '<div style="font-size: 11px; color: var(--text-dim); padding: 4px;">Accessing transmission stream...</div>';
+                listEl.innerHTML = '<div style="font-size: 11px; color: var(--text-dim); padding: 4px;">Loading comments...</div>';
             }
         });
 
@@ -2620,7 +2620,7 @@ document.addEventListener('DOMContentLoaded', () => {
             html += `
                 <div class="devlog-media-block devlog-yt-block">
                     <div class="devlog-media-topbar">
-                        <span class="devlog-media-topbar-title">🔴 YOUTUBE TRANSMISSION STREAM</span>
+                        <span class="devlog-media-topbar-title">🔴 YOUTUBE VIDEO</span>
                         <a href="${escapeHtml(u.youtubeUrl)}" target="_blank" rel="noopener noreferrer" class="devlog-ext-link">OPEN IN YOUTUBE ➔</a>
                     </div>
                     <div class="devlog-video-responsive">
@@ -2635,8 +2635,8 @@ document.addEventListener('DOMContentLoaded', () => {
             html += `
                 <div class="devlog-media-block devlog-video-block">
                     <div class="devlog-media-topbar">
-                        <span class="devlog-media-topbar-title">📼 ANALOG VIDEO DISPATCH</span>
-                        <a href="${escapeHtml(u.mediaUrl)}" target="_blank" class="devlog-ext-link">DIRECT FEED ➔</a>
+                        <span class="devlog-media-topbar-title">📼 VIDEO CLIP</span>
+                        <a href="${escapeHtml(u.mediaUrl)}" target="_blank" class="devlog-ext-link">DIRECT LINK ➔</a>
                     </div>
                     <div class="devlog-video-container">
                         <video src="${escapeHtml(u.mediaUrl)}" controls preload="metadata" class="devlog-html5-video"></video>
@@ -2650,8 +2650,8 @@ document.addEventListener('DOMContentLoaded', () => {
             html += `
                 <div class="devlog-media-block devlog-img-block">
                     <div class="devlog-media-topbar">
-                        <span class="devlog-media-topbar-title">📸 ATTACHED TELEMETRY [IMAGE / GIF]</span>
-                        <span class="devlog-media-hint">CLICK TO ENLARGE [FULL RES]</span>
+                        <span class="devlog-media-topbar-title">📸 ATTACHED IMAGE</span>
+                        <span class="devlog-media-hint">CLICK TO ENLARGE</span>
                     </div>
                     <div class="devlog-img-container">
                         <img src="${escapeHtml(u.mediaUrl)}" alt="${escapeHtml(u.title)}" class="devlog-attached-img" data-img-src="${escapeHtml(u.mediaUrl)}" data-img-title="${escapeHtml(u.title)}" loading="lazy">
@@ -2703,7 +2703,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (updatesListEl) {
                 updatesListEl.innerHTML = '';
                 if (updates.length === 0) {
-                    updatesListEl.innerHTML = '<div style="font-size: 12px; color: var(--text-dim); padding: 12px;">No transmissions logged yet.</div>';
+                    updatesListEl.innerHTML = '<div style="font-size: 12px; color: var(--text-dim); padding: 12px;">No devlogs published yet.</div>';
                 } else {
                     updates.forEach(u => {
                         const box = document.createElement('div');
