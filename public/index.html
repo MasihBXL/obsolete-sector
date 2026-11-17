@@ -362,7 +362,14 @@
 
                             <!-- 2. Title & 3. Tags and Short Description / Subtitle -->
                             <div class="game-header-section">
-                                <h1 id="gameDetailTitle" class="game-detail-main-title">CHAMBER PROTOCOL</h1>
+                                <div class="game-header-top-row">
+                                    <h1 id="gameDetailTitle" class="game-detail-main-title">CHAMBER PROTOCOL</h1>
+                                    <button type="button" id="btnHeaderDownload" class="btn-header-download" title="Quick Jump to Download / Acquisition Console">
+                                        <span class="btn-header-dl-icon">📥</span>
+                                        <span class="btn-header-dl-text">Download the Game</span>
+                                        <span class="btn-header-dl-arrow">⤓</span>
+                                    </button>
+                                </div>
                                 <div id="gameDetailSubtitle" class="game-detail-subtitle">12-gauge tactical roulette in an abandoned facility</div>
                                 <div id="gameDetailTags" class="cat-tags game-detail-tags-row"></div>
                             </div>
@@ -436,20 +443,33 @@
 
                                     <!-- Big Prominent Download & Acquisition Buttons -->
                                     <div class="game-action-buttons-wrap">
-                                        <button type="button" id="btnPageDownload" class="btn-game-download-primary">
-                                            <div class="download-btn-icon-area">
-                                                <span class="dl-disk-icon">💾</span>
-                                            </div>
-                                            <div class="download-btn-content">
-                                                <div class="download-btn-main-title">DIRECT DOWNLOAD STANDALONE ARCHIVE</div>
-                                                <div class="download-btn-meta">
-                                                    <span id="gameBtnDlVersion">VERSION 1.4.2</span> •
-                                                    <span id="gameBtnDlSize">48.5 MB</span> •
-                                                    <span>STANDALONE OFFLINE PACKAGE // SAFE EXTRACT</span>
+                                        <div class="game-download-row-actions">
+                                            <button type="button" id="btnPageDownload" class="btn-game-download-primary">
+                                                <div class="download-btn-icon-area dl-icon-green-glow">
+                                                    <span class="dl-green-emoji">📥</span>
                                                 </div>
-                                            </div>
-                                            <span class="download-btn-arrow">➔</span>
-                                        </button>
+                                                <div class="download-btn-content">
+                                                    <div class="download-btn-main-title">DIRECT DOWNLOAD STANDALONE ARCHIVE</div>
+                                                    <div class="download-btn-meta">
+                                                        <span id="gameBtnDlVersion">VERSION 1.4.2</span> •
+                                                        <span id="gameBtnDlSize">48.5 MB</span> •
+                                                        <span>STANDALONE OFFLINE PACKAGE // SAFE EXTRACT</span>
+                                                    </div>
+                                                </div>
+                                                <span class="download-btn-arrow">➔</span>
+                                            </button>
+
+                                            <a id="btnPageItch" href="#" target="_blank" rel="noopener noreferrer" class="btn-game-itch-companion" style="display: none;" title="Play or acquire this game on itch.io">
+                                                <div class="itch-btn-icon-area">
+                                                    <img src="/assets/badges/social_itchio.svg" alt="itch.io" class="itch-badge-img">
+                                                </div>
+                                                <div class="itch-btn-content">
+                                                    <div class="itch-btn-main-title">PLAY ON ITCH.IO</div>
+                                                    <div class="itch-btn-meta">BROWSER / INDIE</div>
+                                                </div>
+                                                <span class="itch-btn-arrow">↗</span>
+                                            </a>
+                                        </div>
 
                                         <a id="btnPageSteam" href="#" target="_blank" rel="noopener noreferrer" class="btn-game-steam-primary" style="display: none;">
                                             <div class="download-btn-icon-area">

@@ -1391,6 +1391,24 @@ document.addEventListener('DOMContentLoaded', () => {
         if (gameBtnDlSize) gameBtnDlSize.textContent = game.fileSize || 'STANDALONE ARCHIVE';
         if (gameBtnSteamPrice) gameBtnSteamPrice.textContent = isFree ? 'STEAM COMMUNITY HUB' : `PAID RELEASE (${game.price || '$6.99'})`;
 
+        // Header Quick Download Button next to Title
+        const btnHeaderDownload = document.getElementById('btnHeaderDownload');
+        if (btnHeaderDownload) {
+            const headerDlText = btnHeaderDownload.querySelector('.btn-header-dl-text');
+            const headerDlIcon = btnHeaderDownload.querySelector('.btn-header-dl-icon');
+            if (headerDlText) headerDlText.textContent = isFree ? 'Download the Game' : 'Acquire on Steam';
+            if (headerDlIcon) headerDlIcon.textContent = isFree ? '📥' : '⚡';
+            btnHeaderDownload.onclick = () => {
+                const target = document.querySelector('.game-download-dispatch-card');
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    target.classList.add('highlight-pulse');
+                    setTimeout(() => target.classList.remove('highlight-pulse'), 1400);
+                }
+                if (window.soundEngine) window.soundEngine.playSelect();
+            };
+        }
+
         if (btnPageDownload) {
             btnPageDownload.style.display = isFree ? 'flex' : 'none';
             btnPageDownload.onclick = () => {
@@ -1400,6 +1418,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     startDownloadProcess(game);
                 }
             };
+        }
+
+        // Companion Itch.io button (~1/4 width of download button)
+        const btnPageItch = document.getElementById('btnPageItch');
+        if (btnPageItch) {
+            const itchUrl = (game.externalLinks && (game.externalLinks.itch || game.externalLinks.itchio)) || 'https://moptam.itch.io';
+            if (isFree || (game.externalLinks && (game.externalLinks.itch || game.externalLinks.itchio))) {
+                btnPageItch.href = itchUrl;
+                btnPageItch.style.display = 'flex';
+            } else {
+                btnPageItch.style.display = 'none';
+            }
         }
 
         if (btnPageSteam) {

@@ -2990,9 +2990,18 @@ html[data-theme="dark"] body {
     letter-spacing: 0.5px;
 }
 
-/* 2. Game Header: Title, Subtitle, Tags */
+/* 2. Game Header: Title, Subtitle, Tags & Quick Download Action */
 .game-header-section {
     margin-bottom: 20px;
+}
+
+.game-header-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 6px;
 }
 
 .game-detail-main-title {
@@ -3000,9 +3009,69 @@ html[data-theme="dark"] body {
     font-size: 34px;
     font-weight: bold;
     color: var(--link-color);
-    margin: 0 0 6px 0;
+    margin: 0;
     letter-spacing: 0.8px;
     line-height: 1.15;
+}
+
+/* Eye-Catching Header Quick Download Button with Gentle Soft Animation */
+.btn-header-download {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    background: linear-gradient(180deg, #22c55e 0%, #16a34a 60%, #15803d 100%);
+    color: #ffffff;
+    border: 2px solid #14532d;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45), 0 3px 8px rgba(22, 163, 74, 0.35);
+    border-radius: 4px;
+    font-family: var(--font-title);
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: 0.6px;
+    cursor: pointer;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    animation: soft-header-pulse 2.6s ease-in-out infinite;
+    user-select: none;
+}
+
+.btn-header-download:hover {
+    animation-play-state: paused;
+    background: linear-gradient(180deg, #34d399 0%, #22c55e 60%, #16a34a 100%);
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55), 0 6px 14px rgba(34, 197, 94, 0.5);
+}
+
+.btn-header-download:active {
+    transform: translateY(1px);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.btn-header-dl-icon {
+    font-size: 18px;
+    line-height: 1;
+}
+
+.btn-header-dl-arrow {
+    font-size: 18px;
+    font-weight: bold;
+    transition: transform 0.15s ease;
+}
+
+.btn-header-download:hover .btn-header-dl-arrow {
+    transform: translateY(2px);
+}
+
+@keyframes soft-header-pulse {
+    0%, 100% {
+        transform: translateY(0) scale(1);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45), 0 3px 8px rgba(22, 163, 74, 0.35);
+    }
+    50% {
+        transform: translateY(-2.5px) scale(1.02);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55), 0 6px 16px rgba(34, 197, 94, 0.55);
+    }
 }
 
 .game-detail-subtitle {
@@ -3233,14 +3302,21 @@ html[data-theme="dark"] body {
     color: var(--link-color);
 }
 
-/* 6. Download & Acquisition Station (Big, Tactile, Authentic Retro Dispatch Console) */
+/* 6. Download & Acquisition Station (Warm Authentic Console Matching MOPTAM Hero Box) */
 .game-download-dispatch-card {
-    background: var(--bg-card);
-    border: 2px solid var(--border-color);
+    background: #ece9d8;
+    border: 2px solid;
+    border-color: #ffffff #aca899 #aca899 #ffffff;
     padding: 22px 24px;
     margin-bottom: 28px;
-    box-shadow: 2px 3px 8px rgba(0, 0, 0, 0.12);
+    box-shadow: inset 1px 1px 0 #ffffff, 2px 3px 8px rgba(0, 0, 0, 0.14);
     border-radius: 4px;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.game-download-dispatch-card.highlight-pulse {
+    box-shadow: inset 1px 1px 0 #ffffff, 0 0 20px rgba(34, 197, 94, 0.75) !important;
+    border-color: #22c55e !important;
 }
 
 .game-dispatch-pill {
@@ -3264,9 +3340,10 @@ html[data-theme="dark"] body {
     grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
     gap: 12px;
     margin-bottom: 22px;
-    background: var(--bg-card-inner, #ffffff);
+    background: #ffffff;
     padding: 14px 18px;
-    border: 1px solid var(--border-color);
+    border: 1px solid #aca899;
+    box-shadow: inset 1px 1px 0 #f0f0f0;
     border-radius: 4px;
 }
 
@@ -3297,12 +3374,24 @@ html[data-theme="dark"] body {
     margin-bottom: 20px;
 }
 
-/* Primary Big Tactile Download Button */
+/* Actions Row: Direct Download (3/4) + Play on itch.io (1/4) */
+.game-download-row-actions {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    align-items: stretch;
+}
+
+.game-download-row-actions .btn-game-download-primary {
+    flex: 3.2;
+}
+
+/* Primary Big Tactile Download Button with Green Download Emoji */
 .btn-game-download-primary {
     display: flex;
     align-items: center;
     gap: 18px;
-    padding: 14px 24px;
+    padding: 14px 22px;
     width: 100%;
     cursor: pointer;
     text-decoration: none;
@@ -3339,6 +3428,19 @@ html[data-theme="dark"] body {
     flex-shrink: 0;
 }
 
+/* Green Download Emoji Glow */
+.dl-icon-green-glow {
+    background: radial-gradient(circle, rgba(34, 197, 94, 0.3) 0%, rgba(20, 83, 45, 0.5) 100%) !important;
+    border: 1.5px solid #22c55e !important;
+    box-shadow: 0 0 10px rgba(34, 197, 94, 0.45) !important;
+}
+
+.dl-green-emoji {
+    font-size: 26px;
+    line-height: 1;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
+}
+
 .download-btn-content {
     display: flex;
     flex-direction: column;
@@ -3348,7 +3450,7 @@ html[data-theme="dark"] body {
 
 .download-btn-main-title {
     font-family: var(--font-title);
-    font-size: 21px;
+    font-size: 20px;
     font-weight: bold;
     letter-spacing: 0.8px;
     line-height: 1.15;
@@ -3370,6 +3472,97 @@ html[data-theme="dark"] body {
 
 .btn-game-download-primary:hover .download-btn-arrow {
     transform: translateX(4px);
+}
+
+/* Companion Itch.io Button (approx 1/4 length of download button) */
+.btn-game-itch-companion {
+    flex: 1.1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    text-decoration: none;
+    background: linear-gradient(180deg, #fa5c5c 0%, #e63946 55%, #c1121f 100%);
+    color: #ffffff;
+    border: 2px solid #9e1b1b;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 4px 12px rgba(230, 57, 70, 0.3);
+    border-radius: 4px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    transition: transform 0.1s ease, box-shadow 0.15s ease, background 0.15s ease;
+    user-select: none;
+}
+
+.btn-game-itch-companion:hover {
+    background: linear-gradient(180deg, #ff6b6b 0%, #f04754 55%, #d01825 100%);
+    transform: translateY(-2px);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 6px 16px rgba(230, 57, 70, 0.45);
+    color: #ffffff;
+}
+
+.btn-game-itch-companion:active {
+    transform: translateY(1px);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.itch-btn-icon-area {
+    width: 38px;
+    height: 38px;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.itch-badge-img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    display: block;
+}
+
+.itch-btn-content {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    flex: 1;
+    min-width: 0;
+}
+
+.itch-btn-main-title {
+    font-family: var(--font-title);
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: 0.6px;
+    line-height: 1.1;
+    margin-bottom: 2px;
+    white-space: nowrap;
+}
+
+.itch-btn-meta {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    opacity: 0.9;
+    letter-spacing: 0.4px;
+    white-space: nowrap;
+}
+
+.itch-btn-arrow {
+    font-size: 18px;
+    font-weight: bold;
+    transition: transform 0.15s ease;
+}
+
+.btn-game-itch-companion:hover .itch-btn-arrow {
+    transform: translate(2px, -2px);
+}
+
+@media (max-width: 780px) {
+    .game-download-row-actions {
+        flex-direction: column;
+    }
 }
 
 /* Big Tactile Steam Release Button */
@@ -3429,6 +3622,55 @@ html[data-theme="dark"] body {
 }
 
 /* Theme Adaptation: Win98 Dedicated Game Page */
+[data-theme="win98"] .game-download-dispatch-card {
+    background: #d4d0c8 !important;
+    border: 2px solid !important;
+    border-color: #ffffff #808080 #808080 #ffffff !important;
+    box-shadow: inset 1px 1px 0 #ffffff, 1px 1px 0 #000000 !important;
+    border-radius: 0 !important;
+}
+
+[data-theme="win98"] .game-specs-grid {
+    background: #c0c0c0 !important;
+    border: 2px inset #ffffff !important;
+    border-radius: 0 !important;
+}
+
+[data-theme="win98"] .btn-header-download {
+    background: #c0c0c0 !important;
+    color: #008000 !important;
+    border: 2px solid !important;
+    border-color: #ffffff #808080 #808080 #ffffff !important;
+    box-shadow: 1px 1px 0 #000000 !important;
+    border-radius: 0 !important;
+    text-shadow: none !important;
+}
+
+[data-theme="win98"] .btn-header-download:hover {
+    background: #d4d0c8 !important;
+}
+
+[data-theme="win98"] .btn-game-itch-companion {
+    background: #c0c0c0 !important;
+    color: #cc0000 !important;
+    border: 2px solid !important;
+    border-color: #ffffff #808080 #808080 #ffffff !important;
+    box-shadow: 1px 1px 0 #000000 !important;
+    border-radius: 0 !important;
+    text-shadow: none !important;
+}
+
+[data-theme="win98"] .btn-game-itch-companion:hover {
+    background: #d4d0c8 !important;
+}
+
+[data-theme="win98"] .btn-header-download:active,
+[data-theme="win98"] .btn-game-itch-companion:active {
+    border-color: #808080 #ffffff #ffffff #808080 !important;
+    box-shadow: none !important;
+    transform: translate(1px, 1px) !important;
+}
+
 [data-theme="win98"] .btn-game-download-primary {
     background: #c0c0c0 !important;
     color: #000080 !important;
@@ -3465,6 +3707,30 @@ html[data-theme="dark"] body {
 }
 
 /* Theme Adaptation: Backrooms Dedicated Game Page */
+[data-theme="backrooms"] .game-download-dispatch-card {
+    background: #eadebe !important;
+    border: 2px solid #8f805a !important;
+    box-shadow: 2px 2px 0 rgba(40, 32, 16, 0.25) !important;
+    border-radius: 2px !important;
+}
+
+[data-theme="backrooms"] .game-specs-grid {
+    background: #fbf5e6 !important;
+    border-color: #8f805a !important;
+}
+
+[data-theme="backrooms"] .btn-header-download {
+    background: linear-gradient(180deg, #15803d 0%, #166534 100%) !important;
+    border-color: #14532d !important;
+    border-radius: 2px !important;
+}
+
+[data-theme="backrooms"] .btn-game-itch-companion {
+    background: linear-gradient(180deg, #b91c1c 0%, #7f1d1d 100%) !important;
+    border-color: #991b1b !important;
+    border-radius: 2px !important;
+}
+
 [data-theme="backrooms"] .btn-game-download-primary {
     background: linear-gradient(180deg, #7d490c 0%, #4a2802 100%) !important;
     color: #fbf3db !important;
@@ -3479,6 +3745,46 @@ html[data-theme="dark"] body {
 }
 
 /* Theme Adaptation: CRT Phosphor (Dark, Green, Amber, Blood) */
+[data-theme="dark"] .game-download-dispatch-card,
+[data-theme="green"] .game-download-dispatch-card,
+[data-theme="amber"] .game-download-dispatch-card,
+[data-theme="blood"] .game-download-dispatch-card {
+    background: var(--bg-card) !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.5) !important;
+}
+
+[data-theme="dark"] .game-specs-grid,
+[data-theme="green"] .game-specs-grid,
+[data-theme="amber"] .game-specs-grid,
+[data-theme="blood"] .game-specs-grid {
+    background: var(--bg-card-inner) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+[data-theme="dark"] .btn-header-download,
+[data-theme="green"] .btn-header-download,
+[data-theme="amber"] .btn-header-download,
+[data-theme="blood"] .btn-header-download {
+    background: var(--bg-card-inner) !important;
+    color: #22c55e !important;
+    border: 1.5px solid #22c55e !important;
+    box-shadow: 0 0 12px rgba(34, 197, 94, 0.4) !important;
+    text-shadow: 0 0 6px rgba(34, 197, 94, 0.6) !important;
+    border-radius: 2px !important;
+}
+
+[data-theme="dark"] .btn-game-itch-companion,
+[data-theme="green"] .btn-game-itch-companion,
+[data-theme="amber"] .btn-game-itch-companion,
+[data-theme="blood"] .btn-game-itch-companion {
+    background: var(--bg-card-inner) !important;
+    color: #ff6b6b !important;
+    border: 1.5px solid #ff6b6b !important;
+    box-shadow: 0 0 10px rgba(255, 107, 107, 0.35) !important;
+    border-radius: 2px !important;
+}
+
 [data-theme="dark"] .btn-game-download-primary,
 [data-theme="green"] .btn-game-download-primary,
 [data-theme="amber"] .btn-game-download-primary,
