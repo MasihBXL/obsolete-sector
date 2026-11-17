@@ -1608,7 +1608,7 @@ html[data-theme="dark"] body {
     border: 2px solid;
     border-color: #ffffff #aca899 #aca899 #ffffff;
     padding: 20px 22px;
-    margin-bottom: 24px;
+    margin-bottom: 28px;
     position: relative;
     box-shadow: inset 1px 1px 0 #ffffff, 1px 1px 2px rgba(0, 0, 0, 0.15);
     border-radius: 2px;
@@ -1658,7 +1658,7 @@ html[data-theme="dark"] body {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
-    margin-bottom: 28px;
+    margin-bottom: 32px;
 }
 
 /* Authentic Windows XP Explorer Task Box (Luna Royal Blue + Ice Periwinkle) */
@@ -1769,7 +1769,7 @@ html[data-theme="dark"] body {
     background: #ffffe1;
     border: 1px solid #aca899;
     padding: 16px 20px;
-    margin-bottom: 24px;
+    margin-bottom: 30px;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.08);
 }
 
@@ -6725,7 +6725,7 @@ html[data-theme="dark"] body {
    ========================================================================== */
 
 .home-socials-section {
-    margin-bottom: 24px;
+    margin-bottom: 30px;
     background: var(--bg-card);
     border: 1px solid var(--border-color);
     padding: 14px 18px;

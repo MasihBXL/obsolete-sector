@@ -560,13 +560,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function openUserProfileModal() {
         if (!currentUser) {
-            openAuthModal('Please sign in to view your operative dossier.', 'login');
+            openAuthModal('Please sign in to view your profile.', 'login');
             return;
         }
 
         if (profileAvatarImg) profileAvatarImg.src = getUserAvatarUrl(currentUser);
         if (profileUsernameDisplay) profileUsernameDisplay.textContent = currentUser.username;
-        if (profileRoleBadge) profileRoleBadge.textContent = `CLEARANCE: ${(currentUser.role || 'USER').toUpperCase()}`;
+        if (profileRoleBadge) profileRoleBadge.textContent = `ROLE: ${(currentUser.role || 'USER').toUpperCase()}`;
         if (profileProviderBadge) profileProviderBadge.textContent = `${(currentUser.provider || 'LOCAL').toUpperCase()} AUTH`;
         if (profileEmailDisplay) profileEmailDisplay.textContent = currentUser.email || 'No email registered';
         if (dossierUserId) dossierUserId.textContent = currentUser.id || 'N/A';
@@ -986,7 +986,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     ssoUsernameInput.value = p.suggestedName || '';
                     ssoUsernameInput.focus();
                 }
-                authStatusMsg.textContent = 'Account verified. Please choose your call-sign:';
+                authStatusMsg.textContent = 'Account verified. Please choose your username:';
                 authStatusMsg.style.color = 'var(--link-color)';
             }
         }
@@ -1042,7 +1042,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     ssoUsernameInput.focus();
                 }
 
-                authStatusMsg.textContent = `Account verified. Please choose your call-sign:`;
+                authStatusMsg.textContent = `Account verified. Please choose your username:`;
                 authStatusMsg.style.color = 'var(--link-color)';
                 return;
             }
@@ -1093,7 +1093,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         ssoUsernameInput.value = data.suggestedUsername || '';
                         ssoUsernameInput.focus();
                     }
-                    authStatusMsg.textContent = 'Account verified. Please choose your call-sign:';
+                    authStatusMsg.textContent = 'Account verified. Please choose your username:';
                     authStatusMsg.style.color = 'var(--link-color)';
                 }
             } catch (err) {
@@ -1601,7 +1601,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function loadGameFeedback(gameId, type = 'all') {
         if (!gameFeedbackList) return;
-        gameFeedbackList.innerHTML = '<div style="font-size: 12px; color: var(--text-dim); text-align: center; padding: 12px;">Scanning transmission logs...</div>';
+        gameFeedbackList.innerHTML = '<div style="font-size: 12px; color: var(--text-dim); text-align: center; padding: 12px;">Loading feedback...</div>';
 
         try {
             const url = type === 'all' ? `/api/games/${gameId}/feedback` : `/api/games/${gameId}/feedback?type=${type}`;
@@ -1728,7 +1728,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 const data = await res.json();
                 if (res.ok && data.success) {
-                    fbSubmitStatus.textContent = 'Intel logged successfully.';
+                    fbSubmitStatus.textContent = 'Feedback submitted successfully.';
                     fbSubmitStatus.style.color = '#2e7d32';
                     fbContentInput.value = '';
                     setTimeout(() => {
@@ -1740,7 +1740,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     fbSubmitStatus.style.color = 'var(--accent)';
                 }
             } catch (err) {
-                fbSubmitStatus.textContent = 'Server transmission failed.';
+                fbSubmitStatus.textContent = 'Failed to submit feedback. Please try again.';
                 fbSubmitStatus.style.color = 'var(--accent)';
             } finally {
                 btnSubmitFeedback.disabled = false;
@@ -2445,7 +2445,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         listEl.querySelectorAll('.btn-delete-comment').forEach(btn => {
                             btn.addEventListener('click', async () => {
                                 const commentId = btn.getAttribute('data-id');
-                                if (confirm('Delete this comment transmission?')) {
+                                if (confirm('Delete this comment?')) {
                                     await fetch(`/api/devlogs/comments/${commentId}`, {
                                         method: 'DELETE',
                                         headers: { 'Authorization': `Bearer ${authToken}` }
@@ -2462,10 +2462,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (currentUser) {
                         inputArea.innerHTML = `
                             <div class="devlog-comment-form">
-                                <textarea class="devlog-comment-textarea" placeholder="Enter comment transmission as [${currentUser.username}]... (Max 1000 characters)"></textarea>
+                                <textarea class="devlog-comment-textarea" placeholder="Write a comment as [${currentUser.username}]... (Max 1000 characters)"></textarea>
                                 <div style="display: flex; justify-content: flex-end; gap: 8px;">
                                     <button type="button" class="btn-pixel btn-pixel-accent btn-submit-comment" data-devlog="${devlogId}">
-                                        TRANSMIT COMMENT ➔
+                                        POST COMMENT ➔
                                     </button>
                                 </div>
                             </div>
@@ -2824,7 +2824,7 @@ document.addEventListener('DOMContentLoaded', () => {
             guestbookListEl.innerHTML = '';
 
             if (entries.length === 0) {
-                guestbookListEl.innerHTML = '<div style="font-size: 12px; color: var(--text-dim); padding: 12px;">The transmission ledger is currently clear.</div>';
+                guestbookListEl.innerHTML = '<div style="font-size: 12px; color: var(--text-dim); padding: 12px;">No messages in the guestbook yet.</div>';
                 return;
             }
 
@@ -2861,7 +2861,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.btn-delete-gb').forEach(b => {
                 b.addEventListener('click', async () => {
                     const id = b.getAttribute('data-id');
-                    if (confirm('Delete transmission?')) {
+                    if (confirm('Delete this message?')) {
                         await fetch(`/api/guestbook/${id}`, {
                             method: 'DELETE',
                             headers: { 'Authorization': `Bearer ${authToken}` }
@@ -2877,7 +2877,7 @@ document.addEventListener('DOMContentLoaded', () => {
         guestbookForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             if (!currentUser) {
-                openAuthModal('Sign in or register an account to transmit to the guestbook.', 'login');
+                openAuthModal('Sign in or register an account to leave a message.', 'login');
                 return;
             }
 
@@ -2885,7 +2885,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const text = gbText.value.trim();
             if (!text) return;
 
-            gbStatusEl.textContent = 'Transmitting...';
+            gbStatusEl.textContent = 'Posting...';
             gbStatusEl.style.color = 'var(--link-color)';
 
             try {
@@ -2899,7 +2899,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 if (res.ok) {
-                    gbStatusEl.textContent = 'Transmission logged.';
+                    gbStatusEl.textContent = 'Message posted successfully.';
                     gbStatusEl.style.color = '#2e7d32';
                     gbText.value = '';
                     setTimeout(() => {
@@ -2908,11 +2908,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     }, 500);
                 } else {
                     const data = await res.json();
-                    gbStatusEl.textContent = data.error || 'Failed to transmit.';
+                    gbStatusEl.textContent = data.error || 'Failed to post message.';
                     gbStatusEl.style.color = 'var(--accent)';
                 }
             } catch (err) {
-                gbStatusEl.textContent = 'Transmission error.';
+                gbStatusEl.textContent = 'Failed to post message.';
                 gbStatusEl.style.color = 'var(--accent)';
             }
         });
