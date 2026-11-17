@@ -39,7 +39,10 @@
     "screenshots": [
       "/assets/images/cover_chamber.svg",
       "/assets/images/screen_terminal.svg",
-      "/assets/images/screen_machinery.svg"
+      "/assets/images/screen_machinery.svg",
+      "/assets/images/cover_signal.svg",
+      "/assets/images/cover_sub.svg",
+      "/assets/images/cover_machine.svg"
     ]
   },
   {
@@ -78,7 +81,10 @@
     "coverImage": "/assets/images/cover_signal.svg",
     "screenshots": [
       "/assets/images/cover_signal.svg",
-      "/assets/images/screen_terminal.svg"
+      "/assets/images/screen_terminal.svg",
+      "/assets/images/cover_chamber.svg",
+      "/assets/images/screen_machinery.svg",
+      "/assets/images/cover_sub.svg"
     ]
   },
   {
@@ -119,7 +125,10 @@
     "coverImage": "/assets/images/cover_sub.svg",
     "screenshots": [
       "/assets/images/cover_sub.svg",
-      "/assets/images/screen_machinery.svg"
+      "/assets/images/screen_machinery.svg",
+      "/assets/images/screen_terminal.svg",
+      "/assets/images/cover_chamber.svg",
+      "/assets/images/cover_signal.svg"
     ]
   },
   {
@@ -159,7 +168,10 @@
     "coverImage": "/assets/images/cover_machine.svg",
     "screenshots": [
       "/assets/images/cover_machine.svg",
-      "/assets/images/screen_machinery.svg"
+      "/assets/images/screen_machinery.svg",
+      "/assets/images/cover_chamber.svg",
+      "/assets/images/screen_terminal.svg",
+      "/assets/images/cover_signal.svg"
     ]
   }
 ]

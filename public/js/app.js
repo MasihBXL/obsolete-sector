@@ -1304,41 +1304,69 @@ document.addEventListener('DOMContentLoaded', () => {
             gameDetailFeaturesList.innerHTML = game.features.map(f => `<li>${escapeHtml(f)}</li>`).join('');
         }
 
-        // Screenshots Gallery
-        if (gameDetailScreenshots) {
-            const screens = game.screenshots && game.screenshots.length > 0 ? game.screenshots : [game.coverImage || '/assets/images/cover_chamber.svg'];
-            gameDetailScreenshots.className = 'game-screenshots-grid';
-            gameDetailScreenshots.innerHTML = screens.map((s, idx) => `
-                <div class="game-shot-card" data-idx="${idx}" title="Click to enlarge full resolution">
-                    <div class="game-shot-frame">
-                        <img src="${s}" class="game-shot-img" alt="${escapeHtml(game.title)} telemetry ${idx + 1}">
-                        <div class="game-shot-overlay">
-                            <span class="game-shot-zoom-pill">🔍 ENLARGE</span>
+        // 5. Screenshots Archive Gallery (Horizontal Track with Nav Controls & Zoom)
+        const screenshotsTrack = document.getElementById('gameDetailScreenshotsTrack');
+        const galleryCountBadge = document.getElementById('gameGalleryCountBadge');
+        const btnScrollLeft = document.getElementById('btnScrollGalleryLeft');
+        const btnScrollRight = document.getElementById('btnScrollGalleryRight');
+
+        const screens = (game.screenshots && game.screenshots.length > 0)
+            ? game.screenshots
+            : [game.coverImage || '/assets/images/cover_chamber.svg'];
+
+        if (galleryCountBadge) {
+            galleryCountBadge.textContent = `${screens.length} RECORD${screens.length === 1 ? '' : 'S'}`;
+        }
+
+        if (screenshotsTrack) {
+            screenshotsTrack.innerHTML = screens.map((s, idx) => `
+                <div class="game-gallery-shot-card" data-idx="${idx}" title="Click to enlarge in full-resolution zoom viewfinder">
+                    <div class="game-gallery-shot-frame">
+                        <img src="${s}" class="game-gallery-shot-img" alt="${escapeHtml(game.title)} telemetry ${idx + 1}" loading="lazy">
+                        <div class="game-gallery-shot-scanlines"></div>
+                        <div class="game-gallery-shot-overlay">
+                            <span class="game-gallery-zoom-pill">🔍 CLICK TO ZOOM</span>
                         </div>
                     </div>
-                    <div class="game-shot-caption">TELEMETRY_LOG_0${idx + 1}.RAW</div>
+                    <div class="game-gallery-shot-caption">
+                        <span class="shot-caption-label">TELEMETRY_LOG_0${idx + 1}.RAW</span>
+                        <span class="shot-caption-idx">[#0${idx + 1}]</span>
+                    </div>
                 </div>
             `).join('');
 
-            gameDetailScreenshots.querySelectorAll('.game-shot-card').forEach(card => {
+            screenshotsTrack.querySelectorAll('.game-gallery-shot-card').forEach(card => {
                 card.addEventListener('click', () => {
                     const idx = parseInt(card.getAttribute('data-idx') || '0', 10);
-                    if (gameDetailHeroImg) gameDetailHeroImg.src = screens[idx];
                     openLightbox(screens, idx, game.title);
                 });
             });
-
-            // Also make gameDetailHeroImg clickable to enlarge
-            if (gameDetailHeroImg) {
-                gameDetailHeroImg.style.cursor = 'zoom-in';
-                gameDetailHeroImg.title = 'Click to enlarge full resolution';
-                gameDetailHeroImg.onclick = () => {
-                    openLightbox(screens, 0, game.title);
-                };
-            }
         }
 
-        // Price, Download & Steam buttons
+        // Hook up left & right horizontal scroll buttons
+        if (btnScrollLeft && screenshotsTrack) {
+            btnScrollLeft.onclick = () => {
+                screenshotsTrack.scrollBy({ left: -380, behavior: 'smooth' });
+                if (window.soundEngine) window.soundEngine.playSelect();
+            };
+        }
+        if (btnScrollRight && screenshotsTrack) {
+            btnScrollRight.onclick = () => {
+                screenshotsTrack.scrollBy({ left: 380, behavior: 'smooth' });
+                if (window.soundEngine) window.soundEngine.playSelect();
+            };
+        }
+
+        // Also make gameDetailHeroImg clickable to enlarge
+        if (gameDetailHeroImg) {
+            gameDetailHeroImg.style.cursor = 'zoom-in';
+            gameDetailHeroImg.title = 'Click to enlarge full resolution';
+            gameDetailHeroImg.onclick = () => {
+                openLightbox(screens, 0, game.title);
+            };
+        }
+
+        // 6. Acquisition & Download Section Details
         const isFree = game.isFree !== false;
         if (gameDetailPriceBadge) {
             if (isFree) {
@@ -1355,8 +1383,16 @@ document.addEventListener('DOMContentLoaded', () => {
             gameMetaStatus.style.color = isFree ? '#2e7d32' : '#0284c7';
         }
 
+        const gameBtnDlVersion = document.getElementById('gameBtnDlVersion');
+        const gameBtnDlSize = document.getElementById('gameBtnDlSize');
+        const gameBtnSteamPrice = document.getElementById('gameBtnSteamPrice');
+
+        if (gameBtnDlVersion) gameBtnDlVersion.textContent = `VERSION ${game.version || '1.0'}`;
+        if (gameBtnDlSize) gameBtnDlSize.textContent = game.fileSize || 'STANDALONE ARCHIVE';
+        if (gameBtnSteamPrice) gameBtnSteamPrice.textContent = isFree ? 'STEAM COMMUNITY HUB' : `PAID RELEASE (${game.price || '$6.99'})`;
+
         if (btnPageDownload) {
-            btnPageDownload.style.display = isFree ? 'inline-flex' : 'none';
+            btnPageDownload.style.display = isFree ? 'flex' : 'none';
             btnPageDownload.onclick = () => {
                 if (!currentUser) {
                     openAuthModal('An operator account is required to download archive files.', 'login');
@@ -1368,7 +1404,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (btnPageSteam) {
             if (!isFree) {
-                btnPageSteam.style.display = 'inline-flex';
+                btnPageSteam.style.display = 'flex';
                 btnPageSteam.href = game.steamUrl || (game.externalLinks && game.externalLinks.steam) || 'https://store.steampowered.com';
             } else {
                 btnPageSteam.style.display = 'none';
@@ -1809,8 +1845,20 @@ document.addEventListener('DOMContentLoaded', () => {
         if (window.soundEngine) window.soundEngine.playSelect();
     }
 
+    let isLightboxZoomed = false;
+
+    function resetLightboxZoom() {
+        isLightboxZoomed = false;
+        if (lightboxImg) {
+            lightboxImg.classList.remove('zoomed');
+            lightboxImg.style.cursor = 'zoom-in';
+            lightboxImg.title = 'Click to Zoom In (Inspect Pixels)';
+        }
+    }
+
     function updateLightboxView() {
         if (!currentLightboxScreens || currentLightboxScreens.length === 0) return;
+        resetLightboxZoom();
         const currentSrc = currentLightboxScreens[currentLightboxIndex];
         if (lightboxImg) lightboxImg.src = currentSrc;
         if (lightboxCounter) {
@@ -1819,7 +1867,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function closeLightbox() {
+        resetLightboxZoom();
         if (imageLightboxModal) imageLightboxModal.classList.remove('open');
+    }
+
+    if (lightboxImg) {
+        lightboxImg.style.cursor = 'zoom-in';
+        lightboxImg.title = 'Click to Zoom In (Inspect Pixels)';
+        lightboxImg.addEventListener('click', (e) => {
+            e.stopPropagation();
+            isLightboxZoomed = !isLightboxZoomed;
+            if (isLightboxZoomed) {
+                lightboxImg.classList.add('zoomed');
+                lightboxImg.style.cursor = 'zoom-out';
+                lightboxImg.title = 'Click to Zoom Out (Reset View)';
+            } else {
+                lightboxImg.classList.remove('zoomed');
+                lightboxImg.style.cursor = 'zoom-in';
+                lightboxImg.title = 'Click to Zoom In (Inspect Pixels)';
+            }
+            if (window.soundEngine) window.soundEngine.playSelect();
+        });
     }
 
     if (lightboxModalClose) lightboxModalClose.addEventListener('click', closeLightbox);
@@ -3326,10 +3394,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const isYouTube = !!(reel.links && reel.links.youtube) || (reel.previewEmbedUrl && reel.previewEmbedUrl.includes('youtube'));
         const badgeText = isTikTok ? 'TIKTOK REEL' : (isYouTube ? 'YOUTUBE SHORTS' : 'TACTILE REEL');
         const badgeIcon = isTikTok ? '/assets/badges/social_tiktok.svg' : (isYouTube ? '/assets/badges/social_youtube.svg' : '/assets/badges/badge_res.svg');
+        const thumbUrl = reel.thumbnail || (isTikTok ? '/assets/images/thumb_reel_1.jpg' : '/assets/images/screen_machinery.svg');
 
         return `
             <div class="home-reel-facade" style="aspect-ratio: 16/9;" onclick="window.openReelTheater('${escapeHtml(reel.id)}')" title="Click to Watch in Theater">
-                <div class="home-reel-backdrop">
+                <div class="home-reel-backdrop" style="background-image: url('${escapeHtml(thumbUrl)}');">
+                    <div class="home-reel-thumb-overlay"></div>
                     <div class="home-reel-scanlines"></div>
                     <div class="home-reel-content">
                         <div class="home-reel-top-row">

@@ -350,109 +350,137 @@
                                 <strong id="gameBreadcrumbTitle" style="color: var(--link-color);">CHAMBER PROTOCOL</strong>
                             </div>
 
-                            <!-- Dedicated Game Hero Banner -->
-                            <div class="game-page-hero-banner">
+                            <!-- 1. Dedicated Game Hero Banner (Big Full-Width Banner) -->
+                            <div class="game-page-hero-banner" id="gamePageHeroBanner">
                                 <img id="gameDetailHeroImg" class="game-page-hero-img" src="/assets/images/cover_chamber.svg" alt="Game Banner">
                                 <div class="screen-scanline-fx"></div>
-                                <div style="position: absolute; bottom: 12px; left: 14px; background: rgba(0,0,0,0.85); padding: 8px 14px; border: 1px solid var(--border-color);">
+                                <div class="game-hero-badge-overlay">
                                     <span id="gameDetailPriceBadge" class="badge-free">FREE DOWNLOAD</span>
-                                    <span id="gameDetailVersion" style="color: #fff; font-size: 12px; margin-left: 6px; font-weight: bold;">v1.4.2</span>
+                                    <span id="gameDetailVersion" class="game-hero-version-pill">v1.4.2</span>
                                 </div>
                             </div>
 
-                            <!-- Two-column layout for details -->
-                            <div class="game-page-grid">
-                                
-                                <!-- Main Column: Story, Features & Media -->
-                                <div>
-                                    <div class="cat-header" style="margin-bottom: 8px;">
-                                        <h2 id="gameDetailTitle" class="cat-title" style="font-size: 32px;">CHAMBER PROTOCOL</h2>
-                                    </div>
-                                    <div id="gameDetailSubtitle" class="cat-subtitle" style="font-size: 14px; margin-bottom: 12px;">12-gauge tactical roulette in an abandoned facility</div>
-                                    <div id="gameDetailTags" class="cat-tags" style="margin-bottom: 16px;"></div>
+                            <!-- 2. Title & 3. Tags and Short Description / Subtitle -->
+                            <div class="game-header-section">
+                                <h1 id="gameDetailTitle" class="game-detail-main-title">CHAMBER PROTOCOL</h1>
+                                <div id="gameDetailSubtitle" class="game-detail-subtitle">12-gauge tactical roulette in an abandoned facility</div>
+                                <div id="gameDetailTags" class="cat-tags game-detail-tags-row"></div>
+                            </div>
 
-                                    <div style="background: var(--bg-card); border: 1px solid var(--border-color); padding: 16px; margin-bottom: 20px;">
-                                        <h4 style="font-family: var(--font-title); font-size: 20px; color: var(--link-color); margin: 0 0 8px 0;">
-                                            ■ ATMOSPHERIC SYNOPSIS &amp; LOGS
-                                        </h4>
-                                        <p id="gameDetailDesc" style="font-size: 13.5px; line-height: 1.6; color: var(--text-primary); margin: 0;"></p>
-                                    </div>
+                            <!-- 4. Description (Synopsis & Features) -->
+                            <div class="game-description-card">
+                                <div class="game-section-header">
+                                    <span class="game-section-title">■ ATMOSPHERIC SYNOPSIS &amp; LOGS</span>
+                                </div>
+                                <p id="gameDetailDesc" class="game-description-text"></p>
 
-                                    <!-- Screenshots Strip -->
-                                    <div style="margin-bottom: 20px;">
-                                        <h4 style="font-family: var(--font-title); font-size: 20px; color: var(--link-color); margin: 0 0 8px 0;">
-                                            ■ ARCHIVE SCREENSHOTS &amp; TELEMETRY
-                                        </h4>
-                                        <div id="gameDetailScreenshots" class="modal-gallery"></div>
-                                    </div>
+                                <div class="game-features-subblock">
+                                    <div class="game-features-heading">► MECHANICAL SYSTEMS &amp; SIMULATION FEATURES:</div>
+                                    <ul id="gameDetailFeaturesList" class="game-features-list"></ul>
+                                </div>
+                            </div>
 
-                                    <!-- Specifications / Features List -->
-                                    <div style="background: var(--bg-card); border: 1px solid var(--border-color); padding: 16px;">
-                                        <h4 style="font-family: var(--font-title); font-size: 20px; color: var(--link-color); margin: 0 0 8px 0;">
-                                            ■ MECHANICAL SYSTEMS &amp; FEATURES
-                                        </h4>
-                                        <ul id="gameDetailFeaturesList" style="padding-left: 20px; font-size: 13px; line-height: 1.6; margin: 0;"></ul>
+                            <!-- 5. Archive Gallery for that game (Horizontal Scroll, Nav Arrows, Large Stills, Click to Zoom) -->
+                            <div class="game-gallery-archive-card">
+                                <div class="game-section-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <span class="game-section-title">■ ARCHIVE SCREENSHOTS &amp; FIELD TELEMETRY</span>
+                                        <span id="gameGalleryCountBadge" class="gallery-count-badge">0 RECORDS</span>
+                                    </div>
+                                    <div class="gallery-scroll-nav">
+                                        <button type="button" id="btnScrollGalleryLeft" class="btn-pixel gallery-nav-btn" title="Scroll Left (Previous Screenshots)">◄ PREV</button>
+                                        <button type="button" id="btnScrollGalleryRight" class="btn-pixel gallery-nav-btn" title="Scroll Right (Next Screenshots)">NEXT ►</button>
                                     </div>
                                 </div>
+                                <p class="game-gallery-hint">
+                                    Declassified operational stills and telemetry displays. Scroll horizontally to inspect all archive records; click any image to open full-resolution zoom viewfinder.
+                                </p>
+                                <div id="gameDetailScreenshotsTrack" class="game-gallery-track">
+                                    <!-- Populated dynamically via JS: larger high-res cards with zoom trigger -->
+                                </div>
+                                <!-- Hidden compatibility anchor for legacy references -->
+                                <div id="gameDetailScreenshots" style="display: none;"></div>
+                            </div>
 
-                                <!-- Sidebar Column: Download / Steam Actions, Meta & Reactions -->
-                                <div>
-                                    <div class="game-page-sidebar-box">
-                                        <h3 style="font-family: var(--font-title); font-size: 22px; color: var(--link-color); margin: 0 0 12px 0;">
-                                            ACQUISITION CLEARANCE
-                                        </h3>
+                            <!-- 6. Download Section (Big, Prominent, Eye-Catching, Authentic Retro Dispatch Station) -->
+                            <div class="game-download-dispatch-card">
+                                <div class="game-section-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                                    <span class="game-section-title">■ ACQUISITION CLEARANCE &amp; DISPATCH CONSOLE</span>
+                                    <span class="game-dispatch-pill">AUTHENTIC ARCHIVE BUILD</span>
+                                </div>
 
-                                        <table class="game-page-meta-table">
-                                            <tr>
-                                                <td>STATUS:</td>
-                                                <td id="gameMetaStatus" style="color: #2e7d32; font-weight: bold;">FREE DOWNLOAD</td>
-                                            </tr>
-                                            <tr>
-                                                <td>PLATFORMS:</td>
-                                                <td id="gameMetaPlatforms">Windows, Linux</td>
-                                            </tr>
-                                            <tr>
-                                                <td>ARCHIVE SIZE:</td>
-                                                <td id="gameMetaSize">48.5 MB</td>
-                                            </tr>
-                                            <tr>
-                                                <td>RELEASED:</td>
-                                                <td id="gameMetaDate">2026-10-15</td>
-                                            </tr>
-                                            <tr>
-                                                <td>DOWNLOADS:</td>
-                                                <td id="gameMetaDownloads">1422</td>
-                                            </tr>
-                                        </table>
-
-                                        <!-- Actions Row -->
-                                        <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px;">
-                                            <button id="btnPageDownload" class="btn-pixel btn-pixel-accent" style="width: 100%; justify-content: center; padding: 10px;">
-                                                <span>▼</span> DIRECT DOWNLOAD
-                                            </button>
-                                            <a id="btnPageSteam" href="#" target="_blank" class="btn-pixel btn-steam" style="width: 100%; justify-content: center; padding: 10px; display: none; text-decoration: none;">
-                                                <span>⚡</span> BUY / WISHLIST ON STEAM
-                                            </a>
-                                            <button id="btnPagePlayBrowser" class="btn-pixel" style="width: 100%; justify-content: center; display: none;">
-                                                <span>▶</span> PLAY IN BROWSER
-                                            </button>
+                                <div class="game-download-body">
+                                    <!-- Telemetry specs grid -->
+                                    <div class="game-specs-grid">
+                                        <div class="game-spec-item">
+                                            <span class="spec-label">PLATFORMS:</span>
+                                            <strong class="spec-val" id="gameMetaPlatforms">Windows, Linux, Web</strong>
                                         </div>
+                                        <div class="game-spec-item">
+                                            <span class="spec-label">ARCHIVE SIZE:</span>
+                                            <strong class="spec-val" id="gameMetaSize">48.5 MB</strong>
+                                        </div>
+                                        <div class="game-spec-item">
+                                            <span class="spec-label">RELEASE DATE:</span>
+                                            <strong class="spec-val" id="gameMetaDate">2026-10-15</strong>
+                                        </div>
+                                        <div class="game-spec-item">
+                                            <span class="spec-label">STATUS:</span>
+                                            <strong class="spec-val" id="gameMetaStatus" style="color: #2e7d32;">FREE DOWNLOAD</strong>
+                                        </div>
+                                        <div class="game-spec-item">
+                                            <span class="spec-label">TOTAL DISPATCHES:</span>
+                                            <strong class="spec-val" id="gameMetaDownloads">1,422</strong>
+                                        </div>
+                                    </div>
 
-                                        <!-- Live Reactions Bar -->
-                                        <div style="border-top: 1px dashed var(--border-color); padding-top: 12px;">
-                                            <div style="font-size: 11px; font-weight: bold; color: var(--text-dim); margin-bottom: 8px;">
-                                                FIELD REACTIONS:
+                                    <!-- Big Prominent Download & Acquisition Buttons -->
+                                    <div class="game-action-buttons-wrap">
+                                        <button type="button" id="btnPageDownload" class="btn-game-download-primary">
+                                            <div class="download-btn-icon-area">
+                                                <span class="dl-disk-icon">💾</span>
                                             </div>
-                                            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-                                                <button class="btn-pixel rx-btn" data-type="heart" title="Appreciate">❤️ <span class="rx-count" data-type="heart">0</span></button>
-                                                <button class="btn-pixel rx-btn" data-type="skull" title="Dread / Horror">💀 <span class="rx-count" data-type="skull">0</span></button>
-                                                <button class="btn-pixel rx-btn" data-type="fire" title="Intense">🔥 <span class="rx-count" data-type="fire">0</span></button>
-                                                <button class="btn-pixel rx-btn" data-type="tape" title="Atmospheric Tape">📼 <span class="rx-count" data-type="tape">0</span></button>
+                                            <div class="download-btn-content">
+                                                <div class="download-btn-main-title">DIRECT DOWNLOAD STANDALONE ARCHIVE</div>
+                                                <div class="download-btn-meta">
+                                                    <span id="gameBtnDlVersion">VERSION 1.4.2</span> •
+                                                    <span id="gameBtnDlSize">48.5 MB</span> •
+                                                    <span>STANDALONE OFFLINE PACKAGE // SAFE EXTRACT</span>
+                                                </div>
                                             </div>
+                                            <span class="download-btn-arrow">➔</span>
+                                        </button>
+
+                                        <a id="btnPageSteam" href="#" target="_blank" rel="noopener noreferrer" class="btn-game-steam-primary" style="display: none;">
+                                            <div class="download-btn-icon-area">
+                                                <img src="/assets/badges/social_steam.svg" alt="Steam" style="width: 32px; height: 32px; display: block;">
+                                            </div>
+                                            <div class="download-btn-content">
+                                                <div class="download-btn-main-title">ACQUIRE / WISHLIST ON STEAM</div>
+                                                <div class="download-btn-meta">
+                                                    <span id="gameBtnSteamPrice">PAID COMMERCIAL RELEASE</span> •
+                                                    <span>INSTANT STEAM LIBRARY ACCESS</span>
+                                                </div>
+                                            </div>
+                                            <span class="download-btn-arrow">➔</span>
+                                        </a>
+
+                                        <button type="button" id="btnPagePlayBrowser" class="btn-pixel btn-game-browser-play" style="display: none;">
+                                            <span>▶</span> LAUNCH IN RETRO BROWSER EMULATOR
+                                        </button>
+                                    </div>
+
+                                    <!-- Operator Reactions Bar -->
+                                    <div class="game-reactions-strip">
+                                        <span class="reactions-prompt">OPERATOR FIELD REACTIONS:</span>
+                                        <div class="reactions-buttons-row">
+                                            <button class="btn-pixel rx-btn" data-type="heart" title="Appreciate">❤️ <span class="rx-count" data-type="heart">0</span></button>
+                                            <button class="btn-pixel rx-btn" data-type="skull" title="Dread / Horror">💀 <span class="rx-count" data-type="skull">0</span></button>
+                                            <button class="btn-pixel rx-btn" data-type="fire" title="Intense">🔥 <span class="rx-count" data-type="fire">0</span></button>
+                                            <button class="btn-pixel rx-btn" data-type="tape" title="Atmospheric Tape">📼 <span class="rx-count" data-type="tape">0</span></button>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
 
                             <!-- Dedicated Game Feedback Section: Opinions, Suggestions & Bug Reports -->
