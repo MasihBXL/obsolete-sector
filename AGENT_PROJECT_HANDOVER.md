@@ -410,6 +410,12 @@ Whenever working on this codebase, **any AI agent must respect the following rul
 | Commit | Description |
 |--------|-------------|
 | `6732eb6` | Create comprehensive 0-to-100 developer and AI agent handover guide |
+| `ae06e3c` | Add changelog section with full commit history to handover guide |
+
+### Session 5 — 2026-11-19 (Custom Aseprite Pixel Art Icons)
+| Commit | Description |
+|--------|-------------|
+| `b5816a9` | Integrate user custom Aseprite pixel art icons (YouTube, TikTok, Instagram, Discord, Itch.io) with pixelated rendering |
 
 ### Template for Future Entries
 ```

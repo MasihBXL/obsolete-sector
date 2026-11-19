@@ -3124,7 +3124,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (links.youtube) {
                 available.push({
                     platform: 'YouTube Shorts',
-                    iconSrc: '/assets/badges/social_youtube.svg',
+                    iconSrc: '/assets/badges/social_youtube.png',
                     url: links.youtube,
                     btnClass: 'platform-btn-yt'
                 });
@@ -3132,7 +3132,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (links.tiktok) {
                 available.push({
                     platform: 'TikTok',
-                    iconSrc: '/assets/badges/social_tiktok.svg',
+                    iconSrc: '/assets/badges/social_tiktok.png',
                     url: links.tiktok,
                     btnClass: 'platform-btn-tiktok'
                 });
@@ -3140,7 +3140,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (links.instagram) {
                 available.push({
                     platform: 'Instagram Reels',
-                    iconSrc: '/assets/badges/social_instagram.svg',
+                    iconSrc: '/assets/badges/social_instagram.png',
                     url: links.instagram,
                     btnClass: 'platform-btn-instagram'
                 });
@@ -3201,7 +3201,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         ${p.youtube ? `
                             <a href="${escapeHtml(p.youtube)}" target="_blank" rel="noopener noreferrer" class="social-channel-card social-card-yt" title="Official YouTube Channel">
                                 <div class="social-channel-icon-wrap">
-                                    <img src="/assets/badges/social_youtube.svg" alt="YouTube" class="social-channel-img">
+                                    <img src="/assets/badges/social_youtube.png" alt="YouTube" class="social-channel-img">
                                 </div>
                                 <span class="social-channel-label">YOUTUBE</span>
                                 <span class="social-channel-sub">Documentaries</span>
@@ -3210,7 +3210,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         ${p.tiktok ? `
                             <a href="${escapeHtml(p.tiktok)}" target="_blank" rel="noopener noreferrer" class="social-channel-card social-card-tiktok" title="Official TikTok Broadcasts">
                                 <div class="social-channel-icon-wrap">
-                                    <img src="/assets/badges/social_tiktok.svg" alt="TikTok" class="social-channel-img">
+                                    <img src="/assets/badges/social_tiktok.png" alt="TikTok" class="social-channel-img">
                                 </div>
                                 <span class="social-channel-label">TIKTOK</span>
                                 <span class="social-channel-sub">Tactile Reels</span>
@@ -3219,7 +3219,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         ${p.instagram ? `
                             <a href="${escapeHtml(p.instagram)}" target="_blank" rel="noopener noreferrer" class="social-channel-card social-card-instagram" title="Official Instagram">
                                 <div class="social-channel-icon-wrap">
-                                    <img src="/assets/badges/social_instagram.svg" alt="Instagram" class="social-channel-img">
+                                    <img src="/assets/badges/social_instagram.png" alt="Instagram" class="social-channel-img">
                                 </div>
                                 <span class="social-channel-label">INSTAGRAM</span>
                                 <span class="social-channel-sub">Visual Feeds</span>
@@ -3228,7 +3228,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         ${p.discord ? `
                             <a href="${escapeHtml(p.discord)}" target="_blank" rel="noopener noreferrer" class="social-channel-card social-card-discord" title="Official Discord Server">
                                 <div class="social-channel-icon-wrap">
-                                    <img src="/assets/badges/social_discord.svg" alt="Discord" class="social-channel-img">
+                                    <img src="/assets/badges/social_discord.png" alt="Discord" class="social-channel-img">
                                 </div>
                                 <span class="social-channel-label">DISCORD</span>
                                 <span class="social-channel-sub">Community Net</span>
@@ -3237,7 +3237,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         ${(p.itch || p.itchio) ? `
                             <a href="${escapeHtml(p.itch || p.itchio)}" target="_blank" rel="noopener noreferrer" class="social-channel-card social-card-itch" title="Official Itch.io Game Releases & 3D Assets">
                                 <div class="social-channel-icon-wrap">
-                                    <img src="/assets/badges/social_itchio.svg" alt="Itch.io" class="social-channel-img">
+                                    <img src="/assets/badges/social_itchio.png" alt="Itch.io" class="social-channel-img">
                                 </div>
                                 <span class="social-channel-label">ITCH.IO</span>
                                 <span class="social-channel-sub">Games &amp; 3D Packs</span>
@@ -3423,7 +3423,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const isTikTok = !!(reel.links && reel.links.tiktok) || (reel.previewEmbedUrl && reel.previewEmbedUrl.includes('tiktok'));
         const isYouTube = !!(reel.links && reel.links.youtube) || (reel.previewEmbedUrl && reel.previewEmbedUrl.includes('youtube'));
         const badgeText = isTikTok ? 'TIKTOK REEL' : (isYouTube ? 'YOUTUBE SHORTS' : 'TACTILE REEL');
-        const badgeIcon = isTikTok ? '/assets/badges/social_tiktok.svg' : (isYouTube ? '/assets/badges/social_youtube.svg' : '/assets/badges/badge_res.svg');
+        const badgeIcon = isTikTok ? '/assets/badges/social_tiktok.png' : (isYouTube ? '/assets/badges/social_youtube.png' : '/assets/badges/badge_res.svg');
         const thumbUrl = reel.thumbnail || (isTikTok ? '/assets/images/thumb_reel_1.jpg' : '/assets/images/screen_machinery.svg');
 
         return `
@@ -3509,7 +3509,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const links = latestReel.links || {};
                 const directUrl = links.tiktok || links.youtube || links.instagram || '#';
                 const isTikTok = !!links.tiktok;
-                const platformIcon = isTikTok ? '/assets/badges/social_tiktok.svg' : (links.youtube ? '/assets/badges/social_youtube.svg' : '/assets/badges/social_instagram.svg');
+                const platformIcon = isTikTok ? '/assets/badges/social_tiktok.png' : (links.youtube ? '/assets/badges/social_youtube.png' : '/assets/badges/social_instagram.png');
                 const platformLabel = isTikTok ? 'OPEN TIKTOK ➔' : (links.youtube ? 'OPEN SHORTS ➔' : 'OPEN REELS ➔');
 
                 shortActionsEl.innerHTML = `
