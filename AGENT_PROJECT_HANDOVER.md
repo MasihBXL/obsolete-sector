@@ -417,6 +417,7 @@ Whenever working on this codebase, **any AI agent must respect the following rul
 |--------|-------------|
 | `b5816a9` | Integrate user custom Aseprite pixel art icons (YouTube, TikTok, Instagram, Discord, Itch.io) with pixelated rendering |
 | `6f14f29` | Add pixel art Steam icon, update Instagram to new logo, and add minimal YouTube pixel icon |
+| `e32455e` | Fix pixel jitter/shimmering during hover by removing fractional scale transition, remove nearest-neighbor distortion, make YouTube background transparent |
 
 ### Template for Future Entries
 ```
