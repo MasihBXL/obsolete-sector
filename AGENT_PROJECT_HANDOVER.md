@@ -357,4 +357,67 @@ Whenever working on this codebase, **any AI agent must respect the following rul
 - **Adding Games:** New games can be easily added either via `http://localhost:3000/admin.html` or by directly appending records into `data/games.json`.
 
 ---
-*Document prepared for seamless handoff to any AI agent or software engineer.*
+
+## 12. Changelog — All Changes Must Be Logged Here
+
+> **⚠️ IMPORTANT FOR ALL AI AGENTS:** After every change you make to this project, you **MUST** append a new entry to this changelog. Each entry should include the date, commit hash, and a clear description of what was changed.
+
+### Session 1 — 2026-11-11 (Initial Build)
+| Commit | Description |
+|--------|-------------|
+| `0bd5b36` | Complete RBAC user/admin system, SQLite database, reactions, free hosting configs |
+| `a6a3de5` | Add free hosting deployment guide |
+| `8f0aef4` | Update gitignore to exclude cloudflared and sqlite temp files |
+| `4dec424` | Add Deploy to Render button to README |
+| `16cac06` | Transform site into modular multi-part experience (Home, Games, Art, Audio, Devlogs) |
+| `d3f6586` | Implement 2D Banner Gallery, dedicated game pages, Winamp-style audio player |
+| `156b284` | Integrate social auth inside login/signup tabs, restyle audio player |
+| `369d65b` | Revamp XP Luna color palette, 1-click social OAuth with username prompt |
+| `b197e54` | Restore authentic Bliss wallpaper background, eliminate modern colored stripes |
+| `d5853bc` | Restore neutral cream music player, isolate card/button styles across themes |
+| `3b499ca` | Fix SyntaxError in app.js: remove duplicate block with stray await |
+| `ba57e0f` | Fix dark CRT button styles, integrate quick social buttons inside login/register panes |
+| `a1d5e94` | Sync outer window across themes, fix Win98 font wrapping, add screenshot lightbox |
+| `e9e819a` | Implement genuine OAuth 2.0 (Google + GitHub) with token exchange and SQLite sessions |
+| `22edac6` | Remove red horror badge icon next to MOPTAM header title |
+| `067e0b1` | Add User Profile modal with custom avatar upload and 7 theme-matching default avatars |
+| `d5994b1` | Implement devlog reactions & comments with spotlight quote |
+| `18d902a` | Add rich multimedia, responsive YouTube embed, social links to Devlogs |
+| `62e7f7d` | Add dedicated Socials view with embedded YouTube, cross-platform reels launcher |
+| `5f2ca3e` | Add commercial asset store links, pricing, and format specs to Art Gallery |
+| `6a4b3c7` | Add SoundCloud and Spotify buttons to Music Player |
+| `c77faab` | Fix music player title contrast across all themes |
+
+### Session 2 — 2026-11-14 (Themes, Socials, TikTok)
+| Commit | Description |
+|--------|-------------|
+| `8b5c432` | Enhance Win98 3D bevels, Backrooms liminal theme, audio player contrast |
+| `89acc6a` | Retro typography for Win98, single-line nav, YouTube thumbnail facades, marquee editor |
+| `1f5a48b` | Fix home devlog comments sync, restore MS Sans Serif for Win98 |
+| `224d44a` | Restore VT323 pixel font and Share Tech Mono for Win98 |
+| `d0038c0` | Add TikTok embed, replace Twitter→Itch.io, generate 6 retro SVG icons, add Facebook OAuth |
+| `b8106de` | Refactor short reel display with CRT facade and 9:16 theater modal, **remove Apple login permanently** |
+
+### Session 3 — 2026-11-17 (Game Pages, Download UX, UX Overhaul)
+| Commit | Description |
+|--------|-------------|
+| `3638c8d` | Add short reel thumbnail, balance socials row, overhaul game page with scroll gallery and download console |
+| `9b48ad9` | Update download card to warm cream style, add animated quick download button, add "Play on itch.io" button |
+| `198ae50` | **Major UX overhaul:** simplify retro military jargon to clear English, reduce text density, add spacing |
+| `5cd475b` | **UX overhaul continued:** simplify jargon across Games, Art, Audio, Devlogs, Socials, and all modals |
+
+### Session 4 — 2026-11-18 (Documentation)
+| Commit | Description |
+|--------|-------------|
+| `6732eb6` | Create comprehensive 0-to-100 developer and AI agent handover guide |
+
+### Template for Future Entries
+```
+### Session N — YYYY-MM-DD (Brief Topic)
+| Commit | Description |
+|--------|-------------|
+| `abc1234` | Description of changes |
+```
+
+---
+*Document prepared for seamless handoff to any AI agent or software engineer. Last updated: 2026-11-19.*
