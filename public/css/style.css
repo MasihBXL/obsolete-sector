@@ -6202,8 +6202,8 @@ html[data-theme="dark"] body {
 }
 
 .social-channel-icon-wrap {
-    width: 48px;
-    height: 48px;
+    width: 60px;
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -6211,8 +6211,8 @@ html[data-theme="dark"] body {
 }
 
 .social-channel-img {
-    width: 44px;
-    height: 44px;
+    width: 56px;
+    height: 56px;
     display: block;
     object-fit: contain;
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.25));
