@@ -411,7 +411,14 @@ Whenever working on this codebase, **any AI agent must respect the following rul
 |--------|-------------|
 | `6732eb6` | Create comprehensive 0-to-100 developer and AI agent handover guide |
 | `ae06e3c` | Add changelog section with full commit history to handover guide |
-| `5ed4d7d` | Create dedicated `deepcode-ai` branch and configure agent instructions to work strictly on it |
+| ed4d7d | Create dedicated deepcode-ai branch and configure agent instructions to work strictly on it |
+
+### Session 5 — 2026-11-19 (Custom Aseprite Pixel Art Icons)
+| Commit | Description |
+|--------|-------------|
+| 5816a9 | Integrate user custom Aseprite pixel art icons (YouTube, TikTok, Instagram, Discord, Itch.io) with pixelated rendering |
+| f14f29 | Add pixel art Steam icon, update Instagram to new logo, and add minimal YouTube pixel icon |
+| 121b | Fix pixel jitter/shimmering during hover by removing fractional scale transition, remove nearest-neighbor distortion, make YouTube background transparent |
 
 ### Template for Future Entries
 ```

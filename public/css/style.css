@@ -6216,11 +6216,11 @@ html[data-theme="dark"] body {
     display: block;
     object-fit: contain;
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.25));
-    transition: transform 0.15s ease;
+    transition: filter 0.15s ease, opacity 0.15s ease;
 }
 
 .social-channel-card:hover .social-channel-img {
-    transform: scale(1.08);
+    filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.35)) brightness(1.05);
 }
 
 .social-channel-label {
@@ -6905,6 +6905,8 @@ html[data-theme="dark"] body {
     width: 14px;
     height: 14px;
     object-fit: contain;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
 }
 
 .home-reel-center-play {
