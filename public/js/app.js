@@ -3246,7 +3246,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         ${p.steam ? `
                             <a href="${escapeHtml(p.steam)}" target="_blank" rel="noopener noreferrer" class="social-channel-card social-card-steam" title="Official Steam Creator Hub">
                                 <div class="social-channel-icon-wrap">
-                                    <img src="/assets/badges/social_steam.svg" alt="Steam" class="social-channel-img">
+                                    <img src="/assets/badges/social_steam.png" alt="Steam" class="social-channel-img">
                                 </div>
                                 <span class="social-channel-label">STEAM</span>
                                 <span class="social-channel-sub">Commercial Hub</span>
