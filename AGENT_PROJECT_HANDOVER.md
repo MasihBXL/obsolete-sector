@@ -1,7 +1,7 @@
 # 🛸 OBSOLETE SECTOR // Complete 0-to-100 Developer & AI Agent Handover Guide
 
 > **Project Name:** Obsolete Sector / "Hello, I am MOPTAM"  
-> **Repository:** `https://github.com/MasihBXL/obsolete-sector.git` (`branch: main`)  
+> **Repository:** `https://github.com/MasihBXL/obsolete-sector.git` (`branch: deepcode-ai`, production base: `main`)  
 > **Local Workspace:** `D:\Coding & Programing\WEB`  
 > **Current Version:** v2.5 (November 2026)  
 > **Default Admin Passcode:** `1986` (Username: `admin`)  
@@ -64,11 +64,11 @@ The application will be accessible at:
 - **Admin Portal:** `http://localhost:3000/admin.html` (Password: `1986`)
 
 ### Git Workflow
-All commits must be clean and pushed to `origin main`:
+All commits must be clean and pushed to `origin deepcode-ai`:
 ```powershell
 git add .
 git commit -m "Your descriptive commit message"
-git push origin main
+git push origin deepcode-ai
 ```
 
 ---
@@ -406,10 +406,12 @@ Whenever working on this codebase, **any AI agent must respect the following rul
 | `198ae50` | **Major UX overhaul:** simplify retro military jargon to clear English, reduce text density, add spacing |
 | `5cd475b` | **UX overhaul continued:** simplify jargon across Games, Art, Audio, Devlogs, Socials, and all modals |
 
-### Session 4 — 2026-11-18 (Documentation)
+### Session 4 — 2026-11-18 / 2026-11-19 (Documentation & Handover)
 | Commit | Description |
 |--------|-------------|
 | `6732eb6` | Create comprehensive 0-to-100 developer and AI agent handover guide |
+| `ae06e3c` | Add changelog section with full commit history to handover guide |
+| `5ed4d7d` | Create dedicated `deepcode-ai` branch and configure agent instructions to work strictly on it |
 
 ### Template for Future Entries
 ```
